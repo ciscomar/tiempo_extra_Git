@@ -1,0 +1,159 @@
+<%- include ("./static/header") %>
+    <%- include ("./static/sidebar") %>
+        <%- include ("./static/navbar") %>
+
+
+            <div class="col-xl-12 jumbotron jumbotron-fluid animated bounceInDown bg-transparent jumbotronBg">
+                <div class="container">
+                    <img src="/img/TristoneLogo.png" class="img-logo rounded mx-auto d-block" alt="Tristone Flowtech">
+                    <h1 class="display-4 text-center csvTitulo">Solicitud #<%= id %>
+                    </h1>
+                    <input type="text" class="form-control text-center" name="id" id="id" value="<%= id %>" hidden>
+                    <p class="lead text-center"></p>
+                </div>
+            </div>
+            <div class="container">
+
+                <div class="card-header text-white bg-dark ">
+                    <div class="row">
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Semana</label>
+                                <div>
+                                    <input type="text" class="form-control text-center" name="semana" id="semana"
+                                        readonly>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Motivo</label>
+                                <div>
+                                    <input type="text" class="form-control text-center" name="motivo" id="motivo"
+                                        readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-lg-6 text-center">
+                        <div class="form-group">
+                            <input type="text" class="form-control text-center" name="startDate" id="startDate"
+                                placeholder="YYYY-MM-DD" value="" hidden>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 text-center">
+                        <div class="form-group">
+                            <input type="text" class="form-control text-center" name="endDate" id="endDate"
+                                placeholder="YYYY-MM-DD" value="" hidden>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="container-fluid">
+                <div class="table-responsive mt-2">
+                    <div class="containerTable">
+                        <div class="table table-responsive" id="table">
+                            <table id="table2" class="table table-bordered table-striped table-sm hover text-center">
+                                <thead class="thead-dark">
+
+                                    <th width="5%"><span></span> Empleado</th>
+                                    <th width="25%"><span></span> Nombre</th>
+                                    <th width="5%"><span></span> L</th>
+                                    <th width="5%"><span></span> M</th>
+                                    <th width="5%"><span></span> Mc</th>
+                                    <th width="5%"><span></span> J </th>
+                                    <th width="5%"><span></span> V</th>
+                                    <th width="5%"><span></span> S</th>
+                                    <th width="5%"><span></span> D</th>
+                                    <th width="15%"><span></span> Area Actual</th>
+                                    <th width="15%"><span></span> Area a Laborar</th>
+                                    <th width="10%"><span></span> Jefe</th>
+                                    <th width="15%"><span></span>Status</th>
+                                    <!-- <th width="15%"><span></span>Confirmado</th>
+                                    <th width="15%"><span></span>Aprobado</th> -->
+
+
+                                </thead>
+
+                                <tbody>
+
+
+
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+                   <div class="modal fade bd-example-modal-lg" id="modalHistorial" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-lg ">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="card">
+                                <div class="card-header text-center d-none d-lg-block">
+                                    <h4 class="card-mov"><span class="text-info fas fa-history"></span> Historial
+                                    </h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive mt-2">
+                                        <div class="containerTable">
+                                            <div class="table table-responsive" id="table">
+                                                <table id="tableHistorial"
+                                                    class="table table-bordered table-striped table-sm hover text-center">
+                                                    <thead class="thead-dark">
+
+                                                        <th width="10%"><span></span> Empleado</th>
+                                                        <th width="50%"><span></span> Comentario</th>
+                                                        <th width="5%"><span></span> Status</th>
+                                                        <th width="5%"><span></span> Fecha</th>
+                                                    </thead>
+
+                                                    <tbody>
+
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btnCerrar"
+                                data-dismiss="modal" id="btnCerrar">Cerrar</button>
+                        </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+            <%- include ("./static/footer") %>
+                <script src="/js/functions/confirmar_historial_id.js"></script>
