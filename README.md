@@ -1,11 +1,11 @@
-<center><strong><h1>Carga de empleados</h1></strong></center>
+<center><strong><h1>Tiempo Extra</h1></strong></center>
 
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/aramogs/bts/master/public/img/tristone_logo_head.png" />
 </p>
 
-<center><p>Program dedicated to load employee database </p></center>
+<center><p>Program dedicated to request overtime</p></center>
 
 
 ### Installation
