@@ -65,20 +65,58 @@ controller.crear_solicitud_GET = (req, res) => {
 
 controller.infoEmpleado_POST = (req, res) => {
 
+    let week_end=req.body.week_end
+    let week_start=req.body.week_start
     let empleado = req.body.empleado
+    let week_start_moment =  moment(req.body.week_start)
+    let week_end_moment = moment(req.body.week_end)
+    let saturday= week_end_moment.subtract(1,"days").format('YYYY-MM-DD')
+    let friday= week_end_moment.subtract(2,"days").format('YYYY-MM-DD')
+    let tuesday= week_start_moment.add(1,"days").format('YYYY-MM-DD')
+    let descanso1
+    let descanso2
+    let inicio
+    let fin
 
     let result = []
     funcion.getInfoEmpleado(empleado)
         .then((info) => {
             if (info.length > 0) {
 
-                funcion.getInfoEmpleado(info[0].emp_id_jefe)
-                    .then((jefe) => {
-                        result.push(info)
-                        result.push(jefe)
-                        res.json(result)
+                if(info[0].emp_activo==3){
+
+                    descanso1= week_start
+                    descanso2= week_end
+                    inicio= tuesday
+                    fin= saturday
+                }else{
+                    descanso1= saturday
+                    descanso2= week_end
+                    inicio= week_start
+                    fin= friday
+                }
+                
+
+      
+                async function waitForPromise() {
+                    let getInfoEmpleado = await  funcion.getInfoEmpleado(info[0].emp_id_jefe)
+                    let getInfoExtra = await funcion.getInfoExtra(empleado, inicio, fin)
+                    let getInfoDescanso1 = await funcion.getInfoDescanso(empleado, descanso1)
+                    let getInfoDescanso2 = await funcion.getInfoDescanso(empleado, descanso2)
+           
+           
+                    result.push(info)
+                    Promise.all([getInfoEmpleado, getInfoExtra, getInfoDescanso1,getInfoDescanso2])
+                    .then((r) => {
+                        result.push(r)
+                        res.json({ result })
+        
                     })
-                    .catch((err) => { console.error(err) })
+
+                }
+                waitForPromise()
+                
+
 
             } else {
                 res.json([0])
@@ -102,22 +140,22 @@ controller.sendSolicitud_POST = (req, res) => {
         let emp_id = await funcion.getEmpleadoId(solicitante)
         let lastSolicitud = await funcion.getSolicitud();
         let solicitud
-        if(lastSolicitud== undefined){
-                solicitud=1
-        }else{
-                solicitud = lastSolicitud.solicitud + 1
+        if (lastSolicitud == undefined) {
+            solicitud = 1
+        } else {
+            solicitud = lastSolicitud.solicitud + 1
         }
 
         let insert = await getArray(solicitud, emp_id, empleados, fechas, motivo);
-        
+
 
 
         funcion.insertSolicitud(insert)
             .then((result) => {
 
-                        res.json(result)
+                res.json(result)
 
-                     })
+            })
             .catch((err) => { console.error(err) })
 
 
@@ -133,7 +171,7 @@ controller.sendSolicitud_POST = (req, res) => {
 function getArray(solicitud, solicitante, empleados, fecha, motivo) {
 
     let todayDate = moment()
-    let myDate =  moment(todayDate).format('YYYY/MM/DD HH:mm:ss');
+    let myDate = moment(todayDate).format('YYYY/MM/DD HH:mm:ss');
     return new Promise((resolve, reject) => {
 
         let arreglo_insertar = []
@@ -154,17 +192,17 @@ function getArray(solicitud, solicitante, empleados, fecha, motivo) {
                     temp.push(emp[10])
                     temp.push(emp[11])
                     temp.push(fecha[datenum])
-                    if(solicitante==emp[12]){
+                    if (solicitante == emp[12]) {
                         temp.push("Confirmado")
                         temp.push(solicitante)
                         temp.push(myDate)
-                      
-                    }else{
+
+                    } else {
                         temp.push("Pendiente")
                         temp.push(null)
                         temp.push(null)
                     }
-                    
+
 
                     arreglo_insertar.push(temp)
                 }
@@ -182,7 +220,7 @@ function getArray(solicitud, solicitante, empleados, fecha, motivo) {
 controller.solicitud_list_GET = (req, res) => {
     user = req.connection.user
     let access = ""
-    let id= req.param.id
+    let id = req.param.id
 
     acceso(req)
         .then((result) => {
@@ -329,20 +367,20 @@ controller.getSolicitudesFinalizar_POST = (req, res) => {
     async function waitForPromise() {
         let result = []
         let allEmpleados = await funcion.getAllEmpleados()
-        let solicitudesAprob= await funcion.getSolicitudesAprobadas()
+        let solicitudesAprob = await funcion.getSolicitudesAprobadas()
         let solicitudesPend = await funcion.getSolicitudesPendientes()
 
 
 
         for (let i = 0; i < solicitudesAprob.length; i++) {
             for (let y = 0; y < solicitudesPend.length; y++) {
-                if (solicitudesAprob.length>0) {
-                    if(solicitudesAprob[i].solicitud==solicitudesPend[y].solicitud){
-                        solicitudesAprob.splice(i,1)
+                if (solicitudesAprob.length > 0) {
+                    if (solicitudesAprob[i].solicitud == solicitudesPend[y].solicitud) {
+                        solicitudesAprob.splice(i, 1)
                     }
                 }
             }
-            
+
         }
 
         result.push(allEmpleados)
@@ -517,7 +555,7 @@ controller.confirmar_solicitud_POST = (req, res) => {
     let username = req.connection.user.substring(4)
     let comentario = req.body.comentario
 
-    if (comentario==""){comentario=status}
+    if (comentario == "") { comentario = status }
 
     async function waitForPromise() {
 
@@ -540,7 +578,7 @@ controller.finalizar_solicitud_POST = (req, res) => {
     let username = req.connection.user.substring(4)
     let comentario = req.body.comentario
 
-    if (comentario==""){comentario=status}
+    if (comentario == "") { comentario = status }
 
     async function waitForPromise() {
 
@@ -750,22 +788,22 @@ controller.getSolicitudesAprobar_POST = (req, res) => {
         });
 
 
-     
-        let solicitudesConf= await funcion.getSolicitudesConfirmadas(arrayEmpleados)
+
+        let solicitudesConf = await funcion.getSolicitudesConfirmadas(arrayEmpleados)
         let solicitudesPend = await funcion.getSolicitudesPendientesConf(arrayEmpleados)
 
-        
- 
+
+
 
         for (let i = 0; i < solicitudesConf.length; i++) {
             for (let y = 0; y < solicitudesPend.length; y++) {
-                if (solicitudesConf.length>0) {
-                    if(solicitudesConf[i].solicitud==solicitudesPend[y].solicitud){
-                        solicitudesConf.splice(i,1)
+                if (solicitudesConf.length > 0) {
+                    if (solicitudesConf[i].solicitud == solicitudesPend[y].solicitud) {
+                        solicitudesConf.splice(i, 1)
                     }
                 }
             }
-            
+
         }
 
         result.push(allEmpleados)
@@ -799,7 +837,7 @@ controller.aprobar_solicitud_POST = (req, res) => {
     let username = req.connection.user.substring(4)
     let comentario = req.body.comentario
 
-    if (comentario==""){comentario=status}
+    if (comentario == "") { comentario = status }
 
     async function waitForPromise() {
 
