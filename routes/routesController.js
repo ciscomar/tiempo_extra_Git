@@ -135,8 +135,9 @@ controller.sendSolicitud_POST = (req, res) => {
     let solicitante = req.connection.user.substring(4)
 
 
-    async function waitForPromise() {
 
+    async function waitForPromise() {
+        // TODO verificar que el jefe sea el unico jefe, de no ser asi enviar correo a los demas jefes
         let emp_id = await funcion.getEmpleadoId(solicitante)
         let lastSolicitud = await funcion.getSolicitud();
         let solicitud
@@ -145,8 +146,18 @@ controller.sendSolicitud_POST = (req, res) => {
         } else {
             solicitud = lastSolicitud.solicitud + 1
         }
+        
+        let jefesLista = []
+        for (let i = 0; i < empleados.length; i++) {
+           if (empleados[i][12] != solicitante) {
+               jefesLista.push(empleados[i][12])
+           }
+            
+        }
 
+ 
         let insert = await getArray(solicitud, emp_id, empleados, fechas, motivo);
+
 
 
 
@@ -458,6 +469,7 @@ controller.finalizar_historial_id_GET = (req, res) => {
 
 
 controller.confirmar_id_POST = (req, res) => {
+    
     let id = req.body.id
     let username = req.connection.user.substring(4)
     async function waitForPromise() {
@@ -549,7 +561,7 @@ controller.finalizar_historial_id_POST = (req, res) => {
 
 
 controller.confirmar_solicitud_POST = (req, res) => {
-
+    // TODO cuando este totalmente confirmado enviar correo a gerente del solicitante
     let id = req.body.id
     let status = req.body.status
     let username = req.connection.user.substring(4)
@@ -572,7 +584,7 @@ controller.confirmar_solicitud_POST = (req, res) => {
 
 
 controller.finalizar_solicitud_POST = (req, res) => {
-
+    // TODO cuando se apruebe enviar correo a todos los involucrados
     let id = req.body.id
     let status = req.body.status
     let username = req.connection.user.substring(4)
@@ -831,7 +843,7 @@ controller.aprobar_GET = (req, res) => {
 
 
 controller.aprobar_solicitud_POST = (req, res) => {
-
+    // TODO cuando gerente apruebe enviar correo a Blanco
     let id = req.body.id
     let status = req.body.status
     let username = req.connection.user.substring(4)
