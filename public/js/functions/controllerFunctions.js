@@ -405,4 +405,39 @@ funcion.getHistorial = (id) => {
 }
 
 
+funcion.getInfoExtra = (empleado, week_start, week_end) => {
+    return new Promise((resolve, reject) => {
+
+        dbT(`SELECT SUM(horas) as horasExtra
+        FROM 
+            solicitud 
+        WHERE
+            empleado = "${empleado}"
+        AND (fecha BETWEEN  "${week_start}" AND "${week_end}")
+            `)
+
+            .then((result) => { resolve(result) })
+            .catch((error) => { reject(error) })
+    })
+}
+
+
+funcion.getInfoDescanso = (empleado, descanso) => {
+    return new Promise((resolve, reject) => {
+
+        dbT(`SELECT SUM(horas) as horasDescanso
+        FROM 
+            solicitud 
+        WHERE
+            empleado = "${empleado}"
+        AND fecha="${descanso}"
+            `)
+
+            .then((result) => { resolve(result) })
+            .catch((error) => { reject(error) })
+    })
+}
+
+
+
 module.exports = funcion;
