@@ -169,7 +169,9 @@ let getInfoEmpleado = (e) =>{
              if((doble+restante)<10){
                extrax2.value= doble+restante
              }else{
-              //  extrax3.value= 
+                temp1= 9-extrax2
+                extrax3.value=restante-temp1
+                extrax2.value=9
              }
 
            }
