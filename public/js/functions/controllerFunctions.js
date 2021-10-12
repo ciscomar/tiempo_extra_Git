@@ -439,5 +439,72 @@ funcion.getInfoDescanso = (empleado, descanso) => {
 }
 
 
+funcion.getConfirmadoStatus = (solicitud)=>{
+    return new Promise((resolve, reject) => {
+
+        dbT(`
+        SELECT 
+            DISTINCT(status) 
+        FROM
+         tiempo_extra.solicitud
+        WHERE
+            solicitud = ${solicitud};
+            `)
+
+            .then((result) => { resolve(result) })
+            .catch((error) => { reject(error) })
+    })
+}
+
+funcion.getSolicitante = (id)=>{
+    return new Promise((resolve, reject) => {
+
+        dbE(`
+        SELECT 
+            solicitante
+        FROM
+            tiempo_extra.solicitud
+        WHERE
+            solicitud = ${id};
+            `)
+
+            .then((result) => { resolve(result) })
+            .catch((error) => { reject(error) })
+    })
+}
+
+funcion.getIdJefe = (solicitante)=>{
+    return new Promise((resolve, reject) => {
+
+        dbE(`
+        SELECT 
+            emp_id_jefe
+        FROM
+            empleados.del_empleados
+        WHERE
+            emp_id = ${solicitante};
+            `)
+
+            .then((result) => { resolve(result) })
+            .catch((error) => { reject(error) })
+    })
+}
+
+funcion.getEmpleadoNombre = (solicitante)=>{
+    return new Promise((resolve, reject) => {
+
+        dbE(`
+        SELECT 
+            emp_alias
+        FROM
+            empleados.del_empleados
+        WHERE
+            emp_id = ${solicitante};
+            `)
+
+            .then((result) => { resolve(result) })
+            .catch((error) => { reject(error) })
+    })
+}
 
 module.exports = funcion;

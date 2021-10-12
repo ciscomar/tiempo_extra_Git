@@ -60,7 +60,7 @@ let agregar = () =>{
 }
 
 
-let columnas = [empleado, nombre, turno, lunes, martes, miercoles, jueves, viernes, sabado, domingo, actual, laborar, jefeid]
+let columnas = [empleado, nombre, turno, lunes, martes, miercoles, jueves, viernes, sabado, domingo, actual, laborar, jefeid, jefe]
 let arregloFinal=[]
 
 
