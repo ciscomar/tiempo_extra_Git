@@ -3,14 +3,17 @@ const controller = {};
 
 
 const moment = require('moment')
-const axios = require('axios')
 //Require Funciones
 const funcion = require('../public/js/functions/controllerFunctions');
 
-//Require ExcelJs
-const Excel = require('exceljs');
-const { json } = require('body-parser');
-
+// Require email and email template
+const ejs = require("ejs");
+const nodeMailer = require('../public/mail/conn')
+const path = require('path')
+const fs = require('fs')
+const { promisify } = require('util');
+const { log } = require('console');
+const readFile = promisify(fs.readFile);
 
 function acceso(req) {
     let acceso = []
@@ -65,14 +68,14 @@ controller.crear_solicitud_GET = (req, res) => {
 
 controller.infoEmpleado_POST = (req, res) => {
 
-    let week_end=req.body.week_end
-    let week_start=req.body.week_start
+    let week_end = req.body.week_end
+    let week_start = req.body.week_start
     let empleado = req.body.empleado
-    let week_start_moment =  moment(req.body.week_start)
+    let week_start_moment = moment(req.body.week_start)
     let week_end_moment = moment(req.body.week_end)
-    let saturday= week_end_moment.subtract(1,"days").format('YYYY-MM-DD')
-    let friday= week_end_moment.subtract(2,"days").format('YYYY-MM-DD')
-    let tuesday= week_start_moment.add(1,"days").format('YYYY-MM-DD')
+    let saturday = week_end_moment.subtract(1, "days").format('YYYY-MM-DD')
+    let friday = week_end_moment.subtract(2, "days").format('YYYY-MM-DD')
+    let tuesday = week_start_moment.add(1, "days").format('YYYY-MM-DD')
     let descanso1
     let descanso2
     let inicio
@@ -83,39 +86,39 @@ controller.infoEmpleado_POST = (req, res) => {
         .then((info) => {
             if (info.length > 0) {
 
-                if(info[0].emp_activo==3){
+                if (info[0].emp_activo == 3) {
 
-                    descanso1= week_start
-                    descanso2= week_end
-                    inicio= tuesday
-                    fin= saturday
-                }else{
-                    descanso1= saturday
-                    descanso2= week_end
-                    inicio= week_start
-                    fin= friday
+                    descanso1 = week_start
+                    descanso2 = week_end
+                    inicio = tuesday
+                    fin = saturday
+                } else {
+                    descanso1 = saturday
+                    descanso2 = week_end
+                    inicio = week_start
+                    fin = friday
                 }
-                
 
-      
+
+
                 async function waitForPromise() {
-                    let getInfoEmpleado = await  funcion.getInfoEmpleado(info[0].emp_id_jefe)
+                    let getInfoEmpleado = await funcion.getInfoEmpleado(info[0].emp_id_jefe)
                     let getInfoExtra = await funcion.getInfoExtra(empleado, inicio, fin)
                     let getInfoDescanso1 = await funcion.getInfoDescanso(empleado, descanso1)
                     let getInfoDescanso2 = await funcion.getInfoDescanso(empleado, descanso2)
-           
-           
+
+
                     result.push(info)
-                    Promise.all([getInfoEmpleado, getInfoExtra, getInfoDescanso1,getInfoDescanso2])
-                    .then((r) => {
-                        result.push(r)
-                        res.json({ result })
-        
-                    })
+                    Promise.all([getInfoEmpleado, getInfoExtra, getInfoDescanso1, getInfoDescanso2])
+                        .then((r) => {
+                            result.push(r)
+                            res.json({ result })
+
+                        })
 
                 }
                 waitForPromise()
-                
+
 
 
             } else {
@@ -137,33 +140,28 @@ controller.sendSolicitud_POST = (req, res) => {
 
 
     async function waitForPromise() {
-        // TODO verificar que el jefe sea el unico jefe, de no ser asi enviar correo a los demas jefes
+
         let emp_id = await funcion.getEmpleadoId(solicitante)
         let lastSolicitud = await funcion.getSolicitud();
         let solicitud
+        let listaJefes = []
+
         if (lastSolicitud == undefined) {
             solicitud = 1
         } else {
             solicitud = lastSolicitud.solicitud + 1
         }
-        
-        let jefesLista = []
-        for (let i = 0; i < empleados.length; i++) {
-           if (empleados[i][12] != solicitante) {
-               jefesLista.push(empleados[i][12])
-           }
-            
-        }
 
- 
         let insert = await getArray(solicitud, emp_id, empleados, fechas, motivo);
-
-
-
 
         funcion.insertSolicitud(insert)
             .then((result) => {
-
+                for (let i = 0; i < empleados.length; i++) { 
+                    if (empleados[i][12] != emp_id && listaJefes.indexOf(empleados[i][13]) === -1){ 
+                        listaJefes.push(empleados[i][13])
+                    }  
+                }
+                for (let i = 0; i < listaJefes.length; i++) { sendConfirmacionMail(listaJefes[i], solicitud, solicitante, "mail_confirmacion") }
                 res.json(result)
 
             })
@@ -178,6 +176,26 @@ controller.sendSolicitud_POST = (req, res) => {
 
 }
 
+async function sendConfirmacionMail(to, solicitud, solicitante, corre_template) {
+
+    const data = await ejs.renderFile(path.join(__dirname, `../public/mail/${corre_template}.ejs`), { supervisor: solicitante, solicitud: solicitud });
+    let mailOptions = {
+        from: "noreply@tristone.com",
+        to: `${to}@tristone.com`,
+        subject: `Aprobacion de tiempo extra #${solicitud} `,
+        text: "",
+        html: data,
+    };
+
+
+    nodeMailer.transport.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.error(error);
+        } else {
+            console.log(info);
+        }
+    })
+}
 
 function getArray(solicitud, solicitante, empleados, fecha, motivo) {
 
@@ -469,7 +487,7 @@ controller.finalizar_historial_id_GET = (req, res) => {
 
 
 controller.confirmar_id_POST = (req, res) => {
-    
+
     let id = req.body.id
     let username = req.connection.user.substring(4)
     async function waitForPromise() {
@@ -509,7 +527,6 @@ controller.confirmar_historial_id_POST = (req, res) => {
 
             })
     }
-
     waitForPromise()
 }
 
@@ -533,7 +550,6 @@ controller.aprobar_historial_id_POST = (req, res) => {
 
             })
     }
-
     waitForPromise()
 }
 
@@ -562,23 +578,39 @@ controller.finalizar_historial_id_POST = (req, res) => {
 
 controller.confirmar_solicitud_POST = (req, res) => {
     // TODO cuando este totalmente confirmado enviar correo a gerente del solicitante
+
     let id = req.body.id
     let status = req.body.status
     let username = req.connection.user.substring(4)
     let comentario = req.body.comentario
+    let pendiente = 0
 
     if (comentario == "") { comentario = status }
 
     async function waitForPromise() {
 
+        let solicitante = await funcion.getSolicitante(id)
+        let nombreSolicitante = await funcion.getEmpleadoNombre(solicitante[0].solicitante)
+        let id_jefe = await funcion.getIdJefe(solicitante[0].solicitante)
+        let gerente = await funcion.getEmpleadoNombre(id_jefe[0].emp_id_jefe)
         let aprobador = await funcion.getEmpleadoId(username)
         let update = await funcion.updateConfirmar(id, aprobador, status)
         let comment = await funcion.insertHistorial(id, aprobador, status, comentario)
+        let confirmadoStatus = await funcion.getConfirmadoStatus(id)
+
+        confirmadoStatus.forEach(element => { if (element.status != "Confirmado") pendiente++ })
+
+        if (pendiente == 0) {
+
+            sendConfirmacionMail(gerente[0].emp_alias, id, nombreSolicitante[0].emp_alias, "mail_gerente")
+        }
+
         res.json(comment)
     }
 
     waitForPromise()
 }
+
 
 
 

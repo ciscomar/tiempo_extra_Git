@@ -66,6 +66,7 @@ $(document).ready(function () {
     .then((result) => {
 
       let allResults=result.data
+      console.log(allResults);
       let supervisor=allResults.result[0]
       let solEmpleados=allResults.result[1]
 
