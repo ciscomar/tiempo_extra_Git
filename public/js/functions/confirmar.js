@@ -130,6 +130,7 @@ $(document).ready(function () {
       for (let i = 0; i < empleados.length; i++) {
         temp.push(empleados[i])
         temp.push(empleados_nombre[i])
+        temp.push("")
 
         for (let y = 0; y < semana.length; y++) {
           let found = false;
@@ -149,6 +150,10 @@ $(document).ready(function () {
 
           }
         }
+
+        temp.push("")
+        temp.push("")
+        temp.push("")
 
         temp.push(area_actual)
         temp.push(area_req)

@@ -74,7 +74,7 @@ controller.infoEmpleado_POST = (req, res) => {
     let week_start_moment = moment(req.body.week_start)
     let week_end_moment = moment(req.body.week_end)
     let saturday = week_end_moment.subtract(1, "days").format('YYYY-MM-DD')
-    let friday = week_end_moment.subtract(2, "days").format('YYYY-MM-DD')
+    let friday = week_end_moment.subtract(1, "days").format('YYYY-MM-DD')
     let tuesday = week_start_moment.add(1, "days").format('YYYY-MM-DD')
     let descanso1
     let descanso2
@@ -100,7 +100,7 @@ controller.infoEmpleado_POST = (req, res) => {
                 }
 
 
-
+            
                 async function waitForPromise() {
                     let getInfoEmpleado = await funcion.getInfoEmpleado(info[0].emp_id_jefe)
                     let getInfoExtra = await funcion.getInfoExtra(empleado, inicio, fin)
@@ -301,17 +301,73 @@ controller.solicitud_historial_GET = (req, res) => {
 
 
 controller.solicitud_historial_id_POST = (req, res) => {
-    let id = req.body.id
-    async function waitForPromise() {
 
+    let id = req.body.id
+    let empSolicitud=[]
+    let empturno=[]
+    let arrayHorasEmp=[]
+    async function waitForPromise() {
+        let result=[]
         let solicitud = await funcion.getSolicitudId(id)
         let empleados = await funcion.getAllEmpleados(id)
-        Promise.all([solicitud, empleados])
-            .then((result) => {
+        let date = solicitud[0].fecha
 
-                res.json({ result })
+        startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + 1);
+        endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + 7);
+        startDate= startDate.toISOString().split('T')[0]
+        endDate= endDate.toISOString().split('T')[0]
 
-            })
+        let week_start_moment = moment(startDate)
+        let week_end_moment = moment(endDate)
+        let saturday = week_end_moment.subtract(1, "days").format('YYYY-MM-DD')
+        let friday = week_end_moment.subtract(1, "days").format('YYYY-MM-DD')
+        let tuesday = week_start_moment.add(1, "days").format('YYYY-MM-DD')
+        let descanso1
+        let descanso2
+        let inicio
+        let fin
+
+
+
+        result.push(solicitud)
+        result.push(empleados)
+
+        for (let i = 0; i < solicitud.length; i++) {
+            if (empSolicitud.indexOf(solicitud[i].empleado) === -1) {
+                empSolicitud.push(solicitud[i].empleado)
+                empturno.push(solicitud[i].turno)
+            }   
+        }
+
+        for (let y = 0; y < empSolicitud.length; y++) {
+            let temp=[]
+
+            if (empturno[y] == 3) {
+
+                descanso1 = startDate
+                descanso2 = endDate
+                inicio = tuesday
+                fin = saturday
+            } else {
+                descanso1 = saturday
+                descanso2 = endDate
+                inicio = startDate
+                fin = friday
+            }
+            
+            let getInfoExtra = await funcion.getInfoExtra(empSolicitud[y], inicio, fin)
+            let getInfoDescanso1 = await funcion.getInfoDescanso(empSolicitud[y], descanso1)
+            let getInfoDescanso2 = await funcion.getInfoDescanso(empSolicitud[y], descanso2)
+            temp.push(empSolicitud[y])
+            temp.push(getInfoExtra[0].horasExtra)
+            temp.push(getInfoDescanso1[0].horasDescanso)
+            temp.push(getInfoDescanso2[0].horasDescanso)
+            arrayHorasEmp.push(temp)
+            
+        }
+
+        result.push(arrayHorasEmp)
+        res.json({ result })
     }
 
     waitForPromise()

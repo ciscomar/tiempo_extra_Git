@@ -22,14 +22,126 @@ let jefeid = document.getElementsByClassName("jefeid")
 let week_start
 let week_end
 
-let textra = document.querySelectorAll(".textra")
-textra.forEach(element => {
-  element.addEventListener('change', () => { changeValue() })
+let diasInput = document.querySelectorAll(".dias")
+diasInput.forEach(element => {
+  element.addEventListener('keyup', () => { changeValue(element) })
 });
 
-function changeValue() {
 
+
+
+let dobleEmpleado
+let tripleEmpleado
+let descanso1Empleado
+let descanso2Empleado
+
+
+
+function changeValue(e) {
+
+  let id=e.id.replace(/[^0-9]/g, '')
+  let horas= parseInt(e.value)
+  let extrax2 = document.getElementById("te" + id)
+  let extrax3 = document.getElementById("tem" + id)
+  let dl = document.getElementById("l"+ id)
+  let dm = document.getElementById("m"+ id)
+  let dmc = document.getElementById("mc"+ id)
+  let dj = document.getElementById("j"+ id)
+  let dv = document.getElementById("v"+ id)
+  let ds = document.getElementById("s"+ id)
+  let dd = document.getElementById("d"+ id)
+  let descansolab=document.getElementById("dl"+ id)
+  let turnoEmpleado= document.getElementById("tu"+ id)
+
+  turn=turnoEmpleado.value
+  dl=parseInt(dl.value) || 0
+  dm=parseInt(dm.value) || 0
+  dmc=parseInt(dmc.value) || 0
+  dj=parseInt(dj.value) || 0
+  dv=parseInt(dv.value) || 0
+  ds=parseInt(ds.value) || 0
+  dd=parseInt(dd.value) || 0
+  desclab =parseInt(descansolab.value) || 0
+
+  let weekArray
+  let weekendArray
+  if(turn==3){
+      weekArray=[dm,dmc,dj,dv,ds]
+      weekendArray=[dl,dd]
+  }else{
+      weekArray=[dl,dm,dmc,dj,dv]
+      weekendArray=[ds,dd]
+  }
+ 
+  sumExtra = weekArray.reduce((pv, cv) => pv + cv, 0);
+
+  if(dobleEmpleado+sumExtra<9){
+    extrax2.value=dobleEmpleado+sumExtra
+    extrax3.value=0
+    extrax3.classList.remove("danger");
+  }else{
+    
+    temp =9-dobleEmpleado
+    rest=sumExtra-temp
+    extrax2.value=9
+    extrax3.value=tripleEmpleado+rest
+    if(extrax3.value !=0){
+      extrax3.classList.add("danger");
+    }else{
+      extrax3.classList.remove("danger");
+    }
+
+  }
+
+
+  desc1= weekendArray[0]
+  desc2= weekendArray[1]
+
+
+  let horasDescanso=0
+  let horasDescansoExtra=0
+  let horasDescansoExtraAnterior=0
+  if(descanso1Empleado>8){
+      horasDescansoExtraAnterior = horasDescansoExtraAnterior+ (descanso1Empleado-8)
+  }
+  if(descanso2Empleado>8){
+    horasDescansoExtraAnterior = horasDescansoExtraAnterior+ (descanso2Empleado-8)
+  }
+
+  if(descanso1Empleado+desc1<9){
+    horasDescanso= descanso1Empleado+desc1
+    
+  }else{
+    horasDescanso=horasDescanso+8
+    horasDescansoExtra=(descanso1Empleado+desc1)-8
+  }
+  if(descanso2Empleado+desc2<9){
+    horasDescanso= horasDescanso+(descanso2Empleado+desc2)
+  }else{
+    horasDescanso=horasDescanso+8
+    horasDescansoExtra=horasDescansoExtra+((descanso2Empleado+desc2)-8)
+  }
+
+  descansolab.value=horasDescanso
+  horasDescansoExtra=horasDescansoExtra-horasDescansoExtraAnterior
+  dob= parseInt(extrax2.value)
+  trip=parseInt(extrax3.value)
+
+  if(dob+horasDescansoExtra<10){
+
+    extrax2.value=dob+horasDescansoExtra
+  }else{
+
+    rest= (dob+horasDescansoExtra)-9
+    extrax2.value = 9
+    extrax3.value = trip + rest
+    extrax3.classList.add("danger");
+  }
+  
 }
+
+
+
 
 let row = 2
 let agregar = () => {
@@ -39,13 +151,13 @@ let agregar = () => {
     `<td><input class="empleado" id="e${row}" style="width: 100%;" type="text" onkeyup="getInfoEmpleado(this)"></td>`,
     `<td><input class="nombre" id="n${row}" style="width: 100%;" type="text" disabled></td>`,
     `<td><input class="turno" id="tu${row}" style="width: 100%;" type="text" disabled></td>`,
-    `<td><input class="lunes" id="l${row}" style="width: 100%;" type="number"></td>`,
-    `<td><input class="martes" id="m${row}" style="width: 100%;" type="number"></td>`,
-    `<td><input class="miercoles" id="mc${row}" style="width: 100%;" type="number"></td>`,
-    `<td><input class="jueves" id="j${row}" style="width: 100%;" type="number"></td>`,
-    `<td><input class="viernes" id="v${row}" style="width: 100%;" type="number"></td>`,
-    `<td><input class="sabado" id="s${row}" style="width: 100%;" type="number"></td>`,
-    `<td><input class="domingo" id="d${row}" style="width: 100%;" type="number"></td>`,
+    `<td><input class="lunes dias" id="l${row}" style="width: 100%;" type="number"></td>`,
+    `<td><input class="martes dias" id="m${row}" style="width: 100%;" type="number"></td>`,
+    `<td><input class="miercoles dias" id="mc${row}" style="width: 100%;" type="number"></td>`,
+    `<td><input class="jueves dias" id="j${row}" style="width: 100%;" type="number"></td>`,
+    `<td><input class="viernes dias" id="v${row}" style="width: 100%;" type="number"></td>`,
+    `<td><input class="sabado dias" id="s${row}" style="width: 100%;" type="number"></td>`,
+    `<td><input class="domingo dias" id="d${row}" style="width: 100%;" type="number"></td>`,
     `<td><input class="textra" id="te${row}" style="width: 100%;" type="text" disabled></td>`,
     `<td><input class="textra2" id="tem${row}" style="width: 100%;" type="text" disabled></td>`,
     `<td><input class="dlaborado" id="dl${row}" style="width: 100%;" type="text" disabled></td>`,
@@ -58,11 +170,16 @@ let agregar = () => {
 
   row++
 
+  let diasInput = document.querySelectorAll(".dias")
+  diasInput.forEach(element => {
+    element.addEventListener('keyup', () => { changeValue(element) })
+  });
+
 }
 
 
 let columnas = [empleado, nombre, turno, lunes, martes, miercoles, jueves, viernes, sabado, domingo, actual, laborar, jefeid, jefe]
-let arregloFinal=[]
+let arregloFinal = []
 
 
 let send = () => {
@@ -147,35 +264,34 @@ let getInfoEmpleado = (e) => {
         jefeid.value = infoJefe[0].emp_id
         turno.value = infoEmpleado[0].emp_activo
 
-  
+
 
         extrax2.value = 0
         extrax3.value = 0
         descanso.value = 0
-        
         extrax2.value = horasExtra
 
-       
+        console.log(horasExtra);
         //Horas extra dobles y triples
-        if(horasExtra==null){
-          horasExtra=0
+        if (horasExtra == null) {
+          horasExtra = 0
         }
         if (horasExtra < 10) {
           extrax2.value = horasExtra
         } else {
           extrax2.value = 9
           extrax3.value = horasExtra - 9
+          extrax3.classList.add("danger");
         }
 
         //Horas descanso laborado1
-        if(isNaN(horasDescanso1)){
-          horasDescanso1=0
-        }
 
+        if (isNaN(horasDescanso1)) {
+          horasDescanso1 = 0
+        }
 
         let doble = parseInt(extrax2.value)
         let triple = parseInt(extrax3.value)
-        console.log(horasDescanso1);
 
         if (horasDescanso1 < 9) {
           descanso.value = horasDescanso1
@@ -186,44 +302,49 @@ let getInfoEmpleado = (e) => {
           if ((doble + restante) < 10) {
             extrax2.value = doble + restante
           } else {
-  
-              extrax2.value=9
-              extrax3.value=triple+((doble+restante)-9)     
-            }
+
+            extrax2.value = 9
+            extrax3.value = triple + ((doble + restante) - 9)
+            extrax3.classList.add("danger");
 
           }
+
+        }
+  
 
 
         //Horas descanso laborado2
 
-
-        if(isNaN(horasDescanso2)){
-          horasDescanso2=0
+        if (isNaN(horasDescanso2)) {
+          horasDescanso2 = 0
         }
 
         let doble2 = parseInt(extrax2.value)
         let triple2 = parseInt(extrax3.value)
- 
+
         if (horasDescanso2 < 9) {
-          descanso.value = parseInt(descanso.value)+horasDescanso2
+          descanso.value = parseInt(descanso.value) + horasDescanso2
         } else {
-          descanso.value = parseInt(descanso.value)+8
+          descanso.value = parseInt(descanso.value) + 8
           restante2 = horasDescanso2 - 8
+
           if ((doble2 + restante2) < 10) {
             extrax2.value = doble2 + restante2
           } else {
-            if (extrax2.value == 9) {
-              extrax3.value = triple2 + parseInt(restante2)
-            } else {
 
-              extrax2.value=9
-              extrax3.value=triple2+((doble2+restante2)-9)  
-            }
+              extrax2.value = 9
+              extrax3.value = triple2 + ((doble2 + restante2) - 9)
+              extrax3.classList.add("danger");
 
           }
 
         }
 
+
+        dobleEmpleado = parseInt(extrax2.value)
+        tripleEmpleado = parseInt(extrax3.value)
+        descanso1Empleado=horasDescanso1
+        descanso2Empleado=horasDescanso2
 
 
 

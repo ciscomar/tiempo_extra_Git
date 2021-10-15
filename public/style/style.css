@@ -750,3 +750,8 @@ table td {
   font-family: 'Orbitron', sans-serif;
 }
 /*# sourceMappingURL=style.css.map */
+
+.danger{
+  background-color: #d9534f;
+  color: #f7f7f7;
+}
