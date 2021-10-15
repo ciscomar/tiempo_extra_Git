@@ -12,8 +12,7 @@ const nodeMailer = require('../public/mail/conn')
 const path = require('path')
 const fs = require('fs')
 const { promisify } = require('util');
-const { log } = require('console');
-const readFile = promisify(fs.readFile);
+
 
 function acceso(req) {
     let acceso = []
@@ -161,7 +160,7 @@ controller.sendSolicitud_POST = (req, res) => {
                         listaJefes.push(empleados[i][13])
                     }  
                 }
-                for (let i = 0; i < listaJefes.length; i++) { sendConfirmacionMail(listaJefes[i], solicitud, solicitante, "mail_confirmacion") }
+                for (let i = 0; i < listaJefes.length; i++) { sendConfirmacionMail(listaJefes[i], solicitud, solicitante, "mail_confirmacion" ,"supervisor") }
                 res.json(result)
 
             })
@@ -176,13 +175,13 @@ controller.sendSolicitud_POST = (req, res) => {
 
 }
 
-async function sendConfirmacionMail(to, solicitud, solicitante, corre_template) {
+async function sendConfirmacionMail(to, solicitud, solicitante, corre_template, nivel) {
 
     const data = await ejs.renderFile(path.join(__dirname, `../public/mail/${corre_template}.ejs`), { supervisor: solicitante, solicitud: solicitud });
     let mailOptions = {
         from: "noreply@tristone.com",
         to: `${to}@tristone.com`,
-        subject: `Aprobacion de tiempo extra #${solicitud} `,
+        subject: `Aprobacion de tiempo extra nivel ${nivel} #${solicitud} `,
         text: "",
         html: data,
     };
@@ -598,11 +597,17 @@ controller.confirmar_solicitud_POST = (req, res) => {
         let comment = await funcion.insertHistorial(id, aprobador, status, comentario)
         let confirmadoStatus = await funcion.getConfirmadoStatus(id)
 
-        confirmadoStatus.forEach(element => { if (element.status != "Confirmado") pendiente++ })
+        confirmadoStatus.forEach(element => { 
+            if (element.status != "Confirmado") {
+                pendiente++
+                sendConfirmacionMail(nombreSolicitante[0].emp_alias, id, username, "mail_rechazo" , "supervisor: Rechazo")
+            }
+             
+        })
 
         if (pendiente == 0) {
 
-            sendConfirmacionMail(gerente[0].emp_alias, id, nombreSolicitante[0].emp_alias, "mail_gerente")
+            sendConfirmacionMail(gerente[0].emp_alias, id, nombreSolicitante[0].emp_alias, "mail_gerente" , "gerencial")
         }
 
         res.json(comment)
