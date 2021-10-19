@@ -30,7 +30,7 @@ function acceso(req) {
 }
 
 async function sendConfirmacionMail(to, solicitud, solicitante, corre_template, nivel) {
-    console.log({to}, {solicitud}, {solicitante}, {corre_template}, {nivel});
+    // console.log({ to }, { solicitud }, { solicitante }, { corre_template }, { nivel });
 
     const data = await ejs.renderFile(path.join(__dirname, `../public/mail/${corre_template}.ejs`), { supervisor: solicitante, solicitud: solicitud });
     let mailOptions = {
@@ -46,7 +46,7 @@ async function sendConfirmacionMail(to, solicitud, solicitante, corre_template, 
         if (error) {
             console.error(error);
         } else {
-            console.log(info);
+            console.info(info);
         }
     })
 }
@@ -121,7 +121,7 @@ controller.infoEmpleado_POST = (req, res) => {
                 }
 
 
-            
+
                 async function waitForPromise() {
                     let getInfoEmpleado = await funcion.getInfoEmpleado(info[0].emp_id_jefe)
                     let getInfoExtra = await funcion.getInfoExtra(empleado, inicio, fin)
@@ -178,15 +178,24 @@ controller.sendSolicitud_POST = (req, res) => {
 
         funcion.insertSolicitud(insert)
             .then((result) => {
-                for (let i = 0; i < empleados.length; i++) { 
-                    if (empleados[i][12] != emp_id && listaJefes.indexOf(empleados[i][13]) === -1){ 
+                for (let i = 0; i < empleados.length; i++) {
+                    if (empleados[i][12] != emp_id && listaJefes.indexOf(empleados[i][13]) === -1) {
                         listaJefes.push(empleados[i][13])
-                    }else{
-                        gerente = empleados[i][13]
+                    } else {
+                        gerente = empleados[i][12]
+                        console.log(empleados[i][12]);
                     }
                 }
-                for (let i = 0; i < listaJefes.length; i++) { sendConfirmacionMail(listaJefes[i], solicitud, solicitante, "mail_confirmacion" ,"supervisor") }
-                if (listaJefes.length == 0) sendConfirmacionMail(gerente, solicitud, solicitante, "mail_gerente" , "gerencial")
+                for (let i = 0; i < listaJefes.length; i++) { sendConfirmacionMail(listaJefes[i], solicitud, solicitante, "mail_confirmacion", "supervisor") }
+                if (listaJefes.length == 0) {
+
+                    async function waitForPromise() {
+                        let gerente_id = await funcion.getIdJefe(gerente)
+                        let gerente_alias = await funcion.getEmpleadoNombre(gerente_id[0].emp_id_jefe)
+                        sendConfirmacionMail(gerente_alias[0].emp_alias, solicitud, solicitante, "mail_gerente", "gerencial")
+                    }
+                    waitForPromise()
+                }
                 res.json(result)
 
             })
@@ -309,25 +318,25 @@ controller.solicitud_historial_GET = (req, res) => {
 controller.solicitud_historial_id_POST = (req, res) => {
 
     let id = req.body.id
-    let empSolicitud=[]
-    let empturno=[]
-    let arrayHorasEmp=[]
+    let empSolicitud = []
+    let empturno = []
+    let arrayHorasEmp = []
     async function waitForPromise() {
-        let result=[]
+        let result = []
         let solicitud = await funcion.getSolicitudId(id)
         let empleados = await funcion.getAllEmpleados(id)
         let date = solicitud[0].fecha
 
-        momentdate=moment(date)
-        week_day=momentdate.weekday()
+        momentdate = moment(date)
+        week_day = momentdate.weekday()
         let sumdays1
         let sumdays2
-        if(week_day==0){sumdays1=-6, sumdays2=0}else{sumdays1=+1 ,sumdays2=+7}
+        if (week_day == 0) { sumdays1 = -6, sumdays2 = 0 } else { sumdays1 = +1, sumdays2 = +7 }
 
         startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + sumdays1);
         endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + sumdays2);
-        startDate= startDate.toISOString().split('T')[0]
-        endDate= endDate.toISOString().split('T')[0]
+        startDate = startDate.toISOString().split('T')[0]
+        endDate = endDate.toISOString().split('T')[0]
 
         let week_start_moment = moment(startDate)
         let week_end_moment = moment(endDate)
@@ -348,11 +357,11 @@ controller.solicitud_historial_id_POST = (req, res) => {
             if (empSolicitud.indexOf(solicitud[i].empleado) === -1) {
                 empSolicitud.push(solicitud[i].empleado)
                 empturno.push(solicitud[i].turno)
-            }   
+            }
         }
 
         for (let y = 0; y < empSolicitud.length; y++) {
-            let temp=[]
+            let temp = []
 
             if (empturno[y] == 3) {
 
@@ -366,7 +375,7 @@ controller.solicitud_historial_id_POST = (req, res) => {
                 inicio = startDate
                 fin = friday
             }
-            
+
             let getInfoExtra = await funcion.getInfoExtra(empSolicitud[y], inicio, fin)
             let getInfoDescanso1 = await funcion.getInfoDescanso(empSolicitud[y], descanso1)
             let getInfoDescanso2 = await funcion.getInfoDescanso(empSolicitud[y], descanso2)
@@ -375,7 +384,7 @@ controller.solicitud_historial_id_POST = (req, res) => {
             temp.push(getInfoDescanso1[0].horasDescanso)
             temp.push(getInfoDescanso2[0].horasDescanso)
             arrayHorasEmp.push(temp)
-            
+
         }
 
         result.push(arrayHorasEmp)
@@ -558,26 +567,26 @@ controller.confirmar_id_POST = (req, res) => {
 
     let id = req.body.id
     let username = req.connection.user.substring(4)
-    let empSolicitud=[]
-    let empturno=[]
-    let arrayHorasEmp=[]
+    let empSolicitud = []
+    let empturno = []
+    let arrayHorasEmp = []
     async function waitForPromise() {
-        let result=[]
+        let result = []
         let emp_id = await funcion.getEmpleadoId(username)
         let solicitud = await funcion.getSolicitudId(id)
         let empleados = await funcion.getAllEmpleados(id)
         let date = solicitud[0].fecha
 
-        momentdate=moment(date)
-        week_day=momentdate.weekday()
+        momentdate = moment(date)
+        week_day = momentdate.weekday()
         let sumdays1
         let sumdays2
-        if(week_day==0){sumdays1=-6, sumdays2=0}else{sumdays1=+1 ,sumdays2=+7}
+        if (week_day == 0) { sumdays1 = -6, sumdays2 = 0 } else { sumdays1 = +1, sumdays2 = +7 }
 
         startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + sumdays1);
         endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + sumdays2);
-        startDate= startDate.toISOString().split('T')[0]
-        endDate= endDate.toISOString().split('T')[0]
+        startDate = startDate.toISOString().split('T')[0]
+        endDate = endDate.toISOString().split('T')[0]
 
         let week_start_moment = moment(startDate)
         let week_end_moment = moment(endDate)
@@ -598,11 +607,11 @@ controller.confirmar_id_POST = (req, res) => {
             if (empSolicitud.indexOf(solicitud[i].empleado) === -1) {
                 empSolicitud.push(solicitud[i].empleado)
                 empturno.push(solicitud[i].turno)
-            }   
+            }
         }
 
         for (let y = 0; y < empSolicitud.length; y++) {
-            let temp=[]
+            let temp = []
 
             if (empturno[y] == 3) {
 
@@ -616,7 +625,7 @@ controller.confirmar_id_POST = (req, res) => {
                 inicio = startDate
                 fin = friday
             }
-            
+
             let getInfoExtra = await funcion.getInfoExtra(empSolicitud[y], inicio, fin)
             let getInfoDescanso1 = await funcion.getInfoDescanso(empSolicitud[y], descanso1)
             let getInfoDescanso2 = await funcion.getInfoDescanso(empSolicitud[y], descanso2)
@@ -625,7 +634,7 @@ controller.confirmar_id_POST = (req, res) => {
             temp.push(getInfoDescanso1[0].horasDescanso)
             temp.push(getInfoDescanso2[0].horasDescanso)
             arrayHorasEmp.push(temp)
-            
+
         }
 
         result.push(arrayHorasEmp)
@@ -641,26 +650,26 @@ controller.confirmar_id_POST = (req, res) => {
 controller.confirmar_historial_id_POST = (req, res) => {
     let id = req.body.id
     let username = req.connection.user.substring(4)
-    let empSolicitud=[]
-    let empturno=[]
-    let arrayHorasEmp=[]
+    let empSolicitud = []
+    let empturno = []
+    let arrayHorasEmp = []
     async function waitForPromise() {
-        let result=[]
+        let result = []
         let emp_id = await funcion.getEmpleadoId(username)
         let solicitud = await funcion.getSolicitudId(id)
         let empleados = await funcion.getAllEmpleados(id)
         let date = solicitud[0].fecha
 
-        momentdate=moment(date)
-        week_day=momentdate.weekday()
+        momentdate = moment(date)
+        week_day = momentdate.weekday()
         let sumdays1
         let sumdays2
-        if(week_day==0){sumdays1=-6, sumdays2=0}else{sumdays1=+1 ,sumdays2=+7}
+        if (week_day == 0) { sumdays1 = -6, sumdays2 = 0 } else { sumdays1 = +1, sumdays2 = +7 }
 
         startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + sumdays1);
         endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + sumdays2);
-        startDate= startDate.toISOString().split('T')[0]
-        endDate= endDate.toISOString().split('T')[0]
+        startDate = startDate.toISOString().split('T')[0]
+        endDate = endDate.toISOString().split('T')[0]
 
         let week_start_moment = moment(startDate)
         let week_end_moment = moment(endDate)
@@ -681,11 +690,11 @@ controller.confirmar_historial_id_POST = (req, res) => {
             if (empSolicitud.indexOf(solicitud[i].empleado) === -1) {
                 empSolicitud.push(solicitud[i].empleado)
                 empturno.push(solicitud[i].turno)
-            }   
+            }
         }
 
         for (let y = 0; y < empSolicitud.length; y++) {
-            let temp=[]
+            let temp = []
 
             if (empturno[y] == 3) {
 
@@ -699,7 +708,7 @@ controller.confirmar_historial_id_POST = (req, res) => {
                 inicio = startDate
                 fin = friday
             }
-            
+
             let getInfoExtra = await funcion.getInfoExtra(empSolicitud[y], inicio, fin)
             let getInfoDescanso1 = await funcion.getInfoDescanso(empSolicitud[y], descanso1)
             let getInfoDescanso2 = await funcion.getInfoDescanso(empSolicitud[y], descanso2)
@@ -708,7 +717,7 @@ controller.confirmar_historial_id_POST = (req, res) => {
             temp.push(getInfoDescanso1[0].horasDescanso)
             temp.push(getInfoDescanso2[0].horasDescanso)
             arrayHorasEmp.push(temp)
-            
+
         }
 
         result.push(arrayHorasEmp)
@@ -726,26 +735,26 @@ controller.aprobar_historial_id_POST = (req, res) => {
 
     let id = req.body.id
     let username = req.connection.user.substring(4)
-    let empSolicitud=[]
-    let empturno=[]
-    let arrayHorasEmp=[]
+    let empSolicitud = []
+    let empturno = []
+    let arrayHorasEmp = []
     async function waitForPromise() {
-        let result=[]
+        let result = []
         let emp_id = await funcion.getEmpleadoId(username)
         let solicitud = await funcion.getSolicitudId(id)
         let empleados = await funcion.getAllEmpleados(id)
         let date = solicitud[0].fecha
 
-        momentdate=moment(date)
-        week_day=momentdate.weekday()
+        momentdate = moment(date)
+        week_day = momentdate.weekday()
         let sumdays1
         let sumdays2
-        if(week_day==0){sumdays1=-6, sumdays2=0}else{sumdays1=+1 ,sumdays2=+7}
+        if (week_day == 0) { sumdays1 = -6, sumdays2 = 0 } else { sumdays1 = +1, sumdays2 = +7 }
 
         startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + sumdays1);
         endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + sumdays2);
-        startDate= startDate.toISOString().split('T')[0]
-        endDate= endDate.toISOString().split('T')[0]
+        startDate = startDate.toISOString().split('T')[0]
+        endDate = endDate.toISOString().split('T')[0]
 
         let week_start_moment = moment(startDate)
         let week_end_moment = moment(endDate)
@@ -766,11 +775,11 @@ controller.aprobar_historial_id_POST = (req, res) => {
             if (empSolicitud.indexOf(solicitud[i].empleado) === -1) {
                 empSolicitud.push(solicitud[i].empleado)
                 empturno.push(solicitud[i].turno)
-            }   
+            }
         }
 
         for (let y = 0; y < empSolicitud.length; y++) {
-            let temp=[]
+            let temp = []
 
             if (empturno[y] == 3) {
 
@@ -784,7 +793,7 @@ controller.aprobar_historial_id_POST = (req, res) => {
                 inicio = startDate
                 fin = friday
             }
-            
+
             let getInfoExtra = await funcion.getInfoExtra(empSolicitud[y], inicio, fin)
             let getInfoDescanso1 = await funcion.getInfoDescanso(empSolicitud[y], descanso1)
             let getInfoDescanso2 = await funcion.getInfoDescanso(empSolicitud[y], descanso2)
@@ -793,7 +802,7 @@ controller.aprobar_historial_id_POST = (req, res) => {
             temp.push(getInfoDescanso1[0].horasDescanso)
             temp.push(getInfoDescanso2[0].horasDescanso)
             arrayHorasEmp.push(temp)
-            
+
         }
 
         result.push(arrayHorasEmp)
@@ -807,26 +816,26 @@ controller.aprobar_historial_id_POST = (req, res) => {
 controller.finalizar_historial_id_POST = (req, res) => {
     let id = req.body.id
     let username = req.connection.user.substring(4)
-    let empSolicitud=[]
-    let empturno=[]
-    let arrayHorasEmp=[]
+    let empSolicitud = []
+    let empturno = []
+    let arrayHorasEmp = []
     async function waitForPromise() {
-        let result=[]
+        let result = []
         let emp_id = await funcion.getEmpleadoId(username)
         let solicitud = await funcion.getSolicitudId(id)
         let empleados = await funcion.getAllEmpleados(id)
         let date = solicitud[0].fecha
 
-        momentdate=moment(date)
-        week_day=momentdate.weekday()
+        momentdate = moment(date)
+        week_day = momentdate.weekday()
         let sumdays1
         let sumdays2
-        if(week_day==0){sumdays1=-6, sumdays2=0}else{sumdays1=+1 ,sumdays2=+7}
+        if (week_day == 0) { sumdays1 = -6, sumdays2 = 0 } else { sumdays1 = +1, sumdays2 = +7 }
 
         startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + sumdays1);
         endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + sumdays2);
-        startDate= startDate.toISOString().split('T')[0]
-        endDate= endDate.toISOString().split('T')[0]
+        startDate = startDate.toISOString().split('T')[0]
+        endDate = endDate.toISOString().split('T')[0]
 
         let week_start_moment = moment(startDate)
         let week_end_moment = moment(endDate)
@@ -847,11 +856,11 @@ controller.finalizar_historial_id_POST = (req, res) => {
             if (empSolicitud.indexOf(solicitud[i].empleado) === -1) {
                 empSolicitud.push(solicitud[i].empleado)
                 empturno.push(solicitud[i].turno)
-            }   
+            }
         }
 
         for (let y = 0; y < empSolicitud.length; y++) {
-            let temp=[]
+            let temp = []
 
             if (empturno[y] == 3) {
 
@@ -865,7 +874,7 @@ controller.finalizar_historial_id_POST = (req, res) => {
                 inicio = startDate
                 fin = friday
             }
-            
+
             let getInfoExtra = await funcion.getInfoExtra(empSolicitud[y], inicio, fin)
             let getInfoDescanso1 = await funcion.getInfoDescanso(empSolicitud[y], descanso1)
             let getInfoDescanso2 = await funcion.getInfoDescanso(empSolicitud[y], descanso2)
@@ -874,7 +883,7 @@ controller.finalizar_historial_id_POST = (req, res) => {
             temp.push(getInfoDescanso1[0].horasDescanso)
             temp.push(getInfoDescanso2[0].horasDescanso)
             arrayHorasEmp.push(temp)
-            
+
         }
 
         result.push(arrayHorasEmp)
@@ -906,18 +915,11 @@ controller.confirmar_solicitud_POST = (req, res) => {
         let comment = await funcion.insertHistorial(id, aprobador, status, comentario)
         let confirmadoStatus = await funcion.getConfirmadoStatus(id)
 
-        confirmadoStatus.forEach(element => { 
-            if (element.status != "Confirmado") {
-                pendiente++
-                sendConfirmacionMail(nombreSolicitante[0].emp_alias, id, username, "mail_rechazo" , "supervisor: Rechazo")
-            }
-             
+        confirmadoStatus.forEach(element => {
+            if (element.status != "Confirmado") pendiente++
         })
-
-        if (pendiente == 0) {
-
-            sendConfirmacionMail(gerente[0].emp_alias, id, nombreSolicitante[0].emp_alias, "mail_gerente" , "gerencial")
-        }
+        if (status != "Confirmado") sendConfirmacionMail(nombreSolicitante[0].emp_alias, id, username, "mail_rechazo", "supervisor: Rechazo")
+        if (pendiente == 0) sendConfirmacionMail(gerente[0].emp_alias, id, nombreSolicitante[0].emp_alias, "mail_gerente", "gerencial")
 
         res.json(comment)
     }
@@ -930,7 +932,6 @@ controller.confirmar_solicitud_POST = (req, res) => {
 
 
 controller.finalizar_solicitud_POST = (req, res) => {
-    // TODO cuando se apruebe enviar correo a todos los involucrados
     let id = req.body.id
     let status = req.body.status
     let username = req.connection.user.substring(4)
@@ -943,6 +944,17 @@ controller.finalizar_solicitud_POST = (req, res) => {
         let aprobador = await funcion.getEmpleadoId(username)
         let update = await funcion.updateFinalizar(id, aprobador, status)
         let comment = await funcion.insertHistorial(id, aprobador, status, comentario)
+
+        let solicitante_id = await funcion.getSolicitante(id)
+        let soilicitante_nombre = await funcion.getEmpleadoNombre(solicitante_id[0].solicitante)
+
+        if (status != "Finalizado") {
+            sendConfirmacionMail(soilicitante_nombre[0].emp_alias, id, username, "mail_rechazo", "Gerencial Planta: Rechazo")
+        } else {
+
+            sendConfirmacionMail(soilicitante_nombre[0].emp_alias, id, username, "mail_aprobacion", "Gerencial Planta")
+        }
+
         res.json(comment)
     }
 
@@ -1189,7 +1201,8 @@ controller.aprobar_GET = (req, res) => {
 
 
 controller.aprobar_solicitud_POST = (req, res) => {
-    // TODO cuando gerente apruebe enviar correo a Blanco
+
+
     let id = req.body.id
     let status = req.body.status
     let username = req.connection.user.substring(4)
@@ -1202,6 +1215,18 @@ controller.aprobar_solicitud_POST = (req, res) => {
         let aprobador = await funcion.getEmpleadoId(username)
         let update = await funcion.updateAprobar(id, aprobador, status)
         let comment = await funcion.insertHistorial(id, aprobador, status, comentario)
+
+        let solicitante_id = await funcion.getSolicitante(id)
+        let soilicitante_nombre = await funcion.getEmpleadoNombre(solicitante_id[0].solicitante)
+
+        if (status != "Aprobado") {
+            sendConfirmacionMail(soilicitante_nombre[0].emp_alias, id, username, "mail_rechazo", "gerencial: Rechazo")
+        } else {
+            let gerentePlanta_id = await funcion.getIdJefe(aprobador)
+            let gerentePlanta_nombre = await funcion.getEmpleadoNombre(gerentePlanta_id[0].emp_id_jefe)
+            sendConfirmacionMail(gerentePlanta_nombre[0].emp_alias, id, username, "mail_gerente_planta", "Gerencial Planta")
+        }
+
         res.json(comment)
     }
 
@@ -1214,26 +1239,26 @@ controller.aprobar_id_POST = (req, res) => {
 
     let id = req.body.id
     let username = req.connection.user.substring(4)
-    let empSolicitud=[]
-    let empturno=[]
-    let arrayHorasEmp=[]
+    let empSolicitud = []
+    let empturno = []
+    let arrayHorasEmp = []
     async function waitForPromise() {
-        let result=[]
+        let result = []
         let emp_id = await funcion.getEmpleadoId(username)
         let solicitud = await funcion.getSolicitudId(id)
         let empleados = await funcion.getAllEmpleados(id)
         let date = solicitud[0].fecha
 
-        momentdate=moment(date)
-        week_day=momentdate.weekday()
+        momentdate = moment(date)
+        week_day = momentdate.weekday()
         let sumdays1
         let sumdays2
-        if(week_day==0){sumdays1=-6, sumdays2=0}else{sumdays1=+1 ,sumdays2=+7}
+        if (week_day == 0) { sumdays1 = -6, sumdays2 = 0 } else { sumdays1 = +1, sumdays2 = +7 }
 
         startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + sumdays1);
         endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + sumdays2);
-        startDate= startDate.toISOString().split('T')[0]
-        endDate= endDate.toISOString().split('T')[0]
+        startDate = startDate.toISOString().split('T')[0]
+        endDate = endDate.toISOString().split('T')[0]
 
         let week_start_moment = moment(startDate)
         let week_end_moment = moment(endDate)
@@ -1254,11 +1279,11 @@ controller.aprobar_id_POST = (req, res) => {
             if (empSolicitud.indexOf(solicitud[i].empleado) === -1) {
                 empSolicitud.push(solicitud[i].empleado)
                 empturno.push(solicitud[i].turno)
-            }   
+            }
         }
 
         for (let y = 0; y < empSolicitud.length; y++) {
-            let temp=[]
+            let temp = []
 
             if (empturno[y] == 3) {
 
@@ -1272,7 +1297,7 @@ controller.aprobar_id_POST = (req, res) => {
                 inicio = startDate
                 fin = friday
             }
-            
+
             let getInfoExtra = await funcion.getInfoExtra(empSolicitud[y], inicio, fin)
             let getInfoDescanso1 = await funcion.getInfoDescanso(empSolicitud[y], descanso1)
             let getInfoDescanso2 = await funcion.getInfoDescanso(empSolicitud[y], descanso2)
@@ -1281,7 +1306,7 @@ controller.aprobar_id_POST = (req, res) => {
             temp.push(getInfoDescanso1[0].horasDescanso)
             temp.push(getInfoDescanso2[0].horasDescanso)
             arrayHorasEmp.push(temp)
-            
+
         }
 
         result.push(arrayHorasEmp)
@@ -1294,28 +1319,28 @@ controller.aprobar_id_POST = (req, res) => {
 
 
 controller.finalizar_id_POST = (req, res) => {
-let id = req.body.id
+    let id = req.body.id
     let username = req.connection.user.substring(4)
-    let empSolicitud=[]
-    let empturno=[]
-    let arrayHorasEmp=[]
+    let empSolicitud = []
+    let empturno = []
+    let arrayHorasEmp = []
     async function waitForPromise() {
-        let result=[]
+        let result = []
         let emp_id = await funcion.getEmpleadoId(username)
         let solicitud = await funcion.getSolicitudId(id)
         let empleados = await funcion.getAllEmpleados(id)
         let date = solicitud[0].fecha
 
-        momentdate=moment(date)
-        week_day=momentdate.weekday()
+        momentdate = moment(date)
+        week_day = momentdate.weekday()
         let sumdays1
         let sumdays2
-        if(week_day==0){sumdays1=-6, sumdays2=0}else{sumdays1=+1 ,sumdays2=+7}
+        if (week_day == 0) { sumdays1 = -6, sumdays2 = 0 } else { sumdays1 = +1, sumdays2 = +7 }
 
         startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + sumdays1);
         endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + sumdays2);
-        startDate= startDate.toISOString().split('T')[0]
-        endDate= endDate.toISOString().split('T')[0]
+        startDate = startDate.toISOString().split('T')[0]
+        endDate = endDate.toISOString().split('T')[0]
 
         let week_start_moment = moment(startDate)
         let week_end_moment = moment(endDate)
@@ -1336,11 +1361,11 @@ let id = req.body.id
             if (empSolicitud.indexOf(solicitud[i].empleado) === -1) {
                 empSolicitud.push(solicitud[i].empleado)
                 empturno.push(solicitud[i].turno)
-            }   
+            }
         }
 
         for (let y = 0; y < empSolicitud.length; y++) {
-            let temp=[]
+            let temp = []
 
             if (empturno[y] == 3) {
 
@@ -1354,7 +1379,7 @@ let id = req.body.id
                 inicio = startDate
                 fin = friday
             }
-            
+
             let getInfoExtra = await funcion.getInfoExtra(empSolicitud[y], inicio, fin)
             let getInfoDescanso1 = await funcion.getInfoDescanso(empSolicitud[y], descanso1)
             let getInfoDescanso2 = await funcion.getInfoDescanso(empSolicitud[y], descanso2)
@@ -1363,7 +1388,7 @@ let id = req.body.id
             temp.push(getInfoDescanso1[0].horasDescanso)
             temp.push(getInfoDescanso2[0].horasDescanso)
             arrayHorasEmp.push(temp)
-            
+
         }
 
         result.push(arrayHorasEmp)
@@ -1402,21 +1427,21 @@ controller.getHorasGerente_POST = (req, res) => {
     async function waitForPromise() {
 
         let emp_id = await funcion.getEmpleadoId(username)
-        let myEmpleados= await funcion.getMyEmpleados(emp_id)
+        let myEmpleados = await funcion.getMyEmpleados(emp_id)
 
-        
-        momentdate=moment()
-        week_day=momentdate.weekday()
-        date= moment(momentdate).format('YYYY-MM-DD');
-        date= new Date(date)
+
+        momentdate = moment()
+        week_day = momentdate.weekday()
+        date = moment(momentdate).format('YYYY-MM-DD');
+        date = new Date(date)
         let sumdays1
         let sumdays2
-        if(week_day==0){sumdays1=-6, sumdays2=0}else{sumdays1=+1 ,sumdays2=+7}
+        if (week_day == 0) { sumdays1 = -6, sumdays2 = 0 } else { sumdays1 = +1, sumdays2 = +7 }
 
         startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + sumdays1);
         endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + sumdays2);
-        startDate= startDate.toISOString().split('T')[0]
-        endDate= endDate.toISOString().split('T')[0]
+        startDate = startDate.toISOString().split('T')[0]
+        endDate = endDate.toISOString().split('T')[0]
 
         let week_start_moment = moment(startDate)
         let week_end_moment = moment(endDate)

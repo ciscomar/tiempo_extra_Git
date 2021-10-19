@@ -4,10 +4,42 @@
 
 
             <div class="col-xl-12 jumbotron jumbotron-fluid animated bounceInDown bg-transparent jumbotronBg">
-                <div class="container">
-                    <img src="/img/TristoneLogo.png" class="img-logo rounded mx-auto d-block" alt="Tristone Flowtech">
-                    <h1 class="display-4 text-center csvTitulo">Aprobar Solicitudes</h1>
-                    <p class="lead text-center"></p>
+                <div class="container-fluid">
+                    <div class="row">
+
+
+                        <div class="col-4"></div>
+                        <div class="col-4">
+                            <img src="/img/TristoneLogo.png" class="img-logo rounded mx-auto d-block"
+                                alt="Tristone Flowtech">
+                            <h1 class="display-4 text-center csvTitulo">Aprobar Solicitudes</h1>
+                            <p class="lead text-center"></p>
+                        </div>
+                        <div class="col-auto" style="margin: 0 auto">
+                            <table
+                                class="table table-responsive-sm table-striped table-bordered table-hover text-center">
+                                <thead>
+                                    <tr>
+                                        <th colspan="3" class=" bg-info text-white" style="border-top-left-radius: 30px !important;"> Acumulado Semana: 100</th>
+                                    </tr>
+                                    <tr>
+                                        <th>X2</th>
+                                        <th>X3</th>
+                                        <th>D.L</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td> 10</td>
+                                        <td class="danger"> 20</td>
+                                        <td style="border-bottom-right-radius: 20px !important"> 30</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
 
                 </div>
             </div>
@@ -25,7 +57,7 @@
                                     <th width="10%"><span></span> Horas</th>
                                     <th width="20%"><span></span> Semana</th>
                                     <th width="20%"><span></span> Motivo</th>
-                   
+
 
                                 </thead>
 
@@ -39,63 +71,63 @@
                 </div>
             </div>
 
-       
+
 
             <div class="modal fade" id="modalSuccess" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable" role="document">
-                <div class="modal-content">
-                    <div class="modal-header card-mov">
-                        <img src="/img/TristoneLogo.png" alt="SAP" srcset="" class="card-mov">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-2">
-                                <i class="fas fa-check-circle text-success" style="font-size: 2rem;"> </i>
-                            </div>
-                            <div class="col">
-                                <h5>Solicitud Aprobada</h5>
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header card-mov">
+                            <img src="/img/TristoneLogo.png" alt="SAP" srcset="" class="card-mov">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-2">
+                                    <i class="fas fa-check-circle text-success" style="font-size: 2rem;"> </i>
+                                </div>
+                                <div class="col">
+                                    <h5>Solicitud Aprobada</h5>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button id="btnCerrar_Success" type="button" class="btn btn-secondary btnCerrar"
-                            data-dismiss="modal">Cerrar</button>
+                        <div class="modal-footer">
+                            <button id="btnCerrar_Success" type="button" class="btn btn-secondary btnCerrar"
+                                data-dismiss="modal">Cerrar</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
 
 
-        <div class="modal fade" id="modalRechazado" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable" role="document">
-            <div class="modal-content">
-                <div class="modal-header card-mov">
-                    <img src="/img/TristoneLogo.png" alt="SAP" srcset="" class="card-mov">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-2">
-                            <i class="fas fa-times-circle text-danger" style="font-size: 2rem;"> </i>
+            <div class="modal fade" id="modalRechazado" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header card-mov">
+                            <img src="/img/TristoneLogo.png" alt="SAP" srcset="" class="card-mov">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            </button>
                         </div>
-                        <div class="col">
-                            <h5>Solicitud Rechazada</h5>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-2">
+                                    <i class="fas fa-times-circle text-danger" style="font-size: 2rem;"> </i>
+                                </div>
+                                <div class="col">
+                                    <h5>Solicitud Rechazada</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="btnCerrar_Success" type="button" class="btn btn-secondary btnCerrar"
+                                data-dismiss="modal">Cerrar</button>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button id="btnCerrar_Success" type="button" class="btn btn-secondary btnCerrar"
-                        data-dismiss="modal">Cerrar</button>
-                </div>
             </div>
-        </div>
-    </div>
 
 
 
@@ -104,5 +136,5 @@
 
 
 
-<%- include ("./static/footer") %>
-<script src="/js/functions/aprobar_list.js"></script>
+            <%- include ("./static/footer") %>
+                <script src="/js/functions/aprobar_list.js"></script>
