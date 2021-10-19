@@ -755,3 +755,7 @@ table td {
   background-color: #d9534f;
   color: #f7f7f7;
 }
+
+.icoSidebar{
+  cursor: pointer;
+}

@@ -44,6 +44,8 @@ router.post('/getHistorialFinalizado', middleware.sspi, routesController.getHist
 router.get('/finalizar_historial_id/:id', middleware.sspi, routesController.finalizar_historial_id_GET);
 router.post('/finalizar_historial_id', middleware.sspi, routesController.finalizar_historial_id_POST);
 router.post('/historial', middleware.sspi, routesController.historial_POST);
+router.post('/getHorasGerente', middleware.sspi, routesController.getHorasGerente_POST);
+
 
 
 module.exports = router;

@@ -39,15 +39,25 @@ $(document).ready(function () {
       fecha = data[0].fecha
       let datef = new Date(fecha)
 
-      semanaInput.value = $.datepicker.formatDate('yy-mm-dd', new Date(datef.getFullYear(), datef.getMonth(), datef.getDate() - datef.getDay() + 1)) + "  a  " +
-        $.datepicker.formatDate('yy-mm-dd', new Date(datef.getFullYear(), datef.getMonth(), datef.getDate() - datef.getDay() + 7))
-      motivo.value = data[0].motivo
+      momentdate=moment(datef)
+      week_day=momentdate.weekday()
+      let sumdays1
+      let sumdays2
 
+      if(week_day==0){sumdays1=-6, sumdays2=0 }else{sumdays1=+1 ,sumdays2=+7}
+
+
+      semanaInput.value = $.datepicker.formatDate('yy-mm-dd', new Date(datef.getFullYear(), datef.getMonth(), datef.getDate() - datef.getDay() + sumdays1)) + "  a  " +
+        $.datepicker.formatDate('yy-mm-dd', new Date(datef.getFullYear(), datef.getMonth(), datef.getDate() - datef.getDay() + sumdays2))
+
+
+
+      motivo.value = data[0].motivo
       let semana = []
       for (let i = 1; i < 8; i++) {
-        semana.push($.datepicker.formatDate('yy-mm-dd', new Date(datef.getFullYear(), datef.getMonth(), datef.getDate() - datef.getDay() + i)))
+        if(week_day==0){semana.push($.datepicker.formatDate('yy-mm-dd', new Date(datef.getFullYear(), datef.getMonth(), datef.getDate() - datef.getDay() -7 + i)))}
+        else{semana.push($.datepicker.formatDate('yy-mm-dd', new Date(datef.getFullYear(), datef.getMonth(), datef.getDate() - datef.getDay() + i)))}
       }
-
 
 
       let empleados = []
@@ -203,10 +213,11 @@ $(document).ready(function () {
 
           }
 
-
-          temp.push(`<input type="text" class="" style="width: 100%; text-align:center;" name="idPlan" id="test" value="${extrax2}" disabled>`)
-          temp.push(`<input type="text" class="" style="width: 100%; text-align:center;" name="idPlan" id="test" value="${extrax3}" disabled>`)
-          temp.push(`<input type="text" class="" style="width: 100%; text-align:center;" name="idPlan" id="test" value="${descanso}" disabled>`)
+          let classColor=""
+          if(extrax3>0){classColor="danger"}else{classColor=""}
+          temp.push(`<input type="text"  style="width: 100%; text-align:center;" name="idPlan" id="test" value="${extrax2}" disabled>`)
+          temp.push(`<input type="text" class="${classColor}" style="width: 100%; text-align:center;" name="idPlan" id="test" value="${extrax3}" disabled>`)
+          temp.push(`<input type="text"  style="width: 100%; text-align:center;" name="idPlan" id="test" value="${descanso}" disabled>`)
 
           }
         }

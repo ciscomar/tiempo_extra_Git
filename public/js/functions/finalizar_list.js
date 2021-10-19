@@ -35,10 +35,15 @@ axios({
 
 
         let date = new Date(d.fecha)
-        startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + 1);
-        endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + 7);
-        let s=$.datepicker.formatDate('yy-mm-dd',startDate) 
-        let e=$.datepicker.formatDate('yy-mm-dd',endDate) 
+        momentdate=moment(date)
+        week_day=momentdate.weekday()
+        let sumdays1
+        let sumdays2
+        if(week_day==0){sumdays1=-6, sumdays2=0}else{sumdays1=+1 ,sumdays2=+7}
+        startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + sumdays1);
+        endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + sumdays2);
+        let s=$.datepicker.formatDate('yy-mm-dd',startDate)
+        let e=$.datepicker.formatDate('yy-mm-dd',endDate)
 
         let nombre
         dataEmpleados.forEach(e => {

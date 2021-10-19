@@ -41,59 +41,75 @@ $(document).ready(function () {
   })
     .then((result) => {
 
-      let allResults=result.data
-      let supervisor=allResults.result[0]
-      let solEmpleados=allResults.result[1]
-
-      data = solEmpleados[0]
-      dataempleados = solEmpleados[1]
+      let supervisor=result.data.result[0]
+      data = result.data.result[1]
+      dataempleados = result.data.result[2]
+      dataHoras = result.data.result[3]
       fecha = data[0].fecha
       let datef = new Date(fecha)
 
+      momentdate=moment(datef)
+      week_day=momentdate.weekday()
+      let sumdays1
+      let sumdays2
+
+      if(week_day==0){sumdays1=-6, sumdays2=0 }else{sumdays1=+1 ,sumdays2=+7}
 
 
-      semanaInput.value = $.datepicker.formatDate('yy-mm-dd', new Date(datef.getFullYear(), datef.getMonth(), datef.getDate() - datef.getDay() + 1)) + "  a  " +
-        $.datepicker.formatDate('yy-mm-dd', new Date(datef.getFullYear(), datef.getMonth(), datef.getDate() - datef.getDay() + 7))
+      semanaInput.value = $.datepicker.formatDate('yy-mm-dd', new Date(datef.getFullYear(), datef.getMonth(), datef.getDate() - datef.getDay() + sumdays1)) + "  a  " +
+        $.datepicker.formatDate('yy-mm-dd', new Date(datef.getFullYear(), datef.getMonth(), datef.getDate() - datef.getDay() + sumdays2))
+
+
+
       motivo.value = data[0].motivo
-
       let semana = []
       for (let i = 1; i < 8; i++) {
-        semana.push($.datepicker.formatDate('yy-mm-dd', new Date(datef.getFullYear(), datef.getMonth(), datef.getDate() - datef.getDay() + i)))
+        if(week_day==0){semana.push($.datepicker.formatDate('yy-mm-dd', new Date(datef.getFullYear(), datef.getMonth(), datef.getDate() - datef.getDay() -7 + i)))}
+        else{semana.push($.datepicker.formatDate('yy-mm-dd', new Date(datef.getFullYear(), datef.getMonth(), datef.getDate() - datef.getDay() + i)))}
       }
 
       let empleados = []
-      let empleados_jefe=[]
-      let empleados_confirmado=[]
-      let empleados_aprobado=[]
+      let empleados_jefe = []
+      let empleados_confirmado = []
+      let empleados_aprobado = []
+      let empleados_turno = []
+      
       for (let i = 0; i < data.length; i++) {
-        if(empleados.indexOf(data[i].empleado) === -1){
+
+        if (empleados.indexOf(data[i].empleado) === -1) {
           empleados.push(data[i].empleado)
           empleados_jefe.push(data[i].jefe)
           empleados_confirmado.push(data[i].confirmado)
           empleados_aprobado.push(data[i].aprobado)
-          }
+          empleados_turno.push(data[i].turno)
+        }
       }
 
-      
-      let empleados_nombre=[]
+      let empleados_nombre = []
       for (let i = 0; i < empleados.length; i++) {
         for (let y = 0; y < dataempleados.length; y++) {
-          if(empleados[i] == dataempleados[y].emp_id){
+          if (empleados[i] == dataempleados[y].emp_id) {
             empleados_nombre.push(dataempleados[y].emp_nombre)
           }
-          
-        }  
+
+        }
       }
 
-      let jefe_nombre=[]
+      let jefe_nombre = []
       for (let i = 0; i < empleados_jefe.length; i++) {
-        for (let y = 0; y < dataempleados.length; y++) {
-          if(empleados_jefe[i]==dataempleados[y].emp_id){
-            jefe_nombre.push(dataempleados[y].emp_correo.substring(0,dataempleados[y].emp_correo.indexOf('@')))
-          }        
-        }       
-      }
 
+        if (empleados_jefe[i] != null) {
+          for (let y = 0; y < dataempleados.length; y++) {
+            if (empleados_jefe[i] == dataempleados[y].emp_id) {
+              jefe_nombre.push(dataempleados[y].emp_correo.substring(0, dataempleados[y].emp_correo.indexOf('@')))
+            }
+          }
+        } else {
+          jefe_nombre.push("")
+        }
+
+
+      }
 
 
 
@@ -104,9 +120,10 @@ $(document).ready(function () {
       let status
 
       for (let i = 0; i < empleados.length; i++) {
+
         temp.push(empleados[i])
         temp.push(empleados_nombre[i])
-        temp.push("")
+        temp.push(empleados_turno[i])
 
         for (let y = 0; y < semana.length; y++) {
           let found = false;
@@ -115,9 +132,9 @@ $(document).ready(function () {
 
             if (data[x].empleado == empleados[i] && semana[y] === data[x].fecha.substring(0, data[x].fecha.indexOf("T"))) {
               temp.push(data[x].horas)
-              area_actual=data[x].area_actual
-              area_req=data[x].area_req
-              status=data[x].status
+              area_actual = data[x].area_actual
+              area_req = data[x].area_req
+              status = data[x].status
               found = true;
             }
           }
@@ -127,18 +144,102 @@ $(document).ready(function () {
           }
         }
 
-        temp.push("")
-        temp.push("")
-        temp.push("")
-        
+
+
+        for (let z = 0; z < dataHoras.length; z++) {
+
+          if(dataHoras[z][0]===empleados[i]){
+
+          let extrax2 = 0
+          let extrax3 = 0
+          let descanso = 0
+          let horasExtra = dataHoras[z][1]
+          let horasDescanso1 = dataHoras[z][2]
+          let horasDescanso2 = dataHoras[z][3]
+
+          extrax2 = horasExtra
+
+          //Horas extra dobles y triples
+          if (horasExtra == null) {
+            horasExtra = 0
+          }
+          if (horasExtra < 10) {
+            extrax2 = horasExtra
+          } else {
+            extrax2 = 9
+            extrax3 = horasExtra - 9
+          }
+
+          //Horas descanso laborado1
+
+          if (isNaN(horasDescanso1)) {
+            horasDescanso1 = 0
+          }
+
+          let doble = extrax2
+          let triple = extrax3
+
+          if (horasDescanso1 < 9) {
+            descanso = horasDescanso1
+          } else {
+            descanso = 8
+            restante = horasDescanso1 - 8
+
+            if ((doble + restante) < 10) {
+              extrax2 = doble + restante
+            } else {
+
+              extrax2 = 9
+              extrax3 = triple + ((doble + restante) - 9)
+
+            }
+
+          }
+
+          //Horas descanso laborado2
+
+          if (isNaN(horasDescanso2)) {
+            horasDescanso2 = 0
+          }
+
+          let doble2 = extrax2
+          let triple2 = extrax3
+
+          if (horasDescanso2 < 9) {
+            descanso = descanso + horasDescanso2
+          } else {
+            descanso = descanso + 8
+            restante2 = horasDescanso2 - 8
+
+            if ((doble2 + restante2) < 10) {
+              extrax2 = doble2 + restante2
+            } else {
+
+              extrax2 = 9
+              extrax3 = triple2 + ((doble2 + restante2) - 9)
+
+            }
+
+          }
+
+          let classColor=""
+          if(extrax3>0){classColor="danger"}else{classColor=""}
+          temp.push(`<input type="text"  style="width: 100%; text-align:center;" name="idPlan" id="test" value="${extrax2}" disabled>`)
+          temp.push(`<input type="text" class="${classColor}" style="width: 100%; text-align:center;" name="idPlan" id="test" value="${extrax3}" disabled>`)
+          temp.push(`<input type="text"  style="width: 100%; text-align:center;" name="idPlan" id="test" value="${descanso}" disabled>`)
+
+          }
+        }
+
         temp.push(area_actual)
         temp.push(area_req)
 
-        if (status=='Pendiente'){icon = `<span class="icoSidebar fas fa-user-clock text-secondary" onclick="historial()"></span>`}else
-        if (status=='Confirmado'){icon = `<span class="icoSidebar fas fa-user-plus text-info" onclick="historial()"></span>`}else
-        if (status=='Rechazado'){icon = `<span class="icoSidebar fas fa-user-times text-danger" onclick="historial()"></span>`}else
-        if (status=='Aprobado'){icon = `<span class="icoSidebar fas fa-user-check text-primary" onclick="historial()"></span>`}else
-        if (status=='Finalizado'){icon = `<span class="icoSidebar fas fa-user-tie text-success" onclick="historial()"></span>`}
+        if (status == 'Pendiente') { icon = `<span class="icoSidebar fas fa-user-clock text-secondary" onclick="historial()"></span>` } else
+          if (status == 'Confirmado') { icon = `<span class="icoSidebar fas fa-user-plus text-info" onclick="historial()"></span>` } else
+            if (status == 'Rechazado') { icon = `<span class="icoSidebar fas fa-user-times text-danger" onclick="historial()"></span>` } else
+              if (status == 'Aprobado') { icon = `<span class="icoSidebar fas fa-user-check text-primary" onclick="historial()"></span>` } else
+                if (status == 'Finalizado') { icon = `<span class="icoSidebar fas fa-user-tie text-success" onclick="historial()"></span>` }
+
 
         temp.push(jefe_nombre[i])
         temp.push(icon)
