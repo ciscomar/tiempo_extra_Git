@@ -55,12 +55,14 @@ funcion.getSolicitudes = (username) => {
         FROM 
             solicitud WHERE solicitante = "${username}" 
         GROUP BY 
-            solicitud
+            solicitud,status
         ORDER BY 
             solicitud DESC`)
             .then((result) => { resolve(result) })
             .catch((error) => { reject(error) })
     })
+
+
 }
 
 
@@ -509,11 +511,53 @@ funcion.getEmpleadoNombre = (solicitante)=>{
 
 
 
-funcion.getManagerHorasEmpleados = (week_start, week_end) => {
+funcion.getManagerHorasEmpleados = (week_start, week_end, arrayempleados) => {
     return new Promise((resolve, reject) => {
 
-        dbT(`SELECT * FROM solicitud WHERE 
-        AND (fecha BETWEEN  "${week_start}" AND "${week_end}`)
+        dbT(`SELECT * FROM solicitud WHERE ${arrayempleados} AND (fecha BETWEEN "${week_start}" AND "${week_end}")`)
+
+            .then((result) => {  resolve(result) })
+            .catch((error) => { reject(error) })
+    })
+}
+
+
+funcion.getInfoExtraManager = (empleado,solicitantes, week_start, week_end) => {
+
+    return new Promise((resolve, reject) => {
+
+        dbT(`SELECT SUM(horas) as horasExtra
+        FROM 
+            solicitud 
+        WHERE
+            empleado = "${empleado}"
+           
+        AND 
+            (${solicitantes})
+
+        AND (fecha BETWEEN  "${week_start}" AND "${week_end}")
+            `)
+
+            .then((result) => { resolve(result) })
+            .catch((error) => { reject(error) })
+    })
+}
+
+
+funcion.getInfoDescansoManager = (empleado,solicitantes, descanso) => {
+    return new Promise((resolve, reject) => {
+
+        dbT(`SELECT SUM(horas) as horasDescanso
+        FROM 
+            solicitud 
+        WHERE
+            empleado = "${empleado}"
+        AND 
+            (${solicitantes})
+            
+        AND fecha="${descanso}"
+            `)
+
             .then((result) => { resolve(result) })
             .catch((error) => { reject(error) })
     })

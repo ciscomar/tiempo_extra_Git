@@ -1397,13 +1397,27 @@ controller.historial_POST = (req, res) => {
 controller.getHorasGerente_POST = (req, res) => {
 
     let username = req.connection.user.substring(4)
-
+    let empSolicitud=[]
+    let empturno=[]
+    let arrayHorasEmp=[]
 
     async function waitForPromise() {
 
         let emp_id = await funcion.getEmpleadoId(username)
         let myEmpleados= await funcion.getMyEmpleados(emp_id)
 
+        let arrayEmpleados = ""
+        let inc = 0
+        myEmpleados.forEach(emp => {
+
+            if (inc == 0) {
+                arrayEmpleados += `solicitante="${emp.emp_id}"`
+
+            } else {
+                arrayEmpleados += ` OR solicitante= "${emp.emp_id}"`
+            }
+            inc++
+        });
         
         momentdate=moment()
         week_day=momentdate.weekday()
@@ -1428,7 +1442,43 @@ controller.getHorasGerente_POST = (req, res) => {
         let inicio
         let fin
 
+        let solicitudes= await funcion.getManagerHorasEmpleados(startDate, endDate,arrayEmpleados)
 
+        for (let i = 0; i < solicitudes.length; i++) {
+            if (empSolicitud.indexOf(solicitudes[i].empleado) === -1) {
+                empSolicitud.push(solicitudes[i].empleado)
+                empturno.push(solicitudes[i].turno)
+            }   
+        }
+
+        for (let y = 0; y < empSolicitud.length; y++) {
+            let temp=[]
+
+            if (empturno[y] == 3) {
+
+                descanso1 = startDate
+                descanso2 = endDate
+                inicio = tuesday
+                fin = saturday
+            } else {
+                descanso1 = saturday
+                descanso2 = endDate
+                inicio = startDate
+                fin = friday
+            }
+
+            let getInfoExtra = await funcion.getInfoExtraManager(empSolicitud[y],arrayEmpleados, inicio, fin)
+            let getInfoDescanso1 = await funcion.getInfoDescansoManager(empSolicitud[y],arrayEmpleados, descanso1)
+            let getInfoDescanso2 = await funcion.getInfoDescansoManager(empSolicitud[y],arrayEmpleados, descanso2)
+            temp.push(empSolicitud[y])
+            temp.push(getInfoExtra[0].horasExtra)
+            temp.push(getInfoDescanso1[0].horasDescanso)
+            temp.push(getInfoDescanso2[0].horasDescanso)
+            arrayHorasEmp.push(temp)
+            
+        }
+
+        console.log(arrayHorasEmp);
 
 
     }
