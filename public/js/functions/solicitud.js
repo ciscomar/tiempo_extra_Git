@@ -158,9 +158,9 @@ let agregar = () => {
     `<td><input class="viernes dias" id="v${row}" style="width: 100%;" type="number"></td>`,
     `<td><input class="sabado dias" id="s${row}" style="width: 100%;" type="number"></td>`,
     `<td><input class="domingo dias" id="d${row}" style="width: 100%;" type="number"></td>`,
-    `<td><input class="textra" id="te${row}" style="width: 100%;" type="text" disabled></td>`,
-    `<td><input class="textra2" id="tem${row}" style="width: 100%;" type="text" disabled></td>`,
-    `<td><input class="dlaborado" id="dl${row}" style="width: 100%;" type="text" disabled></td>`,
+    `<td><input class="textra" id="te${row}" style="width: 100%; text-align:center;" type="text" disabled></td>`,
+    `<td><input class="textra2" id="tem${row}" style="width: 100%; text-align:center;" type="text" disabled></td>`,
+    `<td><input class="dlaborado" id="dl${row}" style="width: 100%; text-align:center;" type="text" disabled></td>`,
     `<td><input class="actual" id="a${row}" style="width: 100%;" type="text" disabled></td>`,
     `<td><input class="laborar" id="l${row}" style="width: 100%;" type="text"></td>`,
     `<td><input class="jefe" id="je${row}" style="width: 100%;" type="text" disabled></td>`,
@@ -271,7 +271,7 @@ let getInfoEmpleado = (e) => {
         descanso.value = 0
         extrax2.value = horasExtra
 
-        console.log(horasExtra);
+
         //Horas extra dobles y triples
         if (horasExtra == null) {
           horasExtra = 0
@@ -355,11 +355,19 @@ let getInfoEmpleado = (e) => {
         let actual = document.getElementById("a" + id)
         let jefe = document.getElementById("je" + id)
         let jefeid = document.getElementById("jeid" + id)
+        let turno = document.getElementById("tu" + id)
+        let te = document.getElementById("te" + id)
+        let tem = document.getElementById("tem" + id)
+        let dl = document.getElementById("dl" + id)
 
         name.value = ""
         actual.value = ""
         jefe.value = ""
         jefeid.value = ""
+        turno.value = ""
+        te.value = ""
+        tem.value = ""
+        dl.value = ""
 
       }
 
@@ -390,9 +398,14 @@ $(document).ready(function () {
     showWeek: true,
     onSelect: function (dateText, inst) {
       let date = $(this).datepicker('getDate');
+      momentdate=moment(date)
+      week_day=momentdate.weekday()
+      let sumdays1
+      let sumdays2
+      if(week_day==0){sumdays1=-6, sumdays2=0}else{sumdays1=+1 ,sumdays2=+7}
 
-      startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + 1);
-      endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + 7);
+      startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + sumdays1);
+      endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + sumdays2);
       let dateFormat = inst.settings.dateFormat || $.datepicker._defaults.dateFormat;
       $('#startDate').val($.datepicker.formatDate(dateFormat, startDate, inst.settings));
       $('#endDate').val($.datepicker.formatDate(dateFormat, endDate, inst.settings));
@@ -406,10 +419,13 @@ $(document).ready(function () {
 
       fechas = [];
       for (let i = 1; i < 8; i++) {
-        let fecha = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + i)
+        let fecha
+        if(week_day==0){ fecha = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() -7 + i)}
+        else{ fecha = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + i)}
         fechas.push($.datepicker.formatDate(dateFormat, fecha, inst.settings))
-
       }
+
+      console.log(fechas);
 
 
       selectCurrentWeek();

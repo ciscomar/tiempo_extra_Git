@@ -507,4 +507,16 @@ funcion.getEmpleadoNombre = (solicitante)=>{
     })
 }
 
+
+
+funcion.getManagerHorasEmpleados = (week_start, week_end) => {
+    return new Promise((resolve, reject) => {
+
+        dbT(`SELECT * FROM solicitud WHERE 
+        AND (fecha BETWEEN  "${week_start}" AND "${week_end}`)
+            .then((result) => { resolve(result) })
+            .catch((error) => { reject(error) })
+    })
+}
+
 module.exports = funcion;
