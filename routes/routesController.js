@@ -29,6 +29,28 @@ function acceso(req) {
 
 }
 
+async function sendConfirmacionMail(to, solicitud, solicitante, corre_template, nivel) {
+    console.log({to}, {solicitud}, {solicitante}, {corre_template}, {nivel});
+
+    const data = await ejs.renderFile(path.join(__dirname, `../public/mail/${corre_template}.ejs`), { supervisor: solicitante, solicitud: solicitud });
+    let mailOptions = {
+        from: "noreply@tristone.com",
+        to: `${to}@tristone.com`,
+        subject: `Aprobacion de tiempo extra nivel ${nivel} #${solicitud} `,
+        text: "",
+        html: data,
+    };
+
+
+    nodeMailer.transport.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.error(error);
+        } else {
+            console.log(info);
+        }
+    })
+}
+
 
 controller.index_GET = (req, res) => {
     user = req.connection.user
@@ -143,6 +165,7 @@ controller.sendSolicitud_POST = (req, res) => {
         let emp_id = await funcion.getEmpleadoId(solicitante)
         let lastSolicitud = await funcion.getSolicitud();
         let solicitud
+        let gerente
         let listaJefes = []
 
         if (lastSolicitud == undefined) {
@@ -158,9 +181,12 @@ controller.sendSolicitud_POST = (req, res) => {
                 for (let i = 0; i < empleados.length; i++) { 
                     if (empleados[i][12] != emp_id && listaJefes.indexOf(empleados[i][13]) === -1){ 
                         listaJefes.push(empleados[i][13])
-                    }  
+                    }else{
+                        gerente = empleados[i][13]
+                    }
                 }
                 for (let i = 0; i < listaJefes.length; i++) { sendConfirmacionMail(listaJefes[i], solicitud, solicitante, "mail_confirmacion" ,"supervisor") }
+                if (listaJefes.length == 0) sendConfirmacionMail(gerente, solicitud, solicitante, "mail_gerente" , "gerencial")
                 res.json(result)
 
             })
@@ -175,26 +201,7 @@ controller.sendSolicitud_POST = (req, res) => {
 
 }
 
-async function sendConfirmacionMail(to, solicitud, solicitante, corre_template, nivel) {
 
-    const data = await ejs.renderFile(path.join(__dirname, `../public/mail/${corre_template}.ejs`), { supervisor: solicitante, solicitud: solicitud });
-    let mailOptions = {
-        from: "noreply@tristone.com",
-        to: `${to}@tristone.com`,
-        subject: `Aprobacion de tiempo extra nivel ${nivel} #${solicitud} `,
-        text: "",
-        html: data,
-    };
-
-
-    nodeMailer.transport.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.error(error);
-        } else {
-            console.log(info);
-        }
-    })
-}
 
 function getArray(solicitud, solicitante, empleados, fecha, motivo) {
 
@@ -632,7 +639,6 @@ controller.finalizar_historial_id_POST = (req, res) => {
 
 
 controller.confirmar_solicitud_POST = (req, res) => {
-    // TODO cuando este totalmente confirmado enviar correo a gerente del solicitante
 
     let id = req.body.id
     let status = req.body.status
