@@ -3,13 +3,48 @@
         <%- include ("./static/navbar") %>
 
 
-            <div class="col-xl-12 jumbotron jumbotron-fluid animated bounceInDown bg-transparent jumbotronBg">
-                <div class="container">
-                    <img src="/img/TristoneLogo.png" class="img-logo rounded mx-auto d-block" alt="Tristone Flowtech">
-                    <h1 class="display-4 text-center csvTitulo">Historial Aprobado</h1>
-                    <p class="lead text-center"></p>
+        <div class="container-fluid mb-4">
+                    <div class="row mt-5">
+
+
+
+                        <div class="col-4"></div>
+                        <div class="col-4">
+                            <img src="/img/TristoneLogo.png" class="img-logo rounded mx-auto d-block"
+                                alt="Tristone Flowtech">
+                                <h1 class="display-4 text-center csvTitulo">Historial Aprobado</h1>
+                                <p class="lead text-center"></p>
+                        </div>
+                        
+                        <div class="col-auto" style="margin: 0 auto">
+                            <h5 class="text-center">Aprobado</h5>
+                            <table id="tableAcumulado"
+                                class="table table-responsive-sm table-striped table-bordered table-hover text-center">
+                                <thead>
+                                    <tr>
+                                        <th colspan="3" class=" bg-info text-white"
+                                            style="border-top-left-radius: 30px !important;" id="numero_semana"></th>
+                                    </tr>
+                                    <tr>
+                                        <th>X2</th>
+                                        <th>X3</th>
+                                        <th>D.L</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
                 </div>
-            </div>
+         
+
+
+
             <div class="container">
 
                 <div class="table-responsive mt-2">

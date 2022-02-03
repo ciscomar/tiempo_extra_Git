@@ -1,0 +1,215 @@
+<%- include ("./static/header") %>
+    <%- include ("./static/sidebar") %>
+        <%- include ("./static/navbar") %>
+
+            <!-- <div class="col-xl-12 jumbotron jumbotron-fluid animated bounceInDown bg-transparent jumbotronBg"> -->
+            <div class="container-fluid mb-4">
+                <div class="row mt-5">
+
+                    
+                    
+                    <div class="col-auto" style="margin: 0 auto">
+                        <h5 class="text-center">Aprobado</h5>
+                        <table id="tableAcumulado"
+                            class="table table-responsive-sm table-striped table-bordered table-hover text-center">
+                            <thead>
+                                <tr>
+                                    <th colspan="3" class=" bg-info text-white"
+                                        style="border-top-left-radius: 30px !important;" id="numero_semana"></th>
+                                </tr>
+                                <tr>
+                                    <th>X2</th>
+                                    <th>X3</th>
+                                    <th>D.L</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+                            </tbody>
+                        </table>
+
+                        <h6 class="text-center mt-1" id="costoAprobado"></h6>
+                    </div>
+
+
+                    <div class="col-4">
+                        <img src="/img/TristoneLogo.png" class="img-logo rounded mx-auto d-block"
+                            alt="Tristone Flowtech">
+                        <h1 class="display-4 text-center csvTitulo">Supervisores</h1>
+
+                        <p class="lead text-center"></p>
+                    </div>
+
+
+                    <div class="col-auto" style="margin: 0 auto">
+                        <h5 class="text-center">Laborado</h5>
+                        <table id="tableAcumuladoUtilizado"
+                            class="table table-responsive-sm table-striped table-bordered table-hover text-center">
+                            <thead>
+                                <tr>
+                                    <th colspan="3" class=" bg-info text-white"
+                                        style="border-top-left-radius: 30px !important;" id="numero_semana2"></th>
+                                </tr>
+                                <tr>
+                                    <th>X2</th>
+                                    <th>X3</th>
+                                    <th>D.L</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+                            </tbody>
+                        </table>
+                        <h6 class="text-center mt-1" id="costoLaborado"></h6>
+                    </div>
+
+                </div>
+
+            </div>
+            <!-- </div> -->
+
+
+
+
+
+
+
+
+            <div class="container">
+
+                <div class="card-header text-white bg-dark mt-4">
+                    <div class="row">
+
+                        <div class="col-lg-12  text-center">
+                            <div class="col-lg-6 offset-lg-3">
+                                <div class="form-group">
+                                    <label>Semana</label>
+                                    <div>
+                                        <input type="text" class="form-control text-center week-picker" name="week"
+                                            id="week" autocomplete="off">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-lg-6 text-center">
+                        <div class="form-group">
+                            <input type="text" class="form-control text-center" name="startDate" id="startDate"
+                                placeholder="YYYY-MM-DD" value="" hidden>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 text-center">
+                        <div class="form-group">
+                            <input type="text" class="form-control text-center" name="endDate" id="endDate"
+                                placeholder="YYYY-MM-DD" value="" hidden>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="container-fluid">
+                <div class="row">
+
+                    <div class="col-6">
+                    <div class="table-responsive mt-2">
+                        <div class="containerTable">
+                            <h4 class="text-center">Horas Aprobadas</h4>
+                            <div class="table table-responsive" id="table">
+                                <table id="table2"
+                                    class="table table-bordered table-striped table-sm hover text-center">
+                                    <thead class="thead-dark">
+
+                                        <th width="1%"><span></span> Empleado</th>
+                                        <th width="20%"><span></span> Nombre</th>
+                                        <th width="4%"><span></span>x2</th>
+                                        <th width="4%"><span></span>x3</th>
+                                        <th width="4%"><span></span> D.L</th>
+
+
+                                    </thead>
+
+                                    <tbody>
+
+
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                
+                <div class="col-6">
+
+                        
+                    <div class="table-responsive mt-2">
+                        <div class="containerTable">
+                            <h4 class="text-center">Horas Laboradas</h4>
+                            <div class="table table-responsive" id="table">
+                                <table id="table2Utilizado"
+                                    class="table table-bordered table-striped table-sm hover text-center">
+                                    <thead class="thead-dark">
+
+                                        <th width="1%"><span></span> Empleado</th>
+                                        <th width="20%"><span></span> Nombre</th>
+                                        <th width="4%"><span></span>x2</th>
+                                        <th width="4%"><span></span>x3</th>
+                                        <th width="4%"><span></span> D.L</th>
+
+
+                                    </thead>
+
+                                    <tbody>
+
+
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+
+
+                </div>
+            </div>
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+            <%- include ("./static/footer") %>
+                <script src="/js/functions/gerente_supervisores.js"></script>

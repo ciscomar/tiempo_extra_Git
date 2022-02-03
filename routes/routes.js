@@ -7,7 +7,7 @@ const middleware = require('../public/js/middlewares/middleware')
 
 //Routes
 
-router.get('/', routesController.index_GET);
+router.get('/',middleware.sspi, routesController.index_GET);
 router.get('/acceso_denegado',routesController.accesoDenegado_GET);
 router.get('/crear_solicitud', middleware.sspi, routesController.crear_solicitud_GET);
 router.get('/solicitud_list/:id', middleware.sspi, routesController.solicitud_list_GET);
@@ -45,7 +45,32 @@ router.get('/finalizar_historial_id/:id', middleware.sspi, routesController.fina
 router.post('/finalizar_historial_id', middleware.sspi, routesController.finalizar_historial_id_POST);
 router.post('/historial', middleware.sspi, routesController.historial_POST);
 router.post('/getHorasGerente', middleware.sspi, routesController.getHorasGerente_POST);
-
-
+router.post('/getHorasGerentePlanta', middleware.sspi, routesController.getHorasGerentePlanta_POST);
+router.get('/empleados_supervisor', middleware.sspi, routesController.empleados_supervisor_GET);
+router.post('/empleados_supervisor_fecha', middleware.sspi, routesController.empleados_supervisor_fecha_POST);
+router.get('/acumulado_gerente', middleware.sspi, routesController.acumulado_gerente_GET);
+router.post('/acumulado_gerente_fecha', middleware.sspi, routesController.acumulado_gerente_fecha_POST);
+router.get('/acumulado_planta', middleware.sspi, routesController.acumulado_planta_GET);
+router.post('/acumulado_planta_fecha', middleware.sspi, routesController.acumulado_planta_fecha_POST);
+router.get('/gerente_supervisores', middleware.sspi, routesController.gerente_supervisores_GET);
+router.post('/gerente_supervisores_fecha', middleware.sspi, routesController.gerente_supervisores_fecha_POST);
+router.get('/gerente_gerentes', middleware.sspi, routesController.gerente_gerentes_GET);
+router.post('/gerente_gerentes_fecha', middleware.sspi, routesController.gerente_gerentes_fecha_POST);
+router.post('/getMotivos', middleware.sspi, routesController.getMotivos_POST);
+router.get('/solicitud_editar/:id', middleware.sspi, routesController.solicitud_editar_GET);
+router.post('/editarSolicitud', middleware.sspi, routesController.editarSolicitud_POST);
+router.get('/solicitud_utilizado/:id', middleware.sspi, routesController.solicitud_utilizado_GET);
+router.post('/solicitud_utilizado_id', middleware.sspi, routesController.solicitud_utilizado_id_POST);
+router.get('/solicitud_utilizado_historial/:id', middleware.sspi, routesController.solicitud_utilizado_historial_GET);
+router.post('/horas_utilizadas', middleware.sspi, routesController.horas_utilizadas_POST);
+router.get('/pendiente_utilizado/:id', middleware.sspi, routesController.pendiente_utilizado_GET);
+router.post('/getSolicitudesPendienteUtilizado', middleware.sspi, routesController.getSolicitudesPendienteUtilizado_POST);
+router.get('/configuracion', middleware.sspi, routesController.configuracion_GET);
+router.post('/getCostos', middleware.sspi, routesController.getCostos_POST);
+router.post('/deleteMotivo', middleware.sspi, routesController.deleteMotivo_POST);
+router.post('/deleteCosto', middleware.sspi, routesController.deleteCosto_POST);
+router.post('/getAreas', middleware.sspi, routesController.getAreas_POST);
+router.post('/InsertCosto', middleware.sspi, routesController.InsertCosto_POST);
+router.post('/InsertMotivo', middleware.sspi, routesController.InsertMotivo_POST);
 
 module.exports = router;

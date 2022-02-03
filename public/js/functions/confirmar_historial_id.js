@@ -45,6 +45,8 @@ $(document).ready(function () {
       data = result.data.result[1]
       dataempleados = result.data.result[2]
       dataHoras = result.data.result[3]
+      dataSolicitudHoras = result.data.result[4]
+
       fecha = data[0].fecha
       let datef = new Date(fecha)
 
@@ -146,6 +148,25 @@ $(document).ready(function () {
 
 
 
+        for (let s = 0; s < dataSolicitudHoras.length; s++) {
+
+          if (empleados[i] == dataSolicitudHoras[s].empleado) {
+
+            let classColor2 = ""
+            if (dataSolicitudHoras[s].triples > 0) { classColor2 = "danger" } else { classColor2 = "extraA" }
+            temp.push(`<input type="text"  class="extraA" style="width: 100%; text-align:center;" name="idPlan" id="test" value="${dataSolicitudHoras[s].dobles}" disabled>`)
+            temp.push(`<input type="text" class="${classColor2}" style="width: 100%; text-align:center;" name="idPlan" id="test" value="${dataSolicitudHoras[s].triples}" disabled>`)
+            temp.push(`<input type="text"  class="extraA" style="width: 100%; text-align:center;" name="idPlan" id="test" value="${dataSolicitudHoras[s].descanso}" disabled>`)
+          }
+        }
+
+
+        
+        temp.push(area_actual)
+        temp.push(area_req)
+        temp.push(jefe_nombre[i])
+
+
         for (let z = 0; z < dataHoras.length; z++) {
 
           if(dataHoras[z][0]===empleados[i]){
@@ -223,16 +244,14 @@ $(document).ready(function () {
           }
 
           let classColor=""
-          if(extrax3>0){classColor="danger"}else{classColor=""}
-          temp.push(`<input type="text"  style="width: 100%; text-align:center;" name="idPlan" id="test" value="${extrax2}" disabled>`)
+          if(extrax3>0){classColor="danger"}else{classColor="extraS"}
+          temp.push(`<input type="text"  class="extraS" style="width: 100%; text-align:center;" name="idPlan" id="test" value="${extrax2}" disabled>`)
           temp.push(`<input type="text" class="${classColor}" style="width: 100%; text-align:center;" name="idPlan" id="test" value="${extrax3}" disabled>`)
-          temp.push(`<input type="text"  style="width: 100%; text-align:center;" name="idPlan" id="test" value="${descanso}" disabled>`)
+          temp.push(`<input type="text"  class="extraS" style="width: 100%; text-align:center;" name="idPlan" id="test" value="${descanso}" disabled>`)
 
           }
         }
 
-        temp.push(area_actual)
-        temp.push(area_req)
 
         if (status == 'Pendiente') { icon = `<span class="icoSidebar fas fa-user-clock text-secondary" onclick="historial()"></span>` } else
           if (status == 'Confirmado') { icon = `<span class="icoSidebar fas fa-user-plus text-info" onclick="historial()"></span>` } else
@@ -241,7 +260,7 @@ $(document).ready(function () {
                 if (status == 'Finalizado') { icon = `<span class="icoSidebar fas fa-user-tie text-success" onclick="historial()"></span>` }
 
 
-        temp.push(jefe_nombre[i])
+
         temp.push(icon)
 
 

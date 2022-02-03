@@ -2,14 +2,26 @@
     <%- include ("./static/sidebar") %>
         <%- include ("./static/navbar") %>
 
-
+            <!-- 
             <div class="col-xl-12 jumbotron jumbotron-fluid animated bounceInDown bg-transparent jumbotronBg">
-                <div class="container">
-                    <img src="/img/TristoneLogo.png" class="img-logo rounded mx-auto d-block" alt="Tristone Flowtech">
-                    <h1 class="display-4 text-center csvTitulo">Solicitud de Tiempo Extra</h1>
-                    <p class="lead text-center"></p>
+
+            </div> -->
+
+
+            <div class="container">
+                <div class="row mt-5">
+
+                    <div class="col-2"></div>
+                    <div class="col-8">
+                        <img src="/img/TristoneLogo.png" class="img-logo rounded mx-auto d-block"
+                            alt="Tristone Flowtech">
+                        <h1 class="display-4 text-center csvTitulo">Solicitud de Tiempo Extra</h1>
+                        <p class="lead text-center"></p>
+                    </div>
                 </div>
             </div>
+
+
             <div class="container">
 
                 <div class="card-header text-white bg-dark ">
@@ -19,7 +31,8 @@
                             <div class="form-group">
                                 <label>Semana</label>
                                 <div>
-                                    <input type="text" class="form-control text-center week-picker" name="week" id="week">
+                                    <input type="text" class="form-control text-center week-picker" name="week"
+                                        id="week" required autocomplete="off">
                                 </div>
                             </div>
                         </div>
@@ -27,33 +40,35 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label>Motivo</label>
-                                <select class="form-control text-center" id="selectMotivo">
+                                <select class="form-control text-center" id="selectedMotivo" disabled>
                                     <option value="">Seleccionar</option>
-                                    <option value="Retrabajo">Retrabajo</option>
+
 
                                 </select>
                             </div>
                         </div>
                     </div>
 
-                    
+
 
                     <div class="col-lg-6 text-center">
                         <div class="form-group">
-                            <input type="text" class="form-control text-center" name="startDate" id="startDate" placeholder="YYYY-MM-DD" value="" hidden >
+                            <input type="text" class="form-control text-center" name="startDate" id="startDate"
+                                placeholder="YYYY-MM-DD" value="" hidden>
                         </div>
                     </div>
                     <div class="col-lg-6 text-center">
                         <div class="form-group">
-                            <input type="text" class="form-control text-center" name="endDate" id="endDate" placeholder="YYYY-MM-DD" value="" hidden >
+                            <input type="text" class="form-control text-center" name="endDate" id="endDate"
+                                placeholder="YYYY-MM-DD" value="" hidden>
                         </div>
                     </div>
 
                 </div>
 
                 <div class=" mt-4 text-center">
-                    <button id="btnAgregar" class="btn btn-success"
-                        onClick="send()"><span class="fas fa-paper-plane"></span> Enviar Solicitud</button>
+                    <button id="btnSend" class="btn btn-success"><span
+                            class="fas fa-paper-plane"></span> Enviar Solicitud</button>
                 </div>
 
             </div>
@@ -62,47 +77,112 @@
                     <div class="containerTable">
                         <div class="table table-responsive" id="table">
                             <table id="table2" class="table table-bordered table-striped table-sm hover text-center">
-                                <thead class="thead-dark">
+                                <thead class="thead-dark ">
 
-                                    <th width="1%"><span></span> Empleado</th>
-                                    <th width="20%"><span></span> Nombre</th>
-                                    <th width="5%"><span></span> Turno</th>
-                                    <th width="4%"><span></span> L</th>
-                                    <th width="4%"><span></span> M</th>
-                                    <th width="4%"><span></span> Mc</th>
-                                    <th width="4%"><span></span> J </th>
-                                    <th width="4%"><span></span> V</th>
-                                    <th width="4%"><span></span> S</th>
-                                    <th width="4%"><span></span> D</th>
-                                    <th width="4%"><span></span>x2</th>
-                                    <th width="4%"><span></span>x3</th>
-                                    <th width="4%"><span></span> D.L</th>
-                                    <th width="10%"><span></span> Area Actual</th>
-                                    <th  width="15%"><span></span> Area a Laborar</th>
-                                    <th  width="15%"><span></span>Jefe</th>
-                                    <th  width="15%" hidden><span></span></th>
+                                    <tr>
+                                        <th colspan="10" class="bg-transparent border-top-0"></th>
+                                        <th colspan="3" class="bg-dark ">Solicitud Actual</th>
+                                        <th colspan="3" class="bg-transparent border-top-0"></th>
+                                        <th colspan="3" class="bg-dark ">Acumulado</th>
+
+                                    </tr>
+                                    <tr>
+                                        <th width="1%"><span></span> Empleado</th>
+                                        <th width="20%"><span></span> Nombre</th>
+                                        <th width="4%"><span></span> Turno</th>
+                                        <th width="4%"><span></span> L</th>
+                                        <th width="4%"><span></span> M</th>
+                                        <th width="4%"><span></span> Mc</th>
+                                        <th width="4%"><span></span> J </th>
+                                        <th width="4%"><span></span> V</th>
+                                        <th width="4%"><span></span> S</th>
+                                        <th width="4%"><span></span> D</th>
+                                        <th width="4%"><span></span>x2</th>
+                                        <th width="4%"><span></span>x3</th>
+                                        <th width="4%"><span></span> D.L</th>
+                                        <th width="10%"><span></span> Area Actual</th>
+                                        <th width="15%"><span></span> Area a Laborar</th>
+                                        <th width="15%"><span></span>Jefe</th>
+                                        <th width="4%"><span></span>x2</th>
+                                        <th width="4%"><span></span>x3</th>
+                                        <th width="4%"><span></span>D.L</th>
+                                        <th width="0%" hidden><span></span>jefeid</th>
+                                        <th width="0%" hidden><span></span>dl1</th>
+                                        <th width="0%" hidden><span></span>dl2</th>
+                                        <th width="0%" hidden><span></span>x2</th>
+                                        <th width="0%" hidden><span></span>x3</th>
+                                        <th width="0%" hidden><span></span>costohra</th>
+                                        <th width="0%" hidden><span></span>costototal</th>
+
+                                    </tr>
+
 
                                 </thead>
 
                                 <tbody>
                                     <tr>
-                                       <td><input class="empleado" id="e1" style="width: 100%;" type="text" onkeyup="getInfoEmpleado(this)"></td>
-                                       <td><input class="nombre" id="n1" style="width: 100%;" type="text" disabled></td>
-                                       <td><input class="turno" id="tu1" style="width: 100%;" type="text" disabled></td>
-                                       <td><input class="lunes dias" id="l1" style="width: 100%;" type="number"></td>
-                                       <td><input class="martes dias" id="m1" style="width: 100%;" type="number"></td>
-                                       <td><input class="miercoles dias" id="mc1" style="width: 100%;" type="number"></td>
-                                       <td><input class="jueves dias" id="j1" style="width: 100%;" type="number"></td>
-                                       <td><input class="viernes dias" id="v1" style="width: 100%;" type="number"></td>
-                                       <td><input class="sabado dias" id="s1" style="width: 100%;" type="number"></td>
-                                       <td><input class="domingo dias" id="d1" style="width: 100%;" type="number"></td>
-                                       <td><input class="textra" id="te1" style="width: 100%; text-align:center;" type="text" disabled></td>
-                                       <td><input class="textra2" id="tem1" style="width: 100%; text-align:center;" type="text" disabled></td>
-                                       <td><input class="dlaborado" id="dl1" style="width: 100%; text-align:center;" type="text" disabled></td>
-                                       <td><input class="actual" id="a1" style="width: 100%;" type="text" disabled></td>
-                                       <td><input class="laborar" id="l1" style="width: 100%;" type="text"></td>
-                                       <td><input class="jefe" id="je1" style="width: 100%;" type="text" disabled></td>
-                                       <td><input class="jefeid" id="jeid1" style="width: 100%;" type="text" hidden></td>         
+                                        <td><input class="empleado" id="e1" style="width: 100%;" type="number" min="0"
+                                                onkeyup="getInfoEmpleado(this)" required disabled autocomplete="off">
+                                        </td>
+                                        <td><input class="nombre" id="n1" style="width: 100%;" type="text" disabled>
+                                        </td>
+                                        <td><input class="turno" id="tu1" style="width: 100%;" type="text" disabled>
+                                        </td>
+
+                                        <td><input class="lunes dias" id="l1" style="width: 100%;" type="number" min="0"
+                                                disabled autocomplete="off"></td>
+                                        <td><input class="martes dias" id="m1" style="width: 100%;" type="number"
+                                                min="0" disabled autocomplete="off"></td>
+                                        <td><input class="miercoles dias" id="mc1" style="width: 100%;" type="number"
+                                                min="0" disabled autocomplete="off"></td>
+                                        <td><input class="jueves dias" id="j1" style="width: 100%;" type="number"
+                                                min="0" disabled autocomplete="off"></td>
+                                        <td><input class="viernes dias" id="v1" style="width: 100%;" type="number"
+                                                min="0" disabled autocomplete="off"></td>
+                                        <td><input class="sabado dias" id="s1" style="width: 100%;" type="number"
+                                                min="0" disabled autocomplete="off"></td>
+                                        <td><input class="domingo dias" id="d1" style="width: 100%;" type="number"
+                                                min="0" disabled autocomplete="off"></td>
+
+
+
+                                        <td><input class="dobles extraA" id="da1" style="width: 100%;" type="text"
+                                                disabled></td>
+                                        <td><input class="triples extraA" id="ta1" style="width: 100%;" type="text"
+                                                disabled></td>
+                                        <td><input class="descanso extraA" id="desca1" style="width: 100%;" type="text"
+                                                disabled></td>
+
+                                        <td><input class="actual" id="a1" style="width: 100%;" type="text" disabled>
+                                        </td>
+                                        <td><input class="laborar" id="lab1" style="width: 100%;" type="text" disabled
+                                                autocomplete="off" required></td>
+                                        <td><input class="jefe" id="je1" style="width: 100%;" type="text" disabled></td>
+
+                                        <td><input class="textra extraS" id="te1"
+                                                style="width: 100%; text-align:center;" type="text" disabled></td>
+                                        <td><input class="textra2 extraS" id="tem1"
+                                                style="width: 100%; text-align:center;" type="text" disabled></td>
+                                        <td><input class="dlaborado extraS" id="dl1"
+                                                style="width: 100%; text-align:center;" type="text" disabled></td>
+
+
+
+                                        <td hidden><input class="jefeid" id="jeid1" style="width: 100%;" type="text"
+                                                hidden></td>
+                                        <td hidden><input class="descans1Incialc" id="descanso1Inicial1"
+                                                style="width: 100%;" type="text" hidden></td>
+                                        <td hidden><input class="descans2Incialc" id="descanso2Inicial1"
+                                                style="width: 100%;" type="text" hidden></td>
+                                        <td hidden><input class="extrax2Incialc" id="extrax2Inicial1"
+                                                style="width: 100%;" type="text" hidden></td>
+                                        <td hidden><input class="extrax3Incialc" id="extrax3Inicial1"
+                                                style="width: 100%;" type="text" hidden></td>
+
+                                        <td hidden><input class="costohra" id="costohra1"
+                                                style="width: 100%;" type="text" ></td>
+                                        <td hidden><input class="costototal" id="costototal1"
+                                                style="width: 100%;" type="text" ></td>
                                     </tr>
 
                                 </tbody>
@@ -113,13 +193,71 @@
                 </div>
 
                 <div class="mb-4">
-                    <button id="btnAgregar" class="btn btn-success"
-                        onClick="agregar()"><span class="fas fa-plus"></span> Agregar</button>
+                    <button id="btnAgregar" class="btn btn-success" onClick="agregar()" disabled><span
+                            class="fas fa-plus"></span> Agregar</button>
                 </div>
 
             </div>
 
-       
+
+
+
+            <div class="modal fade" id="modalSuccess" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header card-mov">
+                            <img src="/img/TristoneLogo.png" alt="SAP" srcset="" class="card-mov">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-2">
+                                    <i class="fas fa-times text-danger" style="font-size: 2rem;"> </i>
+                                </div>
+                                <div class="col">
+                                    <h5 id="errorMessage"></h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="btnCerrar_Success" type="button" class="btn btn-secondary btnCerrar"
+                                data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div class="modal fade" id="modalError" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header card-mov">
+                            <img src="/img/TristoneLogo.png" alt="SAP" srcset="" class="card-mov">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-2">
+                                    <i class="fas fa-times text-danger" style="font-size: 2rem;"> </i>
+                                </div>
+                                <div class="col">
+                                    <h5>Solicitud Incompleta</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="btnCerrar_Success" type="button" class="btn btn-secondary btnCerrar"
+                                data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 
 
@@ -129,5 +267,5 @@
 
 
 
-<%- include ("./static/footer") %>
-<script src="/js/functions/solicitud.js"></script>
+            <%- include ("./static/footer") %>
+                <script src="/js/functions/solicitud.js"></script>

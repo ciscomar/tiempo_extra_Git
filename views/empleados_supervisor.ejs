@@ -1,0 +1,107 @@
+<%- include ("./static/header") %>
+    <%- include ("./static/sidebar") %>
+        <%- include ("./static/navbar") %>
+
+
+            <div class="container">
+                <div class="row mt-5">
+
+                    <div class="col-2"></div>
+                    <div class="col-8">
+
+                        <img src="/img/TristoneLogo.png" class="img-logo rounded mx-auto d-block" alt="Tristone Flowtech">
+                        <h1 class="display-4 text-center csvTitulo">Mis Empleados
+                        </h1>
+                    
+                        <p class="lead text-center"></p>
+                        
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div class="container">
+
+                <div class="card-header text-white bg-dark ">
+                    <div class="row">
+
+                        <div class="col-lg-12  text-center">
+                            <div class="col-lg-6 offset-lg-3">
+                            <div class="form-group">
+                                <label>Semana</label>
+                                <div>
+                                    <input type="text" class="form-control text-center week-picker" name="week" id="week" autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+
+                    
+
+                    <div class="col-lg-6 text-center">
+                        <div class="form-group">
+                            <input type="text" class="form-control text-center" name="startDate" id="startDate" placeholder="YYYY-MM-DD" value="" hidden >
+                        </div>
+                    </div>
+                    <div class="col-lg-6 text-center">
+                        <div class="form-group">
+                            <input type="text" class="form-control text-center" name="endDate" id="endDate" placeholder="YYYY-MM-DD" value="" hidden >
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="container-fluid">
+                <div class="table-responsive mt-2">
+                    <div class="containerTable">
+                        <div class="table table-responsive" id="table">
+                            <table id="table2" class="table table-bordered table-striped table-sm hover text-center">
+                                <thead class="thead-dark">
+
+                                    <th width="1%"><span></span> Empleado</th>
+                                    <th width="20%"><span></span> Nombre</th>
+                                    <th width="5%"><span></span> Turno</th>
+                                    <th width="4%"><span></span> L</th>
+                                    <th width="4%"><span></span> M</th>
+                                    <th width="4%"><span></span> Mc</th>
+                                    <th width="4%"><span></span> J </th>
+                                    <th width="4%"><span></span> V</th>
+                                    <th width="4%"><span></span> S</th>
+                                    <th width="4%"><span></span> D</th>
+                                    <th width="4%"><span></span>x2</th>
+                                    <th width="4%"><span></span>x3</th>
+                                    <th width="4%"><span></span> D.L</th>
+                                    <th  width="15%"><span></span>Jefe</th>
+
+
+                                </thead>
+
+                                <tbody>
+
+
+
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+            <%- include ("./static/footer") %>
+                <script src="/js/functions/empleados_supervisor.js"></script>

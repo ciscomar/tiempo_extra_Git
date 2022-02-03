@@ -3,6 +3,7 @@ let id = document.getElementById("id").value
 let semanaInput = document.getElementById("semana")
 let motio = document.getElementById("motivo")
 let btnCerrar = document.getElementById("btnCerrar")
+let btnEditar = document.getElementById("btnEditar")
 
 let table = $('#table2').DataTable(
   {
@@ -36,15 +37,18 @@ $(document).ready(function () {
       data = result.data.result[0]
       dataempleados = result.data.result[1]
       dataHoras = result.data.result[2]
+      dataSolicitudHoras = result.data.result[3]
+
       fecha = data[0].fecha
       let datef = new Date(fecha)
 
-      momentdate=moment(datef)
-      week_day=momentdate.weekday()
+
+      momentdate = moment(datef)
+      week_day = momentdate.weekday()
       let sumdays1
       let sumdays2
 
-      if(week_day==0){sumdays1=-6, sumdays2=0 }else{sumdays1=+1 ,sumdays2=+7}
+      if (week_day == 0) { sumdays1 = -6, sumdays2 = 0 } else { sumdays1 = +1, sumdays2 = +7 }
 
 
       semanaInput.value = $.datepicker.formatDate('yy-mm-dd', new Date(datef.getFullYear(), datef.getMonth(), datef.getDate() - datef.getDay() + sumdays1)) + "  a  " +
@@ -55,8 +59,8 @@ $(document).ready(function () {
       motivo.value = data[0].motivo
       let semana = []
       for (let i = 1; i < 8; i++) {
-        if(week_day==0){semana.push($.datepicker.formatDate('yy-mm-dd', new Date(datef.getFullYear(), datef.getMonth(), datef.getDate() - datef.getDay() -7 + i)))}
-        else{semana.push($.datepicker.formatDate('yy-mm-dd', new Date(datef.getFullYear(), datef.getMonth(), datef.getDate() - datef.getDay() + i)))}
+        if (week_day == 0) { semana.push($.datepicker.formatDate('yy-mm-dd', new Date(datef.getFullYear(), datef.getMonth(), datef.getDate() - datef.getDay() - 7 + i))) }
+        else { semana.push($.datepicker.formatDate('yy-mm-dd', new Date(datef.getFullYear(), datef.getMonth(), datef.getDate() - datef.getDay() + i))) }
       }
 
 
@@ -136,103 +140,117 @@ $(document).ready(function () {
         }
 
 
+        for (let s = 0; s < dataSolicitudHoras.length; s++) {
+
+          if (empleados[i] == dataSolicitudHoras[s].empleado) {
+
+            let classColor2 = ""
+            if (dataSolicitudHoras[s].triples > 0) { classColor2 = "danger" } else { classColor2 = "extraA" }
+            temp.push(`<input type="text" class="extraA"  style="width: 100%; text-align:center;" name="idPlan" id="test" value="${dataSolicitudHoras[s].dobles}" disabled>`)
+            temp.push(`<input type="text" class="${classColor2}" style="width: 100%; text-align:center;" name="idPlan" id="test" value="${dataSolicitudHoras[s].triples}" disabled>`)
+            temp.push(`<input type="text" class="extraA" style="width: 100%; text-align:center;" name="idPlan" id="test" value="${dataSolicitudHoras[s].descanso}" disabled>`)
+          }
+        }
+
+
+        temp.push(area_actual)
+        temp.push(area_req)
+        temp.push(jefe_nombre[i])
 
         for (let z = 0; z < dataHoras.length; z++) {
 
-          if(dataHoras[z][0]===empleados[i]){
+          if (dataHoras[z][0] === empleados[i]) {
 
-          let extrax2 = 0
-          let extrax3 = 0
-          let descanso = 0
-          let horasExtra = dataHoras[z][1]
-          let horasDescanso1 = dataHoras[z][2]
-          let horasDescanso2 = dataHoras[z][3]
+            let extrax2 = 0
+            let extrax3 = 0
+            let descanso = 0
+            let horasExtra = dataHoras[z][1]
+            let horasDescanso1 = dataHoras[z][2]
+            let horasDescanso2 = dataHoras[z][3]
 
-          extrax2 = horasExtra
-
-          //Horas extra dobles y triples
-          if (horasExtra == null) {
-            horasExtra = 0
-          }
-          if (horasExtra < 10) {
             extrax2 = horasExtra
-          } else {
-            extrax2 = 9
-            extrax3 = horasExtra - 9
-          }
 
-          //Horas descanso laborado1
-
-          if (isNaN(horasDescanso1)) {
-            horasDescanso1 = 0
-          }
-
-          let doble = extrax2
-          let triple = extrax3
-
-          if (horasDescanso1 < 9) {
-            descanso = horasDescanso1
-          } else {
-            descanso = 8
-            restante = horasDescanso1 - 8
-
-            if ((doble + restante) < 10) {
-              extrax2 = doble + restante
+            //Horas extra dobles y triples
+            if (horasExtra == null) {
+              horasExtra = 0
+            }
+            if (horasExtra < 10) {
+              extrax2 = horasExtra
             } else {
-
               extrax2 = 9
-              extrax3 = triple + ((doble + restante) - 9)
+              extrax3 = horasExtra - 9
+            }
+
+            //Horas descanso laborado1
+
+            if (isNaN(horasDescanso1)) {
+              horasDescanso1 = 0
+            }
+
+            let doble = extrax2
+            let triple = extrax3
+
+            if (horasDescanso1 < 9) {
+              descanso = horasDescanso1
+            } else {
+              descanso = 8
+              restante = horasDescanso1 - 8
+
+              if ((doble + restante) < 10) {
+                extrax2 = doble + restante
+              } else {
+
+                extrax2 = 9
+                extrax3 = triple + ((doble + restante) - 9)
+
+              }
 
             }
 
-          }
+            //Horas descanso laborado2
 
-          //Horas descanso laborado2
+            if (isNaN(horasDescanso2)) {
+              horasDescanso2 = 0
+            }
 
-          if (isNaN(horasDescanso2)) {
-            horasDescanso2 = 0
-          }
+            let doble2 = extrax2
+            let triple2 = extrax3
 
-          let doble2 = extrax2
-          let triple2 = extrax3
-
-          if (horasDescanso2 < 9) {
-            descanso = descanso + horasDescanso2
-          } else {
-            descanso = descanso + 8
-            restante2 = horasDescanso2 - 8
-
-            if ((doble2 + restante2) < 10) {
-              extrax2 = doble2 + restante2
+            if (horasDescanso2 < 9) {
+              descanso = descanso + horasDescanso2
             } else {
+              descanso = descanso + 8
+              restante2 = horasDescanso2 - 8
 
-              extrax2 = 9
-              extrax3 = triple2 + ((doble2 + restante2) - 9)
+              if ((doble2 + restante2) < 10) {
+                extrax2 = doble2 + restante2
+              } else {
+
+                extrax2 = 9
+                extrax3 = triple2 + ((doble2 + restante2) - 9)
+
+              }
 
             }
 
-          }
-
-          let classColor=""
-          if(extrax3>0){classColor="danger"}else{classColor=""}
-          temp.push(`<input type="text"  style="width: 100%; text-align:center;" name="idPlan" id="test" value="${extrax2}" disabled>`)
-          temp.push(`<input type="text" class="${classColor}" style="width: 100%; text-align:center;" name="idPlan" id="test" value="${extrax3}" disabled>`)
-          temp.push(`<input type="text"  style="width: 100%; text-align:center;" name="idPlan" id="test" value="${descanso}" disabled>`)
+            let classColor = ""
+            if (extrax3 > 0) { classColor = "danger" } else { classColor = "extraS" }
+            temp.push(`<input type="text"  class="extraS" style="width: 100%; text-align:center;" name="idPlan" id="test" value="${extrax2}" disabled>`)
+            temp.push(`<input type="text" class="${classColor}" style="width: 100%; text-align:center;" name="idPlan" id="test" value="${extrax3}" disabled>`)
+            temp.push(`<input type="text"  class="extraS" style="width: 100%; text-align:center;" name="idPlan" id="test" value="${descanso}" disabled>`)
 
           }
         }
 
-        temp.push(area_actual)
-        temp.push(area_req)
+
 
         if (status == 'Pendiente') { icon = `<span class="icoSidebar fas fa-user-clock text-secondary" onclick="historial()"></span>` } else
           if (status == 'Confirmado') { icon = `<span class="icoSidebar fas fa-user-plus text-info" onclick="historial()"></span>` } else
-            if (status == 'Rechazado') { icon = `<span class="icoSidebar fas fa-user-times text-danger" onclick="historial()"></span>` } else
+            if (status == 'Rechazado') { icon = `<span class="icoSidebar fas fa-user-times text-danger" onclick="historial()"></span>`;btnEditar.hidden=false } else
               if (status == 'Aprobado') { icon = `<span class="icoSidebar fas fa-user-check text-primary" onclick="historial()"></span>` } else
                 if (status == 'Finalizado') { icon = `<span class="icoSidebar fas fa-user-tie text-success" onclick="historial()"></span>` }
 
 
-        temp.push(jefe_nombre[i])
         temp.push(icon)
         row.push(temp)
         table.row.add(temp).draw(false);
@@ -271,10 +289,11 @@ function historial() {
 
       for (let i = 0; i < historial.length; i++) {
 
+        
 
         if (historial[i].status == 'Pendiente') { icon = `<span class="icoSidebar fas fa-user-clock text-secondary"></span>` } else
           if (historial[i].status == 'Confirmado') { icon = `<span class="icoSidebar fas fa-user-plus text-info"></span>` } else
-            if (historial[i].status == 'Rechazado') { icon = `<span class="icoSidebar fas fa-user-times text-danger"></span>` } else
+            if (historial[i].status == 'Rechazado') { icon = `<span class="icoSidebar fas fa-user-times text-danger"></span>`; } else
               if (historial[i].status == 'Aprobado') { icon = `<span class="icoSidebar fas fa-user-check text-primary"></span>` } else
                 if (historial[i].status == 'Finalizado') { icon = `<span class="icoSidebar fas fa-user-tie text-success"></span>` }
 
@@ -305,4 +324,11 @@ function historial() {
 
 btnCerrar.addEventListener("click", () => {
   tableHistorial.clear().draw();
+})
+
+
+btnEditar.addEventListener("click", () => {
+
+  window.location = `/solicitud_editar/${id}`
+  
 })

@@ -759,3 +759,26 @@ table td {
 .icoSidebar{
   cursor: pointer;
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.extraA{
+  /* background-color: #dac04f; */
+  background-color: #ffcb3c;
+  color: #030303;
+}
+
+.extraS{
+  background-color: #ffcb3c;
+  color: #030303;
+}
+
+.hide{
+
+  visibility: hidden
+  
+  }

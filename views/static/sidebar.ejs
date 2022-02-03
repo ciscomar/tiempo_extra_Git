@@ -1,3 +1,54 @@
+<%
+
+    usertype=sidebar
+    let menusupervisor
+    let menugerente
+    let menuplanta
+    let menurh
+
+    if(usertype=="supervisor"){
+      menusupervisor=""
+      menugerente="hidden"
+      menuplanta="hidden"
+      menurh="hidden"
+    }
+    if(usertype=="gerente"){
+      menusupervisor="hidden"
+      menugerente=""
+      menuplanta="hidden"
+      menurh="hidden"
+    }
+    if(usertype=="planta"){
+      menusupervisor="hidden"
+      menugerente="hidden"
+      menuplanta=""
+      menurh="hidden"
+    }
+    if(usertype=="rh"){
+      menusupervisor="hidden"
+      menugerente="hidden"
+      menuplanta="hidden"
+      menurh=""
+    }
+
+    if(usertype=="admin"){
+      menusupervisor=""
+      menugerente=""
+      menuplanta=""
+      menurh=""
+    }
+    if(usertype=="no"){
+      menusupervisor="hidden"
+      menugerente="hidden"
+      menuplanta="hidden"
+      menurh="hidden"
+    }
+
+
+%>
+
+
+
 <!-- Sidebar -->
 <div class="bg-dark d-none d-lg-block" id="sidebar-wrapper">
   <!-- <div class="sidebar-heading bg-dark text-white"><span><img src="/img/icon.png" style="width: 25px" alt=""></span>
@@ -14,12 +65,17 @@
   </div>
 
 
-  <div class="list-group ">
+  <div class="list-group" >
     <ul class="list-group">
-      <li class="list-group_item">
+      <li class="list-group_item" <%=menusupervisor%>>
         <a href="#" class="list-group-item list-group-item-action bg-dark" id="click_hide_show"><span
-            class="text-light fas fa-angle-right"></span><span class="text-light fas fa-clipboard"></span> <span
-            class="text-white">Solicitud</span></a>
+            class="text-light fas fa-angle-right"></span><span class="text-light fas fa-user-plus"></span> <span
+            class="text-white">Supervisor</span></a>
+            <ul>
+              <a href="/empleados_supervisor" class="list-group-item list-group-item-action bg-dark hide_show">
+                <span class="text-light fas fa-users"></span>
+                <span class="text-white"><span class="text-white text-center">Mis Empleados</span></span></a>
+            </ul>
         <ul>
           <a href="/crear_solicitud" class="list-group-item list-group-item-action bg-dark hide_show">
             <span class="text-light far fa-clipboard"></span>
@@ -30,29 +86,27 @@
             <span class="text-light fas fa-list-alt"></span>
             <span class="text-white"><span class="text-white text-center">Mis Solicitudes</span></span></a>
         </ul>
-      </li>
-    </ul>
 
-    <ul class="list-group">
-      <li class="list-group_item">
-        <a href="#" class="list-group-item list-group-item-action bg-dark" id="click_hide_show2"><span
-            class="text-light fas fa-angle-right"></span><span class="text-light fas fa-user-plus"></span> <span
-            class="text-white">Confirmar</span></a>
         <ul>
-          <a href="/confirmar_list/sidebar" class="list-group-item list-group-item-action bg-dark hide_show2">
+          <a href="/confirmar_list/sidebar" class="list-group-item list-group-item-action bg-dark hide_show">
             <span class="text-light fas fa-check"></span>
             <span class="text-white"><span class="text-white">Confirmar</span></span></a>
         </ul>
         <ul>
-          <a href="/confirmar_historial" class="list-group-item list-group-item-action bg-dark hide_show2">
+          <a href="/confirmar_historial" class="list-group-item list-group-item-action bg-dark hide_show">
             <span class="text-light fas fa-list-alt"></span>
             <span class="text-white"><span class="text-white text-center">Historial</span></span></a>
         </ul>
+
+
+
       </li>
     </ul>
 
+
+
     <ul class="list-group">
-      <li class="list-group_item">
+      <li class="list-group_item" <%=menugerente%>>
         <a href="#" class="list-group-item list-group-item-action bg-dark" id="click_hide_show4"><span
             class="text-light fas fa-angle-right"></span><span class="text-light fas fa-user-check"></span> <span
             class="text-white">Dept. Manager</span></a>
@@ -66,11 +120,21 @@
             <span class="text-light fas fa-list-alt"></span>
             <span class="text-white"><span class="text-white text-center">Historial</span></span></a>
         </ul>
+        <ul>
+          <a href="/gerente_supervisores" class="list-group-item list-group-item-action bg-dark hide_show4">
+            <span class="text-light fas fa-user-friends"></span>
+            <span class="text-white"><span class="text-white text-center">Supervisores</span></span></a>
+        </ul>
+        <!-- <ul>
+          <a href="/acumulado_gerente" class="list-group-item list-group-item-action bg-dark hide_show4">
+            <span class="text-light fas fa-users"></span>
+            <span class="text-white"><span class="text-white text-center">Acumulado</span></span></a>
+        </ul> -->
       </li>
     </ul>
 
     <ul class="list-group">
-      <li class="list-group_item">
+      <li class="list-group_item" <%=menuplanta%>>
         <a href="#" class="list-group-item list-group-item-action bg-dark" id="click_hide_show3"><span
             class="text-light fas fa-angle-right"></span><span class="text-light fas fa-user-tie"></span> <span
             class="text-white">Plant Manager</span></a>
@@ -84,8 +148,50 @@
             <span class="text-light fas fa-list-alt"></span>
             <span class="text-white"><span class="text-white text-center">Historial</span></span></a>
         </ul>
+        <ul>
+          <a href="/gerente_gerentes" class="list-group-item list-group-item-action bg-dark hide_show3">
+            <span class="text-light fas fa-user-friends"></span>
+            <span class="text-white"><span class="text-white text-center">Gerentes</span></span></a>
+        </ul>
+        <ul>
+          <a href="/acumulado_planta" class="list-group-item list-group-item-action bg-dark hide_show3">
+            <span class="text-light fas fa-users"></span>
+            <span class="text-white"><span class="text-white text-center" style="font-size: 92%;">Tiempo Laborado</span></span></a>
+        </ul>     
       </li>
     </ul>
+
+
+
+    <ul class="list-group">
+      <li class="list-group_item" <%=menurh%>>
+        <a href="#" class="list-group-item list-group-item-action bg-dark" id="click_hide_show5"><span
+            class="text-light fas fa-angle-right"></span><span class="text-light fas fa-user-circle"></span> <span
+            class="text-white">Human Resources</span></a>
+        <ul>
+          <a href="/acumulado_planta" class="list-group-item list-group-item-action bg-dark hide_show5">
+            <span class="text-light fas fa-users"></span>
+            <span class="text-white"><span class="text-white text-center" style="font-size: 92%;">Tiempo Laborado</span></span></a>
+        </ul>   
+        
+        <ul>
+          <a href="/pendiente_utilizado/sidebar" class="list-group-item list-group-item-action bg-dark hide_show5">
+            <span class="text-light fas fa-user-clock"></span>
+            <span class="text-white"><span class="text-white text-center">Pendiente</span></span></a>
+        </ul> 
+
+        <ul>
+          <a href="/configuracion" class="list-group-item list-group-item-action bg-dark hide_show5">
+            <span class="text-light fas fa-cog"></span>
+            <span class="text-white"><span class="text-white text-center">Configuracion</span></span></a>
+        </ul> 
+      </li>
+    </ul>
+
+
+
+
+
     
     <a href="http://10.56.99.21:9675/portal/portal-login" target="_blank" class="list-group-item list-group-item-action text-white list-group-ticket"><span class="text-white fas fa-ticket-alt"></span> Soporte</a>
   </div>
