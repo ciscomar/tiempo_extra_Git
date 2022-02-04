@@ -29,7 +29,7 @@ function acceso(req) {
     return new Promise((resolve, reject) => {
         userGroups.forEach(element => {
           
-            if (element.toString() === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Gerente' || element.toString() === 'TFT\\TFT.DEL.PAGES_TiempoExtra_GerentePlanta' || element.toString() === 'TFT\\TFT.DEL.PAGES_TiempoExtra_RH' || element.toString() === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Supervisor') {
+            if (element.toString() === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Gerente' || element.toString() === 'TFT\\TFT.DEL.PAGES_TiempoExtra_GerentePlanta' || element.toString() === 'TFT\\TFT.DEL.PAGES_TiempoExtra_RH' || element.toString() === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Supervisor' || element.toString() === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Admin') {
                
                 acceso.push(element.toString())
             }
@@ -74,6 +74,7 @@ controller.index_GET = (req, res) => {
         .then((result) => {
       
             result.forEach(element => {
+                console.log(element);
                 if (element === "TFT\\TFT.DEL.PAGES_TiempoExtra_Supervisor") {access = "ok", sidebar="supervisor"}
                 else if (element === "TFT\\TFT.DEL.PAGES_TiempoExtra_Gerente") {access = "ok", sidebar="gerente"}
                 else if (element === "TFT\\TFT.DEL.PAGES_TiempoExtra_GerentePlanta") {access = "ok", sidebar="planta"}
@@ -106,7 +107,7 @@ controller.crear_solicitud_GET = (req, res) => {
     acceso(req)
         .then((result) => {
             result.forEach(element => {
-                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Supervisor' ) access = "ok"
+                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Supervisor' || element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Admin') access = "ok"
             });
             if (access == "ok") {
                 res.render("solicitud.ejs", { user })
@@ -124,7 +125,7 @@ controller.empleados_supervisor_GET = (req, res) => {
     acceso(req)
         .then((result) => {
             result.forEach(element => {
-                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Supervisor') access = "ok"
+                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Supervisor' || element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Admin') access = "ok"
             });
             if (access == "ok") {
                 res.render("empleados_supervisor.ejs", { user })
@@ -142,7 +143,7 @@ controller.acumulado_gerente_GET = (req, res) => {
     acceso(req)
         .then((result) => {
             result.forEach(element => {
-                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Gerente') access = "ok"
+                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Gerente' || element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Admin') access = "ok"
             });
             if (access == "ok") {
                 res.render("acumulado_gerente.ejs", { user })
@@ -160,7 +161,7 @@ controller.gerente_supervisores_GET = (req, res) => {
     acceso(req)
         .then((result) => {
             result.forEach(element => {
-                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Gerente') access = "ok"
+                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Gerente' || element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Admin') access = "ok"
             });
             if (access == "ok") {
                 res.render("gerente_supervisores.ejs", { user })
@@ -178,7 +179,7 @@ controller.gerente_gerentes_GET = (req, res) => {
     acceso(req)
         .then((result) => {
             result.forEach(element => {
-                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_GerentePlanta') access = "ok"
+                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_GerentePlanta' || element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Admin') access = "ok"
             });
             if (access == "ok") {
                 res.render("gerente_gerentes.ejs", { user })
@@ -196,7 +197,7 @@ controller.acumulado_planta_GET = (req, res) => {
     acceso(req)
         .then((result) => {
             result.forEach(element => {
-                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_GerentePlanta' || element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_RH') access = "ok"
+                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_GerentePlanta' || element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_RH' || element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Admin') access = "ok"
             });
             if (access == "ok") {
                 res.render("acumulado_planta.ejs", { user })
@@ -568,7 +569,7 @@ controller.solicitud_list_GET = (req, res) => {
     acceso(req)
         .then((result) => {
             result.forEach(element => {
-                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Supervisor') access = "ok"
+                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Supervisor' || element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Admin') access = "ok"
             });
             if (access == "ok") {
 
@@ -591,7 +592,7 @@ controller.pendiente_utilizado_GET = (req, res) => {
     acceso(req)
         .then((result) => {
             result.forEach(element => {
-                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_RH') {access = "ok", sidebar="rh"}
+                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_RH' || element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Admin') {access = "ok", sidebar="rh"}
             });
             if (access == "ok") {
 
@@ -613,7 +614,7 @@ controller.configuracion_GET = (req, res) => {
     acceso(req)
         .then((result) => {
             result.forEach(element => {
-                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_RH') access = "ok"
+                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_RH' || element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Admin') access = "ok"
             });
             if (access == "ok") {
 
@@ -749,7 +750,7 @@ controller.confirmar_list_GET = (req, res) => {
     acceso(req)
         .then((result) => {
             result.forEach(element => {
-                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Supervisor') access = "ok"
+                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Supervisor' || element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Admin') access = "ok"
             });
             if (access == "ok") {
 
@@ -770,7 +771,7 @@ controller.finalizar_list_GET = (req, res) => {
     acceso(req)
         .then((result) => {
             result.forEach(element => {
-                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_GerentePlanta') access = "ok"
+                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_GerentePlanta' || element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Admin') access = "ok"
             });
             if (access == "ok") {
 
@@ -1345,7 +1346,7 @@ controller.confirmar_historial_GET = (req, res) => {
     acceso(req)
         .then((result) => {
             result.forEach(element => {
-                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Supervisor') access = "ok"
+                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Supervisor' || element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Admin') access = "ok"
             });
             if (access == "ok") {
 
@@ -1366,7 +1367,7 @@ controller.finalizar_historial_GET = (req, res) => {
     acceso(req)
         .then((result) => {
             result.forEach(element => {
-                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_GerentePlanta') access = "ok"
+                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_GerentePlanta' || element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Admin') access = "ok"
             });
             if (access == "ok") {
 
@@ -1475,7 +1476,7 @@ controller.aprobar_list_GET = (req, res) => {
     acceso(req)
         .then((result) => {
             result.forEach(element => {
-                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Gerente') access = "ok"
+                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Gerente' || element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Admin') access = "ok"
             });
             if (access == "ok") {
 
@@ -1498,7 +1499,7 @@ controller.aprobar_historial_GET = (req, res) => {
     acceso(req)
         .then((result) => {
             result.forEach(element => {
-                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Gerente') access = "ok"
+                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Gerente' || element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Admin') access = "ok"
             });
             if (access == "ok") {
 
