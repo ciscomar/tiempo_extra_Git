@@ -6,11 +6,11 @@ $("#menu-toggle").click(function (e) {
 
 
 $(document).ready(function(){
-  // $('.hide_show').hide();  
-  // $('.hide_show2').hide(); 
-  // $('.hide_show3').hide(); 
-  // $('.hide_show4').hide(); 
-  // $('.hide_show5').hide(); 
+  $('.hide_show').hide();  
+  $('.hide_show2').hide(); 
+  $('.hide_show3').hide(); 
+  $('.hide_show4').hide(); 
+  $('.hide_show5').hide(); 
 
 })
 
