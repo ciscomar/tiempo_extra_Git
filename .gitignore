@@ -84,5 +84,6 @@ node_modules/
 ######################
 public/resources
 public/resources/
+public/mail/conn.js
 
 
