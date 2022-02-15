@@ -53,7 +53,7 @@ let descanso2Empleado
 function changeValue(e) {
   
 
-  if (parseInt(e.value) > parseInt(e.getAttribute("max")) || parseInt(e.value) < parseInt(e.getAttribute("min"))) {
+  if (parseFloat(e.value) > parseFloat(e.getAttribute("max")) || parseFloat(e.value) < parseFloat(e.getAttribute("min"))) {
 
     e.value=""
 
@@ -81,21 +81,21 @@ function changeValue(e) {
     let extrax2Incial = document.getElementById("extrax2Incial" + id)
     let extrax3Incial = document.getElementById("extrax3Incial" + id)
 
-    dobleEmpleado = parseInt(extrax2Incial.value)
-    tripleEmpleado = parseInt(extrax3Incial.value)
-    descanso1Empleado = parseInt(descanso1Inicial.value)
-    descanso2Empleado = parseInt(descanso2Inicial.value)
+    dobleEmpleado = parseFloat(extrax2Incial.value)
+    tripleEmpleado = parseFloat(extrax3Incial.value)
+    descanso1Empleado = parseFloat(descanso1Inicial.value)
+    descanso2Empleado = parseFloat(descanso2Inicial.value)
 
 
     turn = turnoEmpleado.value
-    dl = parseInt(dl.value) || 0
-    dm = parseInt(dm.value) || 0
-    dmc = parseInt(dmc.value) || 0
-    dj = parseInt(dj.value) || 0
-    dv = parseInt(dv.value) || 0
-    ds = parseInt(ds.value) || 0
-    dd = parseInt(dd.value) || 0
-    desclab = parseInt(descansolab.value) || 0
+    dl = parseFloat(dl.value) || 0
+    dm = parseFloat(dm.value) || 0
+    dmc = parseFloat(dmc.value) || 0
+    dj = parseFloat(dj.value) || 0
+    dv = parseFloat(dv.value) || 0
+    ds = parseFloat(ds.value) || 0
+    dd = parseFloat(dd.value) || 0
+    desclab = parseFloat(descansolab.value) || 0
 
 
 
@@ -152,7 +152,7 @@ function changeValue(e) {
       horasDescansoExtraAnterior = horasDescansoExtraAnterior + (descanso2Empleado - 8)
     }
 
-    if (descanso1Empleado + desc1 < 9) {
+    if (descanso1Empleado + desc1 <= 8) {
       horasDescanso = descanso1Empleado + desc1
 
     } else {
@@ -160,7 +160,7 @@ function changeValue(e) {
       horasDescansoExtra = (descanso1Empleado + desc1) - 8
 
     }
-    if (descanso2Empleado + desc2 < 9) {
+    if (descanso2Empleado + desc2 <= 8) {
       horasDescanso = horasDescanso + (descanso2Empleado + desc2)
     } else {
       horasDescanso = horasDescanso + 8
@@ -170,12 +170,12 @@ function changeValue(e) {
 
     descansolab.value = horasDescanso
     horasDescansoExtra = horasDescansoExtra - horasDescansoExtraAnterior
-    dob = parseInt(extrax2.value)
-    trip = parseInt(extrax3.value)
+    dob = parseFloat(extrax2.value)
+    trip = parseFloat(extrax3.value)
 
 
 
-    if (dob + horasDescansoExtra < 10) {
+    if (dob + horasDescansoExtra <= 9) {
 
       extrax2.value = dob + horasDescansoExtra
 
@@ -197,10 +197,10 @@ function changeValue(e) {
     da.value = extrax2.value - dobleEmpleado
     ta.value = extrax3.value - tripleEmpleado
 
-    if (descanso1Empleado > 8 && descanso2Empleado < 8) { desca.value = parseInt(descansolab.value) - (8 + descanso2Empleado) } else
-      if (descanso2Empleado > 8 && descanso1Empleado < 8) { desca.value = parseInt(descansolab.value) - (8 + descanso1Empleado) } else
-        if (descanso2Empleado > 8 && descanso1Empleado > 8) { desca.value = parseInt(descansolab.value) - 16 } else
-          if (descanso2Empleado < 8 && descanso1Empleado < 8) { desca.value = parseInt(descansolab.value) - (descanso1Empleado + descanso2Empleado) }
+    if (descanso1Empleado > 8 && descanso2Empleado < 8) { desca.value = parseFloat(descansolab.value) - (8 + descanso2Empleado) } else
+      if (descanso2Empleado > 8 && descanso1Empleado < 8) { desca.value = parseFloat(descansolab.value) - (8 + descanso1Empleado) } else
+        if (descanso2Empleado > 8 && descanso1Empleado > 8) { desca.value = parseFloat(descansolab.value) - 16 } else
+          if (descanso2Empleado < 8 && descanso1Empleado < 8) { desca.value = parseFloat(descansolab.value) - (descanso1Empleado + descanso2Empleado) }
 
 
     if (ta.value != 0) {
@@ -436,7 +436,7 @@ $(document).ready(function () {
             if (horasExtra == null) {
               horasExtra = 0
             }
-            if (horasExtra < 10) {
+            if (horasExtra <= 9) {
               extrax2 = horasExtra
             } else {
               extrax2 = 9
@@ -452,13 +452,13 @@ $(document).ready(function () {
             let doble = extrax2
             let triple = extrax3
 
-            if (horasDescanso1 < 9) {
+            if (horasDescanso1 <= 8) {
               descanso = horasDescanso1
             } else {
               descanso = 8
               restante = horasDescanso1 - 8
 
-              if ((doble + restante) < 10) {
+              if ((doble + restante) <= 9) {
                 extrax2 = doble + restante
               } else {
 
@@ -478,13 +478,13 @@ $(document).ready(function () {
             let doble2 = extrax2
             let triple2 = extrax3
 
-            if (horasDescanso2 < 9) {
+            if (horasDescanso2 <= 8) {
               descanso = descanso + horasDescanso2
             } else {
               descanso = descanso + 8
               restante2 = horasDescanso2 - 8
 
-              if ((doble2 + restante2) < 10) {
+              if ((doble2 + restante2) <= 9) {
                 extrax2 = doble2 + restante2
               } else {
 

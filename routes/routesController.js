@@ -1,11 +1,6 @@
 //Conexion a base de datos
 const controller = {};
 
-//let userertest="TFT-francisco.morales"
-//let userertest = "TFT-aram.guillen"
-
-// req.user
-
 const moment = require('moment')
 //Require Funciones
 const funcion = require('../public/js/functions/controllerFunctions');
@@ -21,26 +16,8 @@ const fs = require('fs')
 const { promisify } = require('util');
 
 
-function acceso(req) {
-    
-    let acceso = []
-    let userGroups = req.connection.userGroups
-
-    return new Promise((resolve, reject) => {
-        userGroups.forEach(element => {
-          
-            if (element.toString() === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Gerente' || element.toString() === 'TFT\\TFT.DEL.PAGES_TiempoExtra_GerentePlanta' || element.toString() === 'TFT\\TFT.DEL.PAGES_TiempoExtra_RH' || element.toString() === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Supervisor' || element.toString() === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Admin') {
-               
-                acceso.push(element.toString())
-            }
-        });
-        let response = acceso.length == 0 ? reject("noAccess") : resolve(acceso)
-    })
-
-}
 
 async function sendConfirmacionMail(to, solicitud, solicitante, corre_template, nivel) {
-    // console.log({ to }, { solicitud }, { solicitante }, { corre_template }, { nivel });
 
     const data = await ejs.renderFile(path.join(__dirname, `../public/mail/${corre_template}.ejs`), { supervisor: solicitante, solicitud: solicitud });
     let mailOptions = {
@@ -64,148 +41,113 @@ async function sendConfirmacionMail(to, solicitud, solicitante, corre_template, 
 
 controller.index_GET = (req, res) => {
 
-    // var tesst = "francisco.morales@tristone.com"
-    // var test = tesst.match(/^.*(?=(\@))/);
-    // console.log(test[0]);
+    let user = req.res.locals.authData[0]
+    let sidebar = req.res.locals.authData[1]
 
-   user = req.user
-    let access = ""
-    acceso(req)
-        .then((result) => {
-      
-            result.forEach(element => {
-                console.log(element);
-                if (element === "TFT\\TFT.DEL.PAGES_TiempoExtra_Supervisor") {access = "ok", sidebar="supervisor"}
-                else if (element === "TFT\\TFT.DEL.PAGES_TiempoExtra_Gerente") {access = "ok", sidebar="gerente"}
-                else if (element === "TFT\\TFT.DEL.PAGES_TiempoExtra_GerentePlanta") {access = "ok", sidebar="planta"}
-                else if (element === "TFT\\TFT.DEL.PAGES_TiempoExtra_RH") {access = "ok", sidebar="rh"}
-                else if (element === "TFT\\TFT.DEL.PAGES_TiempoExtra_Admin") {access = "ok", sidebar="admin"}
-                else{access = "nok"}
-            });
-            if (access == "ok") {
-                res.render("index.ejs", { user,sidebar })
-            } else {
-                res.redirect("/acceso_denegado" ,{ user,sidebar })
-            }
-        })
-        .catch((err) => { res.redirect("/acceso_denegado") })
+    
+
+    res.render('index.ejs', {user,sidebar});
+
 }
 
 
 controller.accesoDenegado_GET = (req, res) => {
-    user = req.user
-    sidebar="no"
+   // let user = req.res.locals.authData[0]
+    sidebar = "no"
     res.render('acceso_denegado.ejs', {
-        user,sidebar
+        sidebar, user
     });
 }
 
 
 controller.crear_solicitud_GET = (req, res) => {
-    user = req.user
-    let access = ""
-    acceso(req)
-        .then((result) => {
-            result.forEach(element => {
-                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Supervisor' || element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Admin') access = "ok"
-            });
-            if (access == "ok") {
-                res.render("solicitud.ejs", { user })
-            } else {
-                res.redirect("/acceso_denegado")
-            }
-        })
-        .catch((err) => { res.redirect("/acceso_denegado") })
+    let user = req.res.locals.authData[0]
+    let sidebar = req.res.locals.authData[1]
+
+    if (sidebar === "supervisor" || sidebar==="admin" ) {
+
+        res.render("solicitud.ejs", { user,sidebar})
+
+    } else {
+
+        res.redirect("/acceso_denegado")
+    }
+
 }
 
 
 controller.empleados_supervisor_GET = (req, res) => {
-    user = req.user
-    let access = ""
-    acceso(req)
-        .then((result) => {
-            result.forEach(element => {
-                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Supervisor' || element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Admin') access = "ok"
-            });
-            if (access == "ok") {
-                res.render("empleados_supervisor.ejs", { user })
-            } else {
-                res.redirect("/acceso_denegado")
-            }
-        })
-        .catch((err) => { res.redirect("/acceso_denegado") })
+    let user = req.res.locals.authData[0]
+    let sidebar = req.res.locals.authData[1]
+
+    if (sidebar === "supervisor" || sidebar === "admin") {
+
+        res.render("empleados_supervisor.ejs", { user, sidebar })
+
+    } else {
+        res.redirect("/acceso_denegado")
+    }
+
 }
 
 
 controller.acumulado_gerente_GET = (req, res) => {
-    user = req.user
-    let access = ""
-    acceso(req)
-        .then((result) => {
-            result.forEach(element => {
-                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Gerente' || element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Admin') access = "ok"
-            });
-            if (access == "ok") {
-                res.render("acumulado_gerente.ejs", { user })
-            } else {
-                res.redirect("/acceso_denegado")
-            }
-        })
-        .catch((err) => { res.redirect("/acceso_denegado") })
+    let user = req.res.locals.authData[0]
+    let sidebar = req.res.locals.authData[1]
+
+    if (sidebar === "gerente" || sidebar === "admin") {
+
+        res.render("acumulado_gerente.ejs", { user, sidebar })
+
+    } else {
+        res.redirect("/acceso_denegado")
+    }
+
 }
 
 
 controller.gerente_supervisores_GET = (req, res) => {
-    user = req.user
-    let access = ""
-    acceso(req)
-        .then((result) => {
-            result.forEach(element => {
-                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Gerente' || element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Admin') access = "ok"
-            });
-            if (access == "ok") {
-                res.render("gerente_supervisores.ejs", { user })
-            } else {
-                res.redirect("/acceso_denegado")
-            }
-        })
-        .catch((err) => { res.redirect("/acceso_denegado") })
+    let user = req.res.locals.authData[0]
+    let sidebar = req.res.locals.authData[1]
+
+    if (sidebar === "gerente" || sidebar === "admin") {
+
+        res.render("gerente_supervisores.ejs", { user, sidebar })
+
+    } else {
+        res.redirect("/acceso_denegado")
+    }
+
 }
 
 
 controller.gerente_gerentes_GET = (req, res) => {
-    user = req.user
-    let access = ""
-    acceso(req)
-        .then((result) => {
-            result.forEach(element => {
-                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_GerentePlanta' || element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Admin') access = "ok"
-            });
-            if (access == "ok") {
-                res.render("gerente_gerentes.ejs", { user })
-            } else {
-                res.redirect("/acceso_denegado")
-            }
-        })
-        .catch((err) => { res.redirect("/acceso_denegado") })
+    let user = req.res.locals.authData[0]
+    let sidebar = req.res.locals.authData[1]
+
+    if (sidebar === "planta" || sidebar === "admin") {
+
+        res.render("gerente_gerentes.ejs", { user, sidebar })
+
+    } else {
+        res.redirect("/acceso_denegado")
+    }
+
 }
 
 
 controller.acumulado_planta_GET = (req, res) => {
-    user = req.user
-    let access = ""
-    acceso(req)
-        .then((result) => {
-            result.forEach(element => {
-                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_GerentePlanta' || element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_RH' || element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Admin') access = "ok"
-            });
-            if (access == "ok") {
-                res.render("acumulado_planta.ejs", { user })
-            } else {
-                res.redirect("/acceso_denegado")
-            }
-        })
-        .catch((err) => { res.redirect("/acceso_denegado") })
+    let user = req.res.locals.authData[0]
+    let sidebar = req.res.locals.authData[1]
+
+    if (sidebar === "planta" || sidebar === "admin" || sidebar === "rh") {
+
+        res.render("acumulado_planta.ejs", { user, sidebar })
+
+    } else {
+        res.redirect("/acceso_denegado")
+    }
+
 }
 
 
@@ -315,7 +257,11 @@ controller.sendSolicitud_POST = (req, res) => {
                         //console.log(empleados[i][12]);
                     }
                 }
-                for (let i = 0; i < listaJefes.length; i++) { sendConfirmacionMail(listaJefes[i], solicitud, solicitante, "mail_confirmacion", "supervisor") }
+                
+                for (let i = 0; i < listaJefes.length; i++) 
+                { 
+                    sendConfirmacionMail(listaJefes[i]+"@tristone.com", solicitud, solicitante, "mail_confirmacion", "supervisor") 
+                }
                 if (listaJefes.length == 0) {
 
                     async function waitForPromise() {
@@ -372,11 +318,15 @@ controller.editarSolicitud_POST = (req, res) => {
                     if (empleados[i][12] != emp_id && listaJefes.indexOf(empleados[i][13]) === -1) {
                         listaJefes.push(empleados[i][13])
                     } else {
+                        
                         gerente = empleados[i][12]
-                        //console.log(empleados[i][12]);
+  
                     }
                 }
-                for (let i = 0; i < listaJefes.length; i++) { sendConfirmacionMail(listaJefes[i], solicitud, solicitante, "mail_confirmacion", "supervisor") }
+                for (let i = 0; i < listaJefes.length; i++) { 
+
+                    sendConfirmacionMail(listaJefes[i]+"@tristone.com", solicitud, solicitante, "mail_confirmacion", "supervisor") 
+                }
                 if (listaJefes.length == 0) {
 
                     async function waitForPromise() {
@@ -394,9 +344,6 @@ controller.editarSolicitud_POST = (req, res) => {
 
     }
     waitForPromise()
-
-
-
 
 }
 
@@ -562,69 +509,52 @@ function getArrayHorasUtilizado(solicitud, solicitante, empleados, fecha, motivo
 
 
 controller.solicitud_list_GET = (req, res) => {
-    user = req.user
-    let access = ""
+    let user = req.res.locals.authData[0]
     let id = req.param.id
+    let sidebar = req.res.locals.authData[1]
 
-    acceso(req)
-        .then((result) => {
-            result.forEach(element => {
-                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Supervisor' || element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Admin') access = "ok"
-            });
-            if (access == "ok") {
+    if (sidebar === "supervisor" || sidebar === "admin") {
 
-                res.render("solicitud_list.ejs", { result, id })
+        res.render("solicitud_list.ejs", { id, sidebar, user})
 
-            } else {
-                res.redirect("/acceso_denegado")
-            }
-        })
-        .catch((err) => { res.redirect("/acceso_denegado") })
+    } else {
+        res.redirect("/acceso_denegado")
+    }
+
 }
 
 
 
 controller.pendiente_utilizado_GET = (req, res) => {
-    user = req.user
-    let access = ""
+    let user = req.res.locals.authData[0]
     let id = req.param.id
+    let sidebar = req.res.locals.authData[1]
 
-    acceso(req)
-        .then((result) => {
-            result.forEach(element => {
-                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_RH' || element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Admin') {access = "ok", sidebar="rh"}
-            });
-            if (access == "ok") {
+    if (sidebar === "rh" || sidebar === "admin") {
 
-                res.render("pendiente_utilizado.ejs", { result, id })
 
-            } else {
-                res.redirect("/acceso_denegado")
-            }
-        })
-        .catch((err) => { res.redirect("/acceso_denegado") })
+        res.render("pendiente_utilizado.ejs", { sidebar, id, user })
+
+    } else {
+        res.redirect("/acceso_denegado")
+    }
+
 }
 
 
 controller.configuracion_GET = (req, res) => {
-    user = req.user
-    let access = ""
+    let user = req.res.locals.authData[0]
     let id = req.param.id
+    let sidebar = req.res.locals.authData[1]
 
-    acceso(req)
-        .then((result) => {
-            result.forEach(element => {
-                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_RH' || element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Admin') access = "ok"
-            });
-            if (access == "ok") {
+    if (sidebar === "rh" || sidebar === "admin") {
 
-                res.render("configuracion.ejs", { result, id })
+        res.render("configuracion.ejs", { sidebar, id, user })
 
-            } else {
-                res.redirect("/acceso_denegado")
-            }
-        })
-        .catch((err) => { res.redirect("/acceso_denegado") })
+    } else {
+        res.redirect("/acceso_denegado")
+    }
+
 }
 
 
@@ -654,10 +584,17 @@ controller.getSolicitudes_POST = (req, res) => {
 controller.solicitud_historial_GET = (req, res) => {
 
     let id = req.params.id
+    let sidebar = req.res.locals.authData[1]
+    let user = req.res.locals.authData[0]
 
-    res.render('solicitud_historial.ejs', {
-        id
-    });
+    if (sidebar === "supervisor" || sidebar === "admin") {
+
+        res.render('solicitud_historial.ejs', { id, sidebar, user });
+
+    } else {
+        res.redirect("/acceso_denegado")
+    }
+
 
 
 }
@@ -744,44 +681,32 @@ controller.solicitud_historial_id_POST = (req, res) => {
 
 
 controller.confirmar_list_GET = (req, res) => {
-    user = req.user
-    let access = ""
+    let user = req.res.locals.authData[0]
+    let sidebar = req.res.locals.authData[1]
 
-    acceso(req)
-        .then((result) => {
-            result.forEach(element => {
-                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Supervisor' || element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Admin') access = "ok"
-            });
-            if (access == "ok") {
+    if (sidebar === "supervisor" || sidebar === "admin") {
 
-                res.render("confirmar_list.ejs", { result })
+        res.render("confirmar_list.ejs", { user, sidebar })
 
-            } else {
-                res.redirect("/acceso_denegado")
-            }
-        })
-        .catch((err) => { res.redirect("/acceso_denegado") })
+    } else {
+        res.redirect("/acceso_denegado")
+    }
+
 }
 
 
 controller.finalizar_list_GET = (req, res) => {
-    user = req.user
-    let access = ""
+    let user = req.res.locals.authData[0]
+    let sidebar = req.res.locals.authData[1]
 
-    acceso(req)
-        .then((result) => {
-            result.forEach(element => {
-                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_GerentePlanta' || element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Admin') access = "ok"
-            });
-            if (access == "ok") {
+    if (sidebar === "planta" || sidebar === "admin") {
 
-                res.render("finalizar_list.ejs", { result })
+        res.render("finalizar_list.ejs", { sidebar, user })
 
-            } else {
-                res.redirect("/acceso_denegado")
-            }
-        })
-        .catch((err) => { res.redirect("/acceso_denegado") })
+    } else {
+        res.redirect("/acceso_denegado")
+    }
+
 }
 
 
@@ -854,10 +779,16 @@ controller.getSolicitudesFinalizar_POST = (req, res) => {
 controller.confirmar_GET = (req, res) => {
 
     let id = req.params.id
+    let sidebar = req.res.locals.authData[1]
+    let user = req.res.locals.authData[0]
 
-    res.render('confirmar.ejs', {
-        id
-    });
+    if (sidebar === "supervisor" || sidebar === "admin") {
+
+        res.render('confirmar.ejs', { id, sidebar, user });
+
+    } else {
+        res.redirect("/acceso_denegado")
+    }
 
 
 }
@@ -866,10 +797,17 @@ controller.confirmar_GET = (req, res) => {
 controller.finalizar_GET = (req, res) => {
 
     let id = req.params.id
+    let sidebar = req.res.locals.authData[1]
+    let user = req.res.locals.authData[0]
 
-    res.render('finalizar.ejs', {
-        id
-    });
+    if (sidebar === "planta" || sidebar === "admin") {
+
+        res.render('finalizar.ejs', { id, user, sidebar });
+
+    } else {
+        res.redirect("/acceso_denegado")
+    }
+
 
 
 }
@@ -878,10 +816,16 @@ controller.finalizar_GET = (req, res) => {
 controller.confirmar_historial_id_GET = (req, res) => {
 
     let id = req.params.id
+    let sidebar = req.res.locals.authData[1]
+    let user = req.res.locals.authData[0]
 
-    res.render('confirmar_historial_id.ejs', {
-        id
-    });
+    if (sidebar === "supervisor" || sidebar === "admin") {
+
+        res.render('confirmar_historial_id.ejs', { id, sidebar, user});
+
+    } else {
+        res.redirect("/acceso_denegado")
+    }
 
 
 }
@@ -889,10 +833,16 @@ controller.confirmar_historial_id_GET = (req, res) => {
 controller.aprobar_historial_id_GET = (req, res) => {
 
     let id = req.params.id
+    let sidebar = req.res.locals.authData[1]
+    let user = req.res.locals.authData[0]
 
-    res.render('aprobar_historial_id.ejs', {
-        id
-    });
+    if (sidebar === "gerente" || sidebar === "admin") {
+
+        res.render('aprobar_historial_id.ejs', { id, sidebar, user });
+
+    } else {
+        res.redirect("/acceso_denegado")
+    }
 
 
 }
@@ -901,10 +851,16 @@ controller.aprobar_historial_id_GET = (req, res) => {
 controller.finalizar_historial_id_GET = (req, res) => {
 
     let id = req.params.id
+    let sidebar = req.res.locals.authData[1]
+    let user = req.res.locals.authData[0]
 
-    res.render('finalizar_historial_id.ejs', {
-        id
-    });
+    if (sidebar === "planta" || sidebar === "admin") {
+
+        res.render('finalizar_historial_id.ejs', { id, sidebar, user });
+
+    } else {
+        res.redirect("/acceso_denegado")
+    }
 
 
 }
@@ -913,6 +869,7 @@ controller.finalizar_historial_id_GET = (req, res) => {
 
 
 controller.confirmar_id_POST = (req, res) => {
+
 
     let id = req.body.id
     let username = req.connection.user.substring(4)
@@ -990,6 +947,7 @@ controller.confirmar_id_POST = (req, res) => {
 
         let solicitudHoras = await funcion.getSolicitudHoras(id)
         result.push(solicitudHoras)
+        result.push(username)
 
         res.json({ result })
     }
@@ -1340,44 +1298,37 @@ controller.finalizar_solicitud_POST = (req, res) => {
 
 
 controller.confirmar_historial_GET = (req, res) => {
-    user = req.user
-    let access = ""
+    let user = req.res.locals.authData[0]
+    let sidebar = req.res.locals.authData[1]
 
-    acceso(req)
-        .then((result) => {
-            result.forEach(element => {
-                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Supervisor' || element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Admin') access = "ok"
-            });
-            if (access == "ok") {
 
-                res.render("confirmar_historial.ejs", { result })
+    if (sidebar === "supervisor" || sidebar === "admin") {
 
-            } else {
-                res.redirect("/acceso_denegado")
-            }
-        })
-        .catch((err) => { res.redirect("/acceso_denegado") })
+        res.render("confirmar_historial.ejs", { sidebar, user })
+
+    } else {
+        res.redirect("/acceso_denegado")
+
+    }
+
+
+
 }
 
 
 controller.finalizar_historial_GET = (req, res) => {
-    user = req.user
-    let access = ""
+    let user = req.res.locals.authData[0]
+    let sidebar = req.res.locals.authData[1]
 
-    acceso(req)
-        .then((result) => {
-            result.forEach(element => {
-                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_GerentePlanta' || element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Admin') access = "ok"
-            });
-            if (access == "ok") {
 
-                res.render("finalizar_historial.ejs", { result })
+    if (sidebar === "planta" || sidebar === "admin") {
 
-            } else {
-                res.redirect("/acceso_denegado")
-            }
-        })
-        .catch((err) => { res.redirect("/acceso_denegado") })
+        res.render("finalizar_historial.ejs", { sidebar, user })
+
+    } else {
+        res.redirect("/acceso_denegado")
+    }
+
 }
 
 
@@ -1470,46 +1421,36 @@ controller.getHistorialFinalizado_POST = (req, res) => {
 
 
 controller.aprobar_list_GET = (req, res) => {
-    user = req.user
-    let access = ""
+    let user = req.res.locals.authData[0]
+    let sidebar = req.res.locals.authData[1]
 
-    acceso(req)
-        .then((result) => {
-            result.forEach(element => {
-                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Gerente' || element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Admin') access = "ok"
-            });
-            if (access == "ok") {
 
-                res.render("aprobar_list.ejs", { result })
+    if (sidebar === "gerente" || sidebar === "admin") {
 
-            } else {
-                res.redirect("/acceso_denegado")
-            }
-        })
-        .catch((err) => { res.redirect("/acceso_denegado") })
+        res.render("aprobar_list.ejs", { sidebar, user })
+
+    } else {
+        res.redirect("/acceso_denegado")
+    }
+
 }
 
 
 
 
 controller.aprobar_historial_GET = (req, res) => {
-    user = req.user
-    let access = ""
+    let user = req.res.locals.authData[0]
+    let sidebar = req.res.locals.authData[1]
 
-    acceso(req)
-        .then((result) => {
-            result.forEach(element => {
-                if (element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Gerente' || element === 'TFT\\TFT.DEL.PAGES_TiempoExtra_Admin') access = "ok"
-            });
-            if (access == "ok") {
 
-                res.render("aprobar_historial.ejs", { result })
+    if (sidebar === "gerente" || sidebar === "admin") {
 
-            } else {
-                res.redirect("/acceso_denegado")
-            }
-        })
-        .catch((err) => { res.redirect("/acceso_denegado") })
+        res.render("aprobar_historial.ejs", { sidebar, user })
+
+    } else {
+        res.redirect("/acceso_denegado")
+    }
+
 }
 
 
@@ -1572,10 +1513,17 @@ controller.getSolicitudesAprobar_POST = (req, res) => {
 controller.aprobar_GET = (req, res) => {
 
     let id = req.params.id
+    let sidebar = req.res.locals.authData[1]
+    let user = req.res.locals.authData[0]
 
-    res.render('aprobar.ejs', {
-        id
-    });
+
+    if (sidebar === "gerente" || sidebar === "admin") {
+
+        res.render('aprobar.ejs', { id, sidebar, user });
+
+    } else {
+        res.redirect("/acceso_denegado")
+    }
 
 
 }
@@ -2432,19 +2380,19 @@ controller.getAreas_POST = (req, res) => {
 
 
 
-            for (let i = 0; i < areasCosto.length; i++) {
+        for (let i = 0; i < areasCosto.length; i++) {
 
-                for (let y = 0; y < areas.length; y++) {
-    
-                    if (areas[y].emp_area == areasCosto[i].area) {
-                        areas.splice(y, 1)
-    
-                    }
-    
-    
+            for (let y = 0; y < areas.length; y++) {
+
+                if (areas[y].emp_area == areasCosto[i].area) {
+                    areas.splice(y, 1)
+
                 }
+
+
             }
-        
+        }
+
 
 
         res.json(areas)
@@ -2497,10 +2445,17 @@ controller.getCostos_POST = (req, res) => {
 controller.solicitud_editar_GET = (req, res) => {
 
     let id = req.params.id
+    let user = req.res.locals.authData[0]
+    let sidebar = req.res.locals.authData[1]
 
-    res.render('solicitud_editar.ejs', {
-        id
-    });
+    if (sidebar === "supervisor" || sidebar === "admin") {
+
+        res.render('solicitud_editar.ejs', { id, sidebar,user });
+
+    } else {
+        res.redirect("/acceso_denegado")
+    }
+
 
 
 }
@@ -2508,10 +2463,16 @@ controller.solicitud_editar_GET = (req, res) => {
 controller.solicitud_utilizado_GET = (req, res) => {
 
     let id = req.params.id
+    let sidebar = req.res.locals.authData[1]
+    let user = req.res.locals.authData[0]
 
-    res.render('solicitud_utilizado.ejs', {
-        id
-    });
+    if (sidebar === "supervisor" || sidebar === "admin") {
+
+        res.render('solicitud_utilizado.ejs', { id, sidebar, user });
+
+    } else {
+        res.redirect("/acceso_denegado")
+    }
 
 
 }
@@ -2520,10 +2481,16 @@ controller.solicitud_utilizado_GET = (req, res) => {
 controller.solicitud_utilizado_historial_GET = (req, res) => {
 
     let id = req.params.id
+    let sidebar = req.res.locals.authData[1]
+    let user = req.res.locals.authData[0]
 
-    res.render('solicitud_utilizado_historial.ejs', {
-        id
-    });
+    if (sidebar === "supervisor" || sidebar === "admin") {
+
+        res.render('solicitud_utilizado_historial.ejs', { id, sidebar, user });
+
+    } else {
+        res.redirect("/acceso_denegado")
+    }
 
 
 }
@@ -2707,10 +2674,10 @@ controller.getSolicitudesPendienteUtilizado_POST = (req, res) => {
 
 
 controller.InsertCosto_POST = (req, res) => {
-    area= req.body.area
-    costo=req.body.costo
+    area = req.body.area
+    costo = req.body.costo
 
-    funcion.InsertCosto(area,costo)
+    funcion.InsertCosto(area, costo)
         .then((result) => {
             res.json(result)
         })
@@ -2724,7 +2691,7 @@ controller.InsertCosto_POST = (req, res) => {
 
 
 controller.InsertMotivo_POST = (req, res) => {
-    motivo= req.body.motivo
+    motivo = req.body.motivo
 
     funcion.InsertMotivo(motivo)
         .then((result) => {

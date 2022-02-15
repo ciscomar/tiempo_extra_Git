@@ -38,7 +38,7 @@ const rechazar_horas = schedule.scheduleJob('1 * * * * *', function(){
 });
 
 
-const confirmar_solicitud = schedule.scheduleJob('* * 6 * * *', function(){
+const confirmar_solicitud = schedule.scheduleJob('1 1 6 * * *', function(){
     
 
     dbT(`SELECT DISTINCT solicitud,solicitante,fecha_solicitud FROM solicitud WHERE status = 'Finalizado' AND fecha_utilizado IS NULL `)

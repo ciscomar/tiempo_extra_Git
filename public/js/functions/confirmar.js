@@ -65,12 +65,13 @@ $(document).ready(function () {
   })
     .then((result) => {
 
-
       let supervisor=result.data.result[0]
       data = result.data.result[1]
       dataempleados = result.data.result[2]
       dataHoras = result.data.result[3]
       dataSolicitudHoras = result.data.result[4]
+      username= result.data.result[5]
+
 
       fecha = data[0].fecha
       let datef = new Date(fecha)
@@ -188,6 +189,12 @@ $(document).ready(function () {
         temp.push(area_req)
         temp.push(jefe_nombre[i])
 
+        //Revisar si usuario ya esta confirmado
+        if((jefe_nombre[i].toUpperCase() === username.toUpperCase()) && status != "Pendiente"){
+          window.location = `/confirmar_list/sidebar`
+        
+        }
+
 
         for (let z = 0; z < dataHoras.length; z++) {
 
@@ -202,11 +209,12 @@ $(document).ready(function () {
 
           extrax2 = horasExtra
 
+
           //Horas extra dobles y triples
           if (horasExtra == null) {
             horasExtra = 0
           }
-          if (horasExtra < 10) {
+          if (horasExtra <= 9) {
             extrax2 = horasExtra
           } else {
             extrax2 = 9
@@ -222,13 +230,13 @@ $(document).ready(function () {
           let doble = extrax2
           let triple = extrax3
 
-          if (horasDescanso1 < 9) {
+          if (horasDescanso1 <= 8) {
             descanso = horasDescanso1
           } else {
             descanso = 8
             restante = horasDescanso1 - 8
 
-            if ((doble + restante) < 10) {
+            if ((doble + restante) <=9) {
               extrax2 = doble + restante
             } else {
 
@@ -248,13 +256,13 @@ $(document).ready(function () {
           let doble2 = extrax2
           let triple2 = extrax3
 
-          if (horasDescanso2 < 9) {
+          if (horasDescanso2 <= 8) {
             descanso = descanso + horasDescanso2
           } else {
             descanso = descanso + 8
             restante2 = horasDescanso2 - 8
 
-            if ((doble2 + restante2) < 10) {
+            if ((doble2 + restante2) <= 9) {
               extrax2 = doble2 + restante2
             } else {
 

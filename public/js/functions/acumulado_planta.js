@@ -199,7 +199,7 @@ $(document).ready(function () {
               if (horasExtra == null) {
                 horasExtra = 0
               }
-              if (horasExtra < 10) {
+              if (horasExtra <= 9) {
                 extrax2 = horasExtra
               } else {
                 extrax2 = 9
@@ -215,13 +215,13 @@ $(document).ready(function () {
               let doble = extrax2
               let triple = extrax3
     
-              if (horasDescanso1 < 9) {
+              if (horasDescanso1 <= 8) {
                 descanso = horasDescanso1
               } else {
                 descanso = 8
                 restante = horasDescanso1 - 8
     
-                if ((doble + restante) < 10) {
+                if ((doble + restante) <= 9) {
                   extrax2 = doble + restante
                 } else {
     
@@ -241,13 +241,13 @@ $(document).ready(function () {
               let doble2 = extrax2
               let triple2 = extrax3
     
-              if (horasDescanso2 < 9) {
+              if (horasDescanso2 <= 8) {
                 descanso = descanso + horasDescanso2
               } else {
                 descanso = descanso + 8
                 restante2 = horasDescanso2 - 8
     
-                if ((doble2 + restante2) < 10) {
+                if ((doble2 + restante2) <= 9) {
                   extrax2 = doble2 + restante2
                 } else {
     
@@ -326,7 +326,7 @@ $(document).ready(function () {
               if (horasExtra == null) {
                 horasExtra = 0
               }
-              if (horasExtra < 10) {
+              if (horasExtra <=9) {
                 extrax2 = horasExtra
               } else {
                 extrax2 = 9
@@ -342,13 +342,13 @@ $(document).ready(function () {
               let doble = extrax2
               let triple = extrax3
       
-              if (horasDescanso1 < 9) {
+              if (horasDescanso1 <=8 ) {
                 descanso = horasDescanso1
               } else {
                 descanso = 8
                 restante = horasDescanso1 - 8
       
-                if ((doble + restante) < 10) {
+                if ((doble + restante) <= 9) {
                   extrax2 = doble + restante
                 } else {
       
@@ -368,13 +368,13 @@ $(document).ready(function () {
               let doble2 = extrax2
               let triple2 = extrax3
       
-              if (horasDescanso2 < 9) {
+              if (horasDescanso2 <= 8) {
                 descanso = descanso + horasDescanso2
               } else {
                 descanso = descanso + 8
                 restante2 = horasDescanso2 - 8
       
-                if ((doble2 + restante2) < 10) {
+                if ((doble2 + restante2) <= 9) {
                   extrax2 = doble2 + restante2
                 } else {
       

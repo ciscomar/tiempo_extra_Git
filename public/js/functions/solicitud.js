@@ -40,7 +40,6 @@ diasInput.forEach(element => {
 
 
 
-
 let dobleEmpleado
 let tripleEmpleado
 let descanso1Empleado
@@ -50,14 +49,14 @@ let descanso2Empleado
 
 function changeValue(e) {
 
-  if ( parseInt(e.value) < parseInt(e.getAttribute("min"))) {
+  if ( parseFloat(e.value) < parseFloat(e.getAttribute("min"))) {
 
     e.value=""
 
   } else {
 
   let id=e.id.replace(/[^0-9]/g, '')
-  let horas= parseInt(e.value)
+  let horas= parseFloat(e.value)
   let extrax2 = document.getElementById("te" + id)
   let extrax3 = document.getElementById("tem" + id)
   let dl = document.getElementById("l"+ id)
@@ -79,22 +78,22 @@ function changeValue(e) {
   let extrax3Incial = document.getElementById("extrax3Inicial" + id)
 
 
-   dobleEmpleado = parseInt(extrax2Incial.value)
-   tripleEmpleado = parseInt(extrax3Incial.value)
-   descanso1Empleado = parseInt(descanso1Inicial.value)
-   descanso2Empleado = parseInt(descanso2Inicial.value)
+   dobleEmpleado = parseFloat(extrax2Incial.value)
+   tripleEmpleado = parseFloat(extrax3Incial.value)
+   descanso1Empleado = parseFloat(descanso1Inicial.value)
+   descanso2Empleado = parseFloat(descanso2Inicial.value)
   
 
 
   turn=turnoEmpleado.value
-  dl=parseInt(dl.value) || 0
-  dm=parseInt(dm.value) || 0
-  dmc=parseInt(dmc.value) || 0
-  dj=parseInt(dj.value) || 0
-  dv=parseInt(dv.value) || 0
-  ds=parseInt(ds.value) || 0
-  dd=parseInt(dd.value) || 0
-  desclab =parseInt(descansolab.value) || 0
+  dl=parseFloat(dl.value) || 0
+  dm=parseFloat(dm.value) || 0
+  dmc=parseFloat(dmc.value) || 0
+  dj=parseFloat(dj.value) || 0
+  dv=parseFloat(dv.value) || 0
+  ds=parseFloat(ds.value) || 0
+  dd=parseFloat(dd.value) || 0
+  desclab =parseFloat(descansolab.value) || 0
 
 
   let weekArray
@@ -110,7 +109,6 @@ function changeValue(e) {
 
   sumExtra = weekArray.reduce((pv, cv) => pv + cv, 0);
 
-
   if(dobleEmpleado+sumExtra<9){
 
     extrax2.value=dobleEmpleado+sumExtra
@@ -124,6 +122,7 @@ function changeValue(e) {
     rest=sumExtra-temp
     extrax2.value=9
     extrax3.value=tripleEmpleado+rest
+
     
     if(extrax3.value !=0){
       extrax3.classList.remove("extraS");
@@ -150,30 +149,31 @@ function changeValue(e) {
     horasDescansoExtraAnterior = horasDescansoExtraAnterior+ (descanso2Empleado-8)
   }
 
-  if(descanso1Empleado+desc1<9){
+  if(descanso1Empleado+desc1<=8){
     horasDescanso= descanso1Empleado+desc1
     
   }else{
     horasDescanso=horasDescanso+8
     horasDescansoExtra=(descanso1Empleado+desc1)-8
-
+    
   }
-  if(descanso2Empleado+desc2<9){
+  if(descanso2Empleado+desc2<=8){
     horasDescanso= horasDescanso+(descanso2Empleado+desc2)
   }else{
     horasDescanso=horasDescanso+8
     horasDescansoExtra=horasDescansoExtra+((descanso2Empleado+desc2)-8)
   }
 
+ 
 
   descansolab.value=horasDescanso
   horasDescansoExtra=horasDescansoExtra-horasDescansoExtraAnterior
-  dob= parseInt(extrax2.value)
-  trip=parseInt(extrax3.value)
+  dob= parseFloat(extrax2.value)
+  trip=parseFloat(extrax3.value)
 
  
 
-  if(dob+horasDescansoExtra<10){
+  if(dob+horasDescansoExtra<=9){
 
     extrax2.value=dob+horasDescansoExtra
 
@@ -193,10 +193,10 @@ function changeValue(e) {
     da.value= extrax2.value-dobleEmpleado
     ta.value= extrax3.value-tripleEmpleado
 
-    if(descanso1Empleado>8 && descanso2Empleado<8){desca.value=parseInt(descansolab.value)-(8+descanso2Empleado)}else
-    if(descanso2Empleado>8 && descanso1Empleado<8){desca.value=parseInt(descansolab.value)-(8+descanso1Empleado)}else
-    if(descanso2Empleado>8 && descanso1Empleado>8){desca.value=parseInt(descansolab.value)-16}else
-    if(descanso2Empleado<8 && descanso1Empleado<8){desca.value=parseInt(descansolab.value)-(descanso1Empleado+descanso2Empleado)}
+    if(descanso1Empleado>8 && descanso2Empleado<8){desca.value=parseFloat(descansolab.value)-(8+descanso2Empleado)}else
+    if(descanso2Empleado>8 && descanso1Empleado<8){desca.value=parseFloat(descansolab.value)-(8+descanso1Empleado)}else
+    if(descanso2Empleado>8 && descanso1Empleado>8){desca.value=parseFloat(descansolab.value)-16}else
+    if(descanso2Empleado<8 && descanso1Empleado<8){desca.value=parseFloat(descansolab.value)-(descanso1Empleado+descanso2Empleado)}
 
 
     if(ta.value !=0){
@@ -215,7 +215,7 @@ function changeValue(e) {
   
 }
 
-
+ //Reviewd Decimales -->
 
 
 let row = 2
@@ -244,15 +244,16 @@ let agregar = () => {
     `<td><input class="textra extraS" id="te${row}" style="width: 100%; text-align:center;" type="text" disabled></td>`,
     `<td><input class="textra2 extraS" id="tem${row}" style="width: 100%; text-align:center;" type="text" disabled></td>`,
     `<td><input class="dlaborado extraS" id="dl${row}" style="width: 100%; text-align:center;" type="text" disabled></td>`,
-    `<td class="hide"><input class="jefeid" id="jeid${row}" style="width: 100%;" type="text" hidden ></td>`,
-    `<td class="hide"><input class="descanso1Incialc" id="descanso1Inicial${row}" style="width: 100%;" type="text" hidden></td>`,
-    `<td class="hide"><input class="descanso2Incialc" id="descanso2Inicial${row}" style="width: 100%;" type="text" hidden></td>`,
-    `<td class="hide"><input class="extrax2Inicialc" id="extrax2Inicial${row}" style="width: 100%;" type="text" hidden></td>`,
-    `<td class="hide"><input class="extrax3Inicialc" id="extrax3Inicial${row}" style="width: 100%;" type="text" hidden></td>`,
-    `<td class="hide"><input class="costohra" id="costohra${row}" style="width: 100%;" type="text" hidden></td>`,
-    `<td class="hide"><input class="costototal" id="costototal${row}" style="width: 100%;" type="text" hidden></td>`,
+    `<td ><input class="jefeid" id="jeid${row}" style="width: 100%;" type="text" hidden ></td>`,
+    `<td ><input class="descanso1Incialc" id="descanso1Inicial${row}" style="width: 100%;" type="text" hidden></td>`,
+    `<td ><input class="descanso2Incialc" id="descanso2Inicial${row}" style="width: 100%;" type="text" hidden></td>`,
+    `<td ><input class="extrax2Inicialc" id="extrax2Inicial${row}" style="width: 100%;" type="text" hidden></td>`,
+    `<td ><input class="extrax3Inicialc" id="extrax3Inicial${row}" style="width: 100%;" type="text" hidden></td>`,
+    `<td ><input class="costohra" id="costohra${row}" style="width: 100%;" type="text" hidden></td>`,
+    `<td ><input class="costototal" id="costototal${row}" style="width: 100%;" type="text" hidden></td>`,
 
   ]).draw(false);
+
 
   row++
 
@@ -339,8 +340,8 @@ let getInfoEmpleado = (e) => {
             let horasDescansoInfo1 = infoArray[2]
             let horasDescansoInfo2 = infoArray[3]
             let horasExtra = horasExtraInfo[0].horasExtra
-            let horasDescanso1 = parseInt(horasDescansoInfo1[0].horasDescanso)
-            let horasDescanso2 = parseInt(horasDescansoInfo2[0].horasDescanso)
+            let horasDescanso1 = parseFloat(horasDescansoInfo1[0].horasDescanso)
+            let horasDescanso2 = parseFloat(horasDescansoInfo2[0].horasDescanso)
             let solicitudesEmpleado = infoArray[4]
     
     
@@ -382,7 +383,7 @@ let getInfoEmpleado = (e) => {
             if (horasExtra == null) {
               horasExtra = 0
             }
-            if (horasExtra < 10) {
+            if (horasExtra <= 9) {
               extrax2.value = horasExtra
             } else {
               extrax2.value = 9
@@ -397,16 +398,16 @@ let getInfoEmpleado = (e) => {
               horasDescanso1 = 0
             }
     
-            let doble = parseInt(extrax2.value)
-            let triple = parseInt(extrax3.value)
+            let doble = parseFloat(extrax2.value)
+            let triple = parseFloat(extrax3.value)
     
-            if (horasDescanso1 < 9) {
+            if (horasDescanso1 <= 8) {
               descanso.value = horasDescanso1
             } else {
               descanso.value = 8
               restante = horasDescanso1 - 8
     
-              if ((doble + restante) < 10) {
+              if ((doble + restante) <= 9) {
                 extrax2.value = doble + restante
               } else {
     
@@ -428,16 +429,16 @@ let getInfoEmpleado = (e) => {
               horasDescanso2 = 0
             }
     
-            let doble2 = parseInt(extrax2.value)
-            let triple2 = parseInt(extrax3.value)
+            let doble2 = parseFloat(extrax2.value)
+            let triple2 = parseFloat(extrax3.value)
     
-            if (horasDescanso2 < 9) {
-              descanso.value = parseInt(descanso.value) + horasDescanso2
+            if (horasDescanso2 <= 8) {
+              descanso.value = parseFloat(descanso.value) + horasDescanso2
             } else {
-              descanso.value = parseInt(descanso.value) + 8
+              descanso.value = parseFloat(descanso.value) + 8
               restante2 = horasDescanso2 - 8
     
-              if ((doble2 + restante2) < 10) {
+              if ((doble2 + restante2) <= 9) {
                 extrax2.value = doble2 + restante2
               } else {
     
@@ -453,11 +454,11 @@ let getInfoEmpleado = (e) => {
     
             descanso1Inicial.value=horasDescanso1
             descanso2Inicial.value=horasDescanso2
-            extrax2Incial.value=parseInt(extrax2.value)
-            extrax3Incial.value=parseInt(extrax3.value)
+            extrax2Incial.value=parseFloat(extrax2.value)
+            extrax3Incial.value=parseFloat(extrax3.value)
     
-            // dobleEmpleado = parseInt(extrax2.value)
-            // tripleEmpleado = parseInt(extrax3.value)
+            // dobleEmpleado = parseFloat(extrax2.value)
+            // tripleEmpleado = parseFloat(extrax3.value)
             // descanso1Empleado=horasDescanso1
             // descanso2Empleado=horasDescanso2
     

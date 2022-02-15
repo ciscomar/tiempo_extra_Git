@@ -63,8 +63,7 @@
                 </div>
 
                 <div class=" mt-4 text-center">
-                    <button id="btnSend" class="btn btn-success"
-                        onClick="send()"><span class="fas fa-paper-plane"></span> Enviar Solicitud</button>
+                    <button id="btnSend" class="btn btn-success"><span class="fas fa-paper-plane"></span> Enviar Solicitud</button>
                 </div>
 
             </div>
@@ -84,6 +83,7 @@
                                     </tr>
                                     <tr>
 
+                                    <th width="0%"><span></span> Eliminar</th>
                                     <th width="1%"><span></span> Empleado</th>
                                     <th width="20%"><span></span> Nombre</th>
                                     <th width="4%"><span></span> Turno</th>
@@ -103,11 +103,13 @@
                                     <th width="4%" ><span></span>x2</th>
                                     <th width="4%" ><span></span>x3</th>
                                     <th width="4%" ><span></span>D.L</th>
-                                    <th width="0%" hidden><span hidden></span>jefeid</th>
-                                    <th width="0%" hidden><span hidden></span>dl1</th>
-                                    <th width="0%" hidden><span hidden></span>dl2</th>
-                                    <th width="0%" hidden><span hidden></span>x2</th>
-                                    <th width="0%" hidden><span hidden></span>x3</th>
+                                    <th width="0%" hidden ><span ></span>jefeid</th>
+                                    <th width="0%" hidden ><span ></span>dl1</th>
+                                    <th width="0%" hidden ><span ></span>dl2</th>
+                                    <th width="0%" hidden ><span ></span>x2</th>
+                                    <th width="0%" hidden ><span ></span>x3</th>
+                                    <th width="0%" hidden ><span></span>costohra</th>
+                                    <th width="0%" hidden ><span></span>costototal</th>
 
                                 </tr>
 
@@ -131,6 +133,33 @@
             </div>
 
        
+
+            <div class="modal fade" id="modalError" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                    <div class="modal-header card-mov">
+                        <img src="/img/TristoneLogo.png" alt="SAP" srcset="" class="card-mov">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-2">
+                                <i class="fas fa-times text-danger" style="font-size: 2rem;"> </i>
+                            </div>
+                            <div class="col">
+                                <h5>Solicitud Incompleta</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btnCerrar_Success" type="button" class="btn btn-secondary btnCerrar"
+                            data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
 

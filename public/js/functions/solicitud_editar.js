@@ -28,8 +28,11 @@ let semanaInput = document.getElementById("week")
 let doblesActual = document.getElementsByClassName("dobles")
 let triplesActual = document.getElementsByClassName("triples")
 let descansoActual = document.getElementsByClassName("descanso")
+let costohra = document.getElementsByClassName("costohra")
+let costototal = document.getElementsByClassName("costototal")
 let week_start
 let week_end
+let btnSend = document.getElementById("btnSend")
 
 let diasInput = document.querySelectorAll(".dias")
 diasInput.forEach(element => {
@@ -37,7 +40,7 @@ diasInput.forEach(element => {
 });
 
 
-let rowNumber=1;
+let rowNumber = 1;
 
 let dobleEmpleado
 let tripleEmpleado
@@ -66,24 +69,24 @@ function changeValue(e) {
   let descanso1Inicial = document.getElementById("descanso1Inicial" + id)
   let descanso2Inicial = document.getElementById("descanso2Inicial" + id)
 
-  let extrax2Incial = document.getElementById("extrax2Incial" + id)
-  let extrax3Incial = document.getElementById("extrax3Incial" + id)
+  let extrax2Inicial = document.getElementById("extrax2Inicial" + id)
+  let extrax3Inicial = document.getElementById("extrax3Inicial" + id)
 
-  dobleEmpleado = parseInt(extrax2Incial.value)
-  tripleEmpleado = parseInt(extrax3Incial.value)
-  descanso1Empleado=parseInt(descanso1Inicial.value)
-  descanso2Empleado=parseInt(descanso2Inicial.value)
+  dobleEmpleado = parseFloat(extrax2Inicial.value)
+  tripleEmpleado = parseFloat(extrax3Inicial.value)
+  descanso1Empleado = parseFloat(descanso1Inicial.value)
+  descanso2Empleado = parseFloat(descanso2Inicial.value)
 
 
   turn = turnoEmpleado.value
-  dl = parseInt(dl.value) || 0
-  dm = parseInt(dm.value) || 0
-  dmc = parseInt(dmc.value) || 0
-  dj = parseInt(dj.value) || 0
-  dv = parseInt(dv.value) || 0
-  ds = parseInt(ds.value) || 0
-  dd = parseInt(dd.value) || 0
-  desclab = parseInt(descansolab.value) || 0
+  dl = parseFloat(dl.value) || 0
+  dm = parseFloat(dm.value) || 0
+  dmc = parseFloat(dmc.value) || 0
+  dj = parseFloat(dj.value) || 0
+  dv = parseFloat(dv.value) || 0
+  ds = parseFloat(ds.value) || 0
+  dd = parseFloat(dd.value) || 0
+  desclab = parseFloat(descansolab.value) || 0
 
 
 
@@ -140,7 +143,7 @@ function changeValue(e) {
     horasDescansoExtraAnterior = horasDescansoExtraAnterior + (descanso2Empleado - 8)
   }
 
-  if (descanso1Empleado + desc1 < 9) {
+  if (descanso1Empleado + desc1 <= 8) {
     horasDescanso = descanso1Empleado + desc1
 
   } else {
@@ -148,7 +151,7 @@ function changeValue(e) {
     horasDescansoExtra = (descanso1Empleado + desc1) - 8
 
   }
-  if (descanso2Empleado + desc2 < 9) {
+  if (descanso2Empleado + desc2 <= 8) {
     horasDescanso = horasDescanso + (descanso2Empleado + desc2)
   } else {
     horasDescanso = horasDescanso + 8
@@ -158,12 +161,12 @@ function changeValue(e) {
 
   descansolab.value = horasDescanso
   horasDescansoExtra = horasDescansoExtra - horasDescansoExtraAnterior
-  dob = parseInt(extrax2.value)
-  trip = parseInt(extrax3.value)
+  dob = parseFloat(extrax2.value)
+  trip = parseFloat(extrax3.value)
 
 
 
-  if (dob + horasDescansoExtra < 10) {
+  if (dob + horasDescansoExtra <= 9) {
 
     extrax2.value = dob + horasDescansoExtra
 
@@ -185,10 +188,10 @@ function changeValue(e) {
   da.value = extrax2.value - dobleEmpleado
   ta.value = extrax3.value - tripleEmpleado
 
-  if (descanso1Empleado > 8 && descanso2Empleado < 8) { desca.value = parseInt(descansolab.value) - (8 + descanso2Empleado) } else
-    if (descanso2Empleado > 8 && descanso1Empleado < 8) { desca.value = parseInt(descansolab.value) - (8 + descanso1Empleado) } else
-      if (descanso2Empleado > 8 && descanso1Empleado > 8) { desca.value = parseInt(descansolab.value) - 16 } else
-        if (descanso2Empleado < 8 && descanso1Empleado < 8) { desca.value = parseInt(descansolab.value) - (descanso1Empleado + descanso2Empleado) }
+  if (descanso1Empleado > 8 && descanso2Empleado < 8) { desca.value = parseFloat(descansolab.value) - (8 + descanso2Empleado) } else
+    if (descanso2Empleado > 8 && descanso1Empleado < 8) { desca.value = parseFloat(descansolab.value) - (8 + descanso1Empleado) } else
+      if (descanso2Empleado > 8 && descanso1Empleado > 8) { desca.value = parseFloat(descansolab.value) - 16 } else
+        if (descanso2Empleado < 8 && descanso1Empleado < 8) { desca.value = parseFloat(descansolab.value) - (descanso1Empleado + descanso2Empleado) }
 
 
   if (ta.value != 0) {
@@ -199,20 +202,34 @@ function changeValue(e) {
     ta.classList.add("extraA");
   }
 
+  let costototal= document.getElementById("costototal" + id)
+  let costohra= document.getElementById("costohra" + id)
+  costototal.value=(desca.value*(costohra.value*2))+(da.value*(costohra.value*2))+(ta.value*(costohra.value*3))
+
 
 
 }
 
 
 
+let deleteRow = (row) => {
+
+  console.log(row);
+  table.row(`:eq(${row-1})`).remove().draw();
+
+}
+
+
 
 let row = 2
 let agregar = () => {
+
 
   btnAgregar.disabled = true
 
   table.row.add([
 
+    `<button type="submit" class="btn" id="btnDelete${rowNumber}" onClick="deleteRow(${rowNumber})"> <span class="icoSidebar fas fa-trash text-danger""></span>`,
     `<td><input class="empleado" id="e${rowNumber}" style="width: 100%;" type="number" min="0" onkeyup="getInfoEmpleado(this)"></td>`,
     `<td><input class="nombre" id="n${rowNumber}" style="width: 100%;" type="text" disabled></td>`,
     `<td><input class="turno" id="tu${rowNumber}" style="width: 100%;" type="text" disabled></td>`,
@@ -232,11 +249,13 @@ let agregar = () => {
     `<td><input class="textra extraS" id="te${rowNumber}" style="width: 100%; text-align:center;" type="text" disabled></td>`,
     `<td><input class="textra2 extraS" id="tem${rowNumber}" style="width: 100%; text-align:center;" type="text" disabled></td>`,
     `<td><input class="dlaborado extraS" id="dl${rowNumber}" style="width: 100%; text-align:center;" type="text" disabled></td>`,
-    `<td hidden><input class="jefeid" id="jeid${rowNumber}" style="width: 100%;" type="text" hidden></td>`,
-    `<td hidden><input class="descans1Incialc" id="descanso1Inicial${rowNumber}" style="width: 100%;" type="text" hidden></td>`,
-    `<td hidden><input class="descans2Incialc" id="descanso2Inicial${rowNumber}" style="width: 100%;" type="text" hidden ></td>`,
-    `<td hidden><input class="extrax2Incialc" id="extrax2Incial${rowNumber}" style="width: 100%;" type="text" hidden ></td>`,
-    `<td hidden><input class="extrax3Incialc" id="extrax3Incial${rowNumber}" style="width: 100%;" type="text" hidden ></td>`,
+    `<td class="hide"><input class="jefeid" id="jeid${rowNumber}" style="width: 100%;" type="text" hidden></td>`,
+    `<td class="hide"><input class="descans1Inicialc" id="descanso1Inicial${rowNumber}" style="width: 100%;" type="text" hidden></td>`,
+    `<td class="hide"><input class="descans2Inicialc" id="descanso2Inicial${rowNumber}" style="width: 100%;" type="text" hidden></td>`,
+    `<td class="hide"><input class="extrax2Inicialc" id="extrax2Inicial${rowNumber}" style="width: 100%;" type="text" hidden></td>`,
+    `<td class="hide"><input class="extrax3Inicialc" id="extrax3Inicial${rowNumber}" style="width: 100%;" type="text" hidden></td>`,
+    `<td class="hide"class="hide"><input class="costohra" id="costohra${rowNumber}" style="width: 100%;" type="text" hidden></td>`,
+    `<td class="hide"class="hide"><input class="costototal" id="costototal${rowNumber}" style="width: 100%;" type="text" hidden></td>`,
 
   ]).draw(false);
 
@@ -252,20 +271,19 @@ let agregar = () => {
 
 
 
-let columnas = [empleado, nombre, turno, lunes, martes, miercoles, jueves, viernes, sabado, domingo, actual, laborar, jefeid, jefe, doblesActual, triplesActual, descansoActual]
+let columnas = [empleado, nombre, turno, lunes, martes, miercoles, jueves, viernes, sabado, domingo, actual, laborar, jefeid, jefe, doblesActual, triplesActual, descansoActual,costohra, costototal]
 let arregloFinal = []
 let send = () => {
 
   for (let i = 0; i < empleado.length; i++) {
     let temp = [];
     columnas.forEach(column => {
-      console.log(column);
       temp.push(column[i].value)
     });
     arregloFinal.push(temp)
   }
 
-  let data = { "empleados": arregloFinal, "fechas": fechas, "motivo": `${selectedMotivo.value}`,"solicitud": `${id}` }
+  let data = { "empleados": arregloFinal, "fechas": fechas, "motivo": `${selectedMotivo.value}`, "solicitud": `${id}` }
 
   axios({
     method: 'post',
@@ -283,6 +301,7 @@ let send = () => {
 
 
 }
+
 
 
 
@@ -309,144 +328,207 @@ let getInfoEmpleado = (e) => {
 
 
       if (result.data.result != undefined) {
-        let infoEmpleado = result.data.result[0]
-        let infoArray = result.data.result[1]
-        let infoJefe = infoArray[0]
-        let horasExtraInfo = infoArray[1]
-        let horasDescansoInfo1 = infoArray[2]
-        let horasDescansoInfo2 = infoArray[3]
-        let horasExtra = horasExtraInfo[0].horasExtra
-        let horasDescanso1 = parseInt(horasDescansoInfo1[0].horasDescanso)
-        let horasDescanso2 = parseInt(horasDescansoInfo2[0].horasDescanso)
-        let solicitudesEmpleado = infoArray[4]
+        let arrayPend =result.data.result[1]
+        let pendientes=arrayPend[5]
+        let cantpendiente=pendientes[0].pendiente
+        let costoArray= arrayPend[6]
 
+        if(costoArray != ""){
 
-        let name = document.getElementById("n" + id)
-        let actual = document.getElementById("a" + id)
-        let jefe = document.getElementById("je" + id)
-        let jefeid = document.getElementById("jeid" + id)
-        let turno = document.getElementById("tu" + id)
-        let extrax2 = document.getElementById("te" + id)
-        let extrax3 = document.getElementById("tem" + id)
-        let descanso = document.getElementById("dl" + id)
+          let costo=costoArray[0].costo
 
+          if(cantpendiente<1){
 
-
-        name.value = infoEmpleado[0].emp_nombre
-        actual.value = infoEmpleado[0].emp_area
-        jefe.value = infoJefe[0].emp_correo.substring(0, infoJefe[0].emp_correo.indexOf('@'))
-        jefeid.value = infoJefe[0].emp_id
-        turno.value = infoEmpleado[0].emp_turno
-
-
-
-        extrax2.value = 0
-        extrax3.value = 0
-        descanso.value = 0
-        extrax2.value = horasExtra
-
-
-        //Horas extra dobles y triples
-        if (horasExtra == null) {
-          horasExtra = 0
-        }
-        if (horasExtra < 10) {
-          extrax2.value = horasExtra
-        } else {
-          extrax2.value = 9
-          extrax3.value = horasExtra - 9
-          extrax3.classList.remove("extraS");
-          extrax3.classList.add("danger");
-        }
-
-        //Horas descanso laborado1
-
-        if (isNaN(horasDescanso1)) {
-          horasDescanso1 = 0
-        }
-
-        let doble = parseInt(extrax2.value)
-        let triple = parseInt(extrax3.value)
-
-        if (horasDescanso1 < 9) {
-          descanso.value = horasDescanso1
-        } else {
-          descanso.value = 8
-          restante = horasDescanso1 - 8
-
-          if ((doble + restante) < 10) {
-            extrax2.value = doble + restante
-          } else {
-
-            extrax2.value = 9
-            extrax3.value = triple + ((doble + restante) - 9)
-            extrax3.classList.remove("extraS");
-            extrax3.classList.add("danger");
-
-          }
-
-        }
-
-
-
-        //Horas descanso laborado2
-
-        if (isNaN(horasDescanso2)) {
-          horasDescanso2 = 0
-        }
-
-        let doble2 = parseInt(extrax2.value)
-        let triple2 = parseInt(extrax3.value)
-
-        if (horasDescanso2 < 9) {
-          descanso.value = parseInt(descanso.value) + horasDescanso2
-        } else {
-          descanso.value = parseInt(descanso.value) + 8
-          restante2 = horasDescanso2 - 8
-
-          if ((doble2 + restante2) < 10) {
-            extrax2.value = doble2 + restante2
-          } else {
-
-            extrax2.value = 9
-            extrax3.value = triple2 + ((doble2 + restante2) - 9)
-            extrax3.classList.remove("extraS");
-            extrax3.classList.add("danger");
-
-          }
-
-        }
-
-
-        dobleEmpleado = parseInt(extrax2.value)
-        tripleEmpleado = parseInt(extrax3.value)
-        descanso1Empleado = horasDescanso1
-        descanso2Empleado = horasDescanso2
-
-
-        enableUserInfo(id, "enable")
-
-
-
-        for (let i = 0; i < fechas.length; i++) {
-
-          for (let y = 0; y < solicitudesEmpleado.length; y++) {
-            if (solicitudesEmpleado[y].fecha.substring(0, solicitudesEmpleado[y].fecha.indexOf("T")) == fechas[i]) {
-
-              if (i == 0) { let dl = document.getElementById("l" + id); dl.disabled = true }
-              if (i == 1) { let dm = document.getElementById("m" + id); dm.disabled = true }
-              if (i == 2) { let dmc = document.getElementById("mc" + id); dmc.disabled = true }
-              if (i == 3) { let dj = document.getElementById("j" + id); dj.disabled = true }
-              if (i == 4) { let dv = document.getElementById("v" + id); dv.disabled = true }
-              if (i == 5) { let ds = document.getElementById("s" + id); ds.disabled = true }
-              if (i == 6) { let dd = document.getElementById("d" + id); dd.disabled = true }
-
+            let infoEmpleado = result.data.result[0]
+            let infoArray = result.data.result[1]
+            let infoJefe = infoArray[0]
+            let horasExtraInfo = infoArray[1]
+            let horasDescansoInfo1 = infoArray[2]
+            let horasDescansoInfo2 = infoArray[3]
+            let horasExtra = horasExtraInfo[0].horasExtra
+            let horasDescanso1 = parseFloat(horasDescansoInfo1[0].horasDescanso)
+            let horasDescanso2 = parseFloat(horasDescansoInfo2[0].horasDescanso)
+            let solicitudesEmpleado = infoArray[4]
+    
+    
+            let name = document.getElementById("n" + id)
+            let actual = document.getElementById("a" + id)
+            let jefe = document.getElementById("je" + id)
+            let jefeid = document.getElementById("jeid" + id)
+            let turno = document.getElementById("tu" + id)
+            let extrax2 = document.getElementById("te" + id)
+            let extrax3 = document.getElementById("tem" + id)
+            let descanso = document.getElementById("dl" + id)
+    
+            let descanso1Inicial = document.getElementById("descanso1Inicial" + id)
+            let descanso2Inicial = document.getElementById("descanso2Inicial" + id)
+            let extrax2Incial = document.getElementById("extrax2Inicial" + id)
+            let extrax3Incial = document.getElementById("extrax3Inicial" + id)
+  
+            let costohra = document.getElementById("costohra" + id)
+    
+    
+    
+            name.value = infoEmpleado[0].emp_nombre
+            actual.value = infoEmpleado[0].emp_area
+            jefe.value = infoJefe[0].emp_correo.substring(0, infoJefe[0].emp_correo.indexOf('@'))
+            jefeid.value = infoJefe[0].emp_id
+            turno.value = infoEmpleado[0].emp_turno
+            costohra.value= costo
+    
+    
+    
+    
+            extrax2.value = 0
+            extrax3.value = 0
+            descanso.value = 0
+            extrax2.value = horasExtra
+    
+    
+            //Horas extra dobles y triples
+            if (horasExtra == null) {
+              horasExtra = 0
             }
-
+            if (horasExtra <= 9) {
+              extrax2.value = horasExtra
+            } else {
+              extrax2.value = 9
+              extrax3.value = horasExtra - 9
+              extrax3.classList.remove("extraS");
+              extrax3.classList.add("danger");
+            }
+    
+            //Horas descanso laborado1
+    
+            if (isNaN(horasDescanso1) || horasDescanso1==null) {
+              horasDescanso1 = 0
+            }
+    
+            let doble = parseFloat(extrax2.value)
+            let triple = parseFloat(extrax3.value)
+    
+            if (horasDescanso1 <= 8) {
+              descanso.value = horasDescanso1
+            } else {
+              descanso.value = 8
+              restante = horasDescanso1 - 8
+    
+              if ((doble + restante) <= 9) {
+                extrax2.value = doble + restante
+              } else {
+    
+                extrax2.value = 9
+                extrax3.value = triple + ((doble + restante) - 9)
+                extrax3.classList.remove("extraS");
+                extrax3.classList.add("danger");
+    
+              }
+    
+            }
+      
+    
+    
+            //Horas descanso laborado2
+            
+            if (isNaN(horasDescanso2) || horasDescanso2==null) {
+            
+              horasDescanso2 = 0
+            }
+    
+            let doble2 = parseFloat(extrax2.value)
+            let triple2 = parseFloat(extrax3.value)
+    
+            if (horasDescanso2 <= 8) {
+              descanso.value = parseFloat(descanso.value) + horasDescanso2
+            } else {
+              descanso.value = parseFloat(descanso.value) + 8
+              restante2 = horasDescanso2 - 8
+    
+              if ((doble2 + restante2) <= 9) {
+                extrax2.value = doble2 + restante2
+              } else {
+    
+                  extrax2.value = 9
+                  extrax3.value = triple2 + ((doble2 + restante2) - 9)
+                  extrax3.classList.remove("extraS");
+                  extrax3.classList.add("danger");
+    
+              }
+    
+            }
+    
+    
+            descanso1Inicial.value=horasDescanso1
+            descanso2Inicial.value=horasDescanso2
+            extrax2Incial.value=parseFloat(extrax2.value)
+            extrax3Incial.value=parseFloat(extrax3.value)
+    
+            // dobleEmpleado = parseFloat(extrax2.value)
+            // tripleEmpleado = parseFloat(extrax3.value)
+            // descanso1Empleado=horasDescanso1
+            // descanso2Empleado=horasDescanso2
+    
+    
+            enableUserInfo(id, "enable")
+    
+    
+    
+            for (let i = 0; i < fechas.length; i++) {
+              
+              for (let y = 0; y < solicitudesEmpleado.length; y++) {
+                if(solicitudesEmpleado[y].fecha.substring(0,solicitudesEmpleado[y].fecha.indexOf("T"))==fechas[i])
+                {
+  
+    
+                  if(i==0){let dl = document.getElementById("l"+ id); dl.disabled=true}
+                  if(i==1){let dm = document.getElementById("m"+ id); dm.disabled=true}
+                  if(i==2){let dmc = document.getElementById("mc"+ id); dmc.disabled=true}
+                  if(i==3){let dj = document.getElementById("j"+ id); dj.disabled=true}
+                  if(i==4){let dv = document.getElementById("v"+ id); dv.disabled=true}
+                  if(i==5){let ds = document.getElementById("s"+ id); ds.disabled=true}
+                  if(i==6){let dd = document.getElementById("d"+ id); dd.disabled=true}
+    
+                }
+                
+              }
+              
+            }
+  
+  
+          }else{
+  
+            $('#modalSuccess').modal({ backdrop: 'static', keyboard: false })
+            errorMessage.innerHTML="Empleado con Solicitud Pendiente"
+  
+            let name = document.getElementById("n" + id)
+            let actual = document.getElementById("a" + id)
+            let jefe = document.getElementById("je" + id)
+            let jefeid = document.getElementById("jeid" + id)
+            let turno = document.getElementById("tu" + id)
+            let te = document.getElementById("te" + id)
+            let tem = document.getElementById("tem" + id)
+            let dl = document.getElementById("dl" + id)
+    
+            name.value = ""
+            actual.value = ""
+            jefe.value = ""
+            jefeid.value = ""
+            turno.value = ""
+            te.value = ""
+            tem.value = ""
+            dl.value = ""
+    
+            enableUserInfo(id, "disable")
+  
           }
 
-        }
 
+
+        }else{
+          $('#modalSuccess').modal({ backdrop: 'static', keyboard: false })
+          errorMessage.innerHTML="Costo de Area no Registrado"
+        }
+      
 
       } else {
 
@@ -479,9 +561,22 @@ let getInfoEmpleado = (e) => {
 
 
 
-
 let fechas = [];
 $(document).ready(function () {
+
+  getTableInfo()
+
+
+})
+
+
+
+
+
+
+function getTableInfo(){
+
+
 
   data = { "id": `${id}` }
   axios({
@@ -496,7 +591,10 @@ $(document).ready(function () {
       dataempleados = result.data.result[1]
       dataHoras = result.data.result[2]
       dataSolicitudHoras = result.data.result[3]
-      
+
+      console.log(dataHoras);
+      console.log(dataSolicitudHoras);
+
 
       fecha = data[0].fecha
       let datef = new Date(fecha)
@@ -512,7 +610,7 @@ $(document).ready(function () {
 
       semanaInput.value = $.datepicker.formatDate('yy-mm-dd', new Date(datef.getFullYear(), datef.getMonth(), datef.getDate() - datef.getDay() + sumdays1)) + "  a  " +
         $.datepicker.formatDate('yy-mm-dd', new Date(datef.getFullYear(), datef.getMonth(), datef.getDate() - datef.getDay() + sumdays2))
-        
+
 
       selectedMotivo.value = data[0].motivo
       let semana = []
@@ -521,8 +619,10 @@ $(document).ready(function () {
         else { semana.push($.datepicker.formatDate('yy-mm-dd', new Date(datef.getFullYear(), datef.getMonth(), datef.getDate() - datef.getDay() + i))) }
       }
 
+      week_start = $.datepicker.formatDate('yy-mm-dd', new Date(datef.getFullYear(), datef.getMonth(), datef.getDate() - datef.getDay() + sumdays1))
+      week_end = $.datepicker.formatDate('yy-mm-dd', new Date(datef.getFullYear(), datef.getMonth(), datef.getDate() - datef.getDay() + sumdays2))
 
-      fechas=semana
+      fechas = semana
 
 
 
@@ -532,6 +632,7 @@ $(document).ready(function () {
       let empleados_confirmado = []
       let empleados_aprobado = []
       let empleados_turno = []
+      let empleados_costohra = []
       for (let i = 0; i < data.length; i++) {
 
         if (empleados.indexOf(data[i].empleado) === -1) {
@@ -540,6 +641,7 @@ $(document).ready(function () {
           empleados_confirmado.push(data[i].confirmado)
           empleados_aprobado.push(data[i].aprobado)
           empleados_turno.push(data[i].turno)
+          empleados_costohra.push(data[i].costo_hra)
         }
       }
 
@@ -580,9 +682,10 @@ $(document).ready(function () {
       let classdia = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"]
       for (let i = 0; i < empleados.length; i++) {
 
+        temp.push(`<button type="submit" class="btn" id="${empleados[i]}" onClick="deleteRow(${rowNumber})"> <span class="icoSidebar fas fa-trash text-danger""></span>`)
         temp.push(`<td><input class="empleado" id="e${rowNumber}" style="width: 100%;" type="number" value="${empleados[i]}""></td>`)
         temp.push(`<td><input class="nombre" id="n${rowNumber}" style="width: 100%;" type="text" value="${empleados_nombre[i]}" disabled></td>`)
-        temp.push( `<td><input class="turno" id="tu${rowNumber}" style="width: 100%;" type="text" value="${empleados_turno[i]}" disabled></td>`)
+        temp.push(`<td><input class="turno" id="tu${rowNumber}" style="width: 100%;" type="text" value="${empleados_turno[i]}" disabled></td>`)
 
         for (let y = 0; y < semana.length; y++) {
           let found = false;
@@ -607,15 +710,17 @@ $(document).ready(function () {
         }
 
 
+        let costototal
         for (let s = 0; s < dataSolicitudHoras.length; s++) {
 
           if (empleados[i] == dataSolicitudHoras[s].empleado) {
 
+            costototal=dataSolicitudHoras[s].costo_total
             let classColor2 = ""
             if (dataSolicitudHoras[s].triples > 0) { classColor2 = "danger" } else { classColor2 = "extraA" }
 
             temp.push(`<td><input class="dobles extraA" id="da${rowNumber}" style="width: 100%;" type="text" value="0" disabled></td>`)
-            temp.push( `<td><input class="triples extraA" id="ta${rowNumber}" style="width: 100%;" type="text" value="0" disabled></td>`)
+            temp.push(`<td><input class="triples extraA" id="ta${rowNumber}" style="width: 100%;" type="text" value="0" disabled></td>`)
             temp.push(`<td><input class="descanso extraA" id="desca${rowNumber}" style="width: 100%;" type="text" value="0" disabled></td>`)
 
 
@@ -627,19 +732,19 @@ $(document).ready(function () {
         temp.push(`<td><input class="laborar" id="lab${rowNumber}" style="width: 100%;" type="text"  value="${area_req}" disabled></td>`)
         temp.push(`<td><input class="jefe" id="je${rowNumber}" style="width: 100%;" type="text" value="${jefe_nombre[i]}"disabled></td>`)
 
-          
-    
 
-        let horasDescanso1=0
-        let horasDescanso2=0
+
+
+        let horasDescanso1 = 0
+        let horasDescanso2 = 0
         let extrax2 = 0
         let extrax3 = 0
         for (let z = 0; z < dataHoras.length; z++) {
 
           if (dataHoras[z][0] === empleados[i]) {
 
-                extrax2 = 0
-                extrax3 = 0
+            extrax2 = 0
+            extrax3 = 0
             let descanso = 0
             let horasExtra = dataHoras[z][1]
             horasDescanso1 = dataHoras[z][2]
@@ -651,7 +756,7 @@ $(document).ready(function () {
             if (horasExtra == null) {
               horasExtra = 0
             }
-            if (horasExtra < 10) {
+            if (horasExtra <= 9) {
               extrax2 = horasExtra
             } else {
               extrax2 = 9
@@ -660,20 +765,20 @@ $(document).ready(function () {
 
             //Horas descanso laborado1
 
-            if (isNaN(horasDescanso1) || horasDescanso1== null) {
+            if (isNaN(horasDescanso1) || horasDescanso1 == null) {
               horasDescanso1 = 0
             }
 
             let doble = extrax2
             let triple = extrax3
 
-            if (horasDescanso1 < 9) {
+            if (horasDescanso1 <= 8) {
               descanso = horasDescanso1
             } else {
               descanso = 8
               restante = horasDescanso1 - 8
 
-              if ((doble + restante) < 10) {
+              if ((doble + restante) <= 9) {
                 extrax2 = doble + restante
               } else {
 
@@ -693,13 +798,13 @@ $(document).ready(function () {
             let doble2 = extrax2
             let triple2 = extrax3
 
-            if (horasDescanso2 < 9) {
+            if (horasDescanso2 <= 8) {
               descanso = descanso + horasDescanso2
             } else {
               descanso = descanso + 8
               restante2 = horasDescanso2 - 8
 
-              if ((doble2 + restante2) < 10) {
+              if ((doble2 + restante2) <= 9) {
                 extrax2 = doble2 + restante2
               } else {
 
@@ -714,38 +819,44 @@ $(document).ready(function () {
             if (extrax3 > 0) { classColor = "danger" } else { classColor = "extraS" }
 
             temp.push(`<td><input class="textra extraS" id="te${rowNumber}" style="width: 100%; text-align:center;" type="text" value="${extrax2}" disabled></td>`)
-            temp.push(`<td><input class="textra2 extraS" id="tem${rowNumber}" style="width: 100%; text-align:center;" type="text" value="${extrax3}" disabled></td>`)   
+            temp.push(`<td><input class="textra2 extraS" id="tem${rowNumber}" style="width: 100%; text-align:center;" type="text" value="${extrax3}" disabled></td>`)
             temp.push(`<td><input class="dlaborado extraS" id="dl${rowNumber}" style="width: 100%; text-align:center;" type="text" value="${descanso}" disabled></td>`)
-  
+
 
           }
         }
-        temp.push(`<td hidden><input class="jefeid" id="jeid${rowNumber}" style="width: 100%;" type="text" value="${empleados_jefe[i]}"hidden></td>`)
-        temp.push(`<td hidden><input class="descans1Incialc" id="descanso1Inicial${rowNumber}" style="width: 100%;" type="text" value="${horasDescanso1}"hidden></td>`)
-        temp.push(`<td hidden><input class="descans2Incialc" id="descanso2Inicial${rowNumber}" style="width: 100%;" type="text" value="${horasDescanso2}"hidden></td>`)
-        temp.push(`<td hidden><input class="extrax2Incialc" id="extrax2Incial${rowNumber}" style="width: 100%;" type="text" value="${extrax2}"hidden></td>`)
-        temp.push(`<td hidden><input class="extrax3Incialc" id="extrax3Incial${rowNumber}" style="width: 100%;" type="text" value="${extrax3}"hidden></td>`)
+        temp.push(`<td class="hide"><input class="jefeid" id="jeid${rowNumber}" style="width: 100%;" type="text" value="${empleados_jefe[i]}" hidden></td>`)
+        temp.push(`<td class="hide"><input class="descans1Inicialc" id="descanso1Inicial${rowNumber}" style="width: 100%;" type="text" value="${horasDescanso1}" hidden></td>`)
+        temp.push(`<td class="hide"><input class="descans2Inicialc" id="descanso2Inicial${rowNumber}" style="width: 100%;" type="text" value="${horasDescanso2}" hidden></td>`)
+        temp.push(`<td class="hide"><input class="extrax2Inicialc" id="extrax2Inicial${rowNumber}" style="width: 100%;" type="text" value="${extrax2}" hidden></td>`)
+        temp.push(`<td class="hide"><input class="extrax3Inicialc" id="extrax3Inicial${rowNumber}" style="width: 100%;" type="text" value="${extrax3}" hidden></td>`)
+        temp.push(`<td class="hide"><input class="costohra" id="costohra${rowNumber}" style="width: 100%;" type="text" value="${empleados_costohra[i]}" hidden></td>`)
+        temp.push(`<td class="hide"><input class="costototal" id="costototal${rowNumber}" style="width: 100%;" type="text" value="${costototal}" hidden></td>`)
+        
+
         row.push(temp)
         table.row.add(temp).draw(false);
         temp = []
         rowNumber++
         let diasInput = document.querySelectorAll(".dias")
-          diasInput.forEach(element => {
-            element.addEventListener('keyup', () => { changeValue(element) })
-          });
+        diasInput.forEach(element => {
+          element.addEventListener('keyup', () => { changeValue(element) })
+        });
 
 
       }
       let startdate = document.getElementsByClassName("lunes")
       for (let r = 0; r < startdate.length; r++) {
         changeValue(startdate[r])
-        
+
       }
     })
     .catch((err) => { console.error(err) })
 
 
-})
+}
+
+
 
 
 
@@ -790,4 +901,53 @@ function enableUserInfo(id, accion) {
 
 
 }
+
+
+
+btnSend.addEventListener('click', function (evt) {
+  let empleadoAll = document.querySelectorAll(".nombre")
+  let doblesAll = document.querySelectorAll(".dobles")
+  let laborarAll = document.querySelectorAll(".laborar")
+  let costoAll = document.querySelectorAll(".costototal")
+
+  let empty = false
+
+  for (var i = 0, len = empleadoAll.length; i < len; i++) {
+
+    if(empleadoAll[i].value==""){
+      empty=true
+    }
+  }
+
+  for (var i = 0, len = doblesAll.length; i < len; i++) {
+
+    if(doblesAll[i].value==""){
+      empty=true
+    }
+  }
+
+  for (var i = 0, len = laborarAll.length; i < len; i++) {
+
+    if(laborarAll[i].value==""){
+      empty=true
+    }
+  }
+
+  for (var i = 0, len = costoAll.length; i < len; i++) {
+
+    if(costoAll[i].value=="0"){
+      empty=true
+    }
+  }
+
+  if(selectedMotivo.value != "" && selectedMotivo.value != "Seleccionar" && empty ==false){
+    send()
+  }else{
+
+    $('#modalError').modal({ backdrop: 'static', keyboard: false })
+  }
+
+
+});
+
 
