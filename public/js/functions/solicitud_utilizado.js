@@ -250,7 +250,7 @@ let send = () => {
   })
     .then((result) => {
 
-      window.location = `/solicitud_list/enviada`
+      window.location = `/solicitud_list/confirmada`
 
     })
     .catch((err) => { console.error(err) })

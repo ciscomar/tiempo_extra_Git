@@ -11,7 +11,9 @@ $(document).ready(function () {
 
   var url = window.location.href;
   var idurl = url.substring(url.lastIndexOf('/') + 1);
-  if (idurl != "sidebar") {
+  if (idurl == "confirmada") {
+    $('#modalConfirmado').modal({ backdrop: 'static', keyboard: false })
+  }else if (idurl != "sidebar") {
     $('#modalSuccess').modal({ backdrop: 'static', keyboard: false })
   }
 
