@@ -411,25 +411,56 @@ function getArrayUtilizado(solicitud, solicitante, empleados, fecha, motivo) {
         empleados.forEach(emp => {
 
             let datenum = 0
-            for (let i = 3; i < 10; i++) {
-                let temp = []
-                if (emp[i] > 0) {
-                    temp.push(solicitud)
-                    temp.push(solicitante)
-                    temp.push(emp[0])
-                    temp.push(emp[2])
-                    temp.push(emp[12])
-                    temp.push(emp[i])
-                    temp.push(motivo)
-                    temp.push(emp[10])
-                    temp.push(emp[11])
-                    temp.push(fecha[datenum])
-                    temp.push(myDate)
-                    temp.push(emp[17])
+            let empLaboro=false
 
-                    arreglo_insertar.push(temp)
+            for (let y = 3; y < 10; y++) {
+
+                if (emp[y] > 0) {
+                    empLaboro=true
                 }
-                datenum++
+
+            }
+
+            if(empLaboro){
+
+                for (let i = 3; i < 10; i++) {
+                    let temp = []
+                    if (emp[i] > 0) {
+                        temp.push(solicitud)
+                        temp.push(solicitante)
+                        temp.push(emp[0])
+                        temp.push(emp[2])
+                        temp.push(emp[12])
+                        temp.push(emp[i])
+                        temp.push(motivo)
+                        temp.push(emp[10])
+                        temp.push(emp[11])
+                        temp.push(fecha[datenum])
+                        temp.push(myDate)
+                        temp.push(emp[17])
+    
+                        arreglo_insertar.push(temp)
+                    }
+                    datenum++
+                }
+            }else{
+
+                        let temp = []
+                        temp.push(solicitud)
+                        temp.push(solicitante)
+                        temp.push(emp[0])
+                        temp.push(emp[2])
+                        temp.push(emp[12])
+                        temp.push(emp[3])
+                        temp.push(motivo)
+                        temp.push(emp[10])
+                        temp.push(emp[11])
+                        temp.push(fecha[datenum])
+                        temp.push(myDate)
+                        temp.push(emp[17])
+    
+                        arreglo_insertar.push(temp)
+    
 
             }
 
@@ -2613,30 +2644,33 @@ controller.horas_utilizadas_POST = (req, res) => {
         let comment = await funcion.insertHistorial(solicitud, emp_id, "Confirmado", "Horas Laboradas")
         let updateFechaUtilizado = await funcion.updateFechaUtilizado(solicitud)
 
-        funcion.insertUtilizado(insert)
-            .then((result) => {
-                for (let i = 0; i < empleados.length; i++) {
-                    if (empleados[i][12] != emp_id && listaJefes.indexOf(empleados[i][13]) === -1) {
-                        listaJefes.push(empleados[i][13])
-                    } else {
-                        gerente = empleados[i][12]
-                        //console.log(empleados[i][12]);
-                    }
-                }
-                for (let i = 0; i < listaJefes.length; i++) { sendConfirmacionMail(listaJefes[i], solicitud, solicitante, "mail_confirmacion", "supervisor") }
-                if (listaJefes.length == 0) {
+        let insertUtilziadoTabla = await funcion.insertUtilizado(insert)
+        res.json(insertUtilziadoTabla)
+        
+        // funcion.insertUtilizado(insert)
+        //     .then((result) => {
+        //         for (let i = 0; i < empleados.length; i++) {
+        //             if (empleados[i][12] != emp_id && listaJefes.indexOf(empleados[i][13]) === -1) {
+        //                 listaJefes.push(empleados[i][13])
+        //             } else {
+        //                 gerente = empleados[i][12]
+        //                 //console.log(empleados[i][12]);
+        //             }
+        //         }
+        //         for (let i = 0; i < listaJefes.length; i++) { sendConfirmacionMail(listaJefes[i], solicitud, solicitante, "mail_confirmacion", "supervisor") }
+        //         if (listaJefes.length == 0) {
 
-                    async function waitForPromise() {
-                        let gerente_id = await funcion.getIdJefe(gerente)
-                        let gerente_alias = await funcion.getEmpleadoNombre(gerente_id[0].emp_id_jefe)
-                        sendConfirmacionMail(gerente_alias[0].emp_correo, solicitud, solicitante, "mail_gerente", "gerencial")
-                    }
-                    waitForPromise()
-                }
-                res.json(result)
+        //             async function waitForPromise() {
+        //                 let gerente_id = await funcion.getIdJefe(gerente)
+        //                 let gerente_alias = await funcion.getEmpleadoNombre(gerente_id[0].emp_id_jefe)
+        //                 sendConfirmacionMail(gerente_alias[0].emp_correo, solicitud, solicitante, "mail_gerente", "gerencial")
+        //             }
+        //             waitForPromise()
+        //         }
+        //         res.json(result)
 
-            })
-            .catch((err) => { console.error(err) })
+        //     })
+        //     .catch((err) => { console.error(err) })
 
 
     }
