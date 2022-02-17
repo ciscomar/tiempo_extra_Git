@@ -850,7 +850,7 @@ controller.confirmar_historial_id_GET = (req, res) => {
     let sidebar = req.res.locals.authData[1]
     let user = req.res.locals.authData[0]
 
-    if (sidebar === "supervisor" || sidebar === "admin") {
+    if (sidebar === "supervisor" || sidebar === "admin" || sidebar === "rh") {
 
         res.render('confirmar_historial_id.ejs', { id, sidebar, user});
 

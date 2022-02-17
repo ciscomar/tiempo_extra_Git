@@ -8,11 +8,11 @@ let table = $('#table2').DataTable(
 
 $(document).ready(function () {
   
-  var url = window.location.href;
-  var idurl = url.substring(url.lastIndexOf('/') + 1);
-  if(idurl != "sidebar"){
-    $('#modalSuccess').modal({ backdrop: 'static', keyboard: false })
-  }
+  // var url = window.location.href;
+  // var idurl = url.substring(url.lastIndexOf('/') + 1);
+  // if(idurl != "sidebar"){
+  //   $('#modalSuccess').modal({ backdrop: 'static', keyboard: false })
+  // }
 
 
 axios({
