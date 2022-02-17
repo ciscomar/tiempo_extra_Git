@@ -13,24 +13,28 @@
       menugerente="hidden"
       menuplanta="hidden"
       menurh="hidden"
+      manual="Manual_Supervisor.pdf"
     }
     if(usertype=="gerente"){
       menusupervisor="hidden"
       menugerente=""
       menuplanta="hidden"
       menurh="hidden"
+      manual="Manual_Gerente.pdf"
     }
     if(usertype=="planta"){
       menusupervisor="hidden"
       menugerente="hidden"
       menuplanta=""
       menurh="hidden"
+      manual="Manual_GerentePlanta.pdf"
     }
     if(usertype=="rh"){
       menusupervisor="hidden"
       menugerente="hidden"
       menuplanta="hidden"
       menurh=""
+      manual="Manual_RH.pdf"
     }
 
     if(usertype=="admin"){
@@ -38,6 +42,7 @@
       menugerente=""
       menuplanta=""
       menurh=""
+      manual="Manual_Supervisor.pdf"
     }
     if(usertype=="no"){
       menusupervisor="hidden"
@@ -190,12 +195,8 @@
       </li>
     </ul>
 
-
-
-
-
     
-    <a href="http://10.56.99.21:9675/portal/portal-login" target="_blank" class="list-group-item list-group-item-action text-white list-group-ticket"><span class="text-white fas fa-ticket-alt"></span> Soporte</a>
+    <a data-target="#modalGuia" data-toggle="modal"  href="#modalGuia" class="list-group-item list-group-item-action text-white list-group-ticket"><span class="text-white fas fa-book"></span> Guia</a>
   </div>
 
   
