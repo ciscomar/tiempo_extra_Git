@@ -3,7 +3,8 @@ const router = express.Router();
 const routesController = require('./routesController')
 const middleware = require('../public/js/middlewares/middleware')
 
-
+const multer = require('multer')
+const upload = multer()
 
 //Routes
 
@@ -72,5 +73,9 @@ router.post('/deleteCosto', middleware.sspi, middleware.userType, routesControll
 router.post('/getAreas', middleware.sspi, middleware.userType, routesController.getAreas_POST);
 router.post('/InsertCosto', middleware.sspi, middleware.userType, routesController.InsertCosto_POST);
 router.post('/InsertMotivo', middleware.sspi, middleware.userType, routesController.InsertMotivo_POST);
+router.get('/catalogo', middleware.sspi, middleware.userType, routesController.catalogo_GET);
+router.post('/insertar_catalogo', middleware.sspi, middleware.userType, upload.single("excelFile"), routesController.insertar_catalogo_POST);
+router.get('/search_empleados',middleware.sspi, middleware.userType, routesController.Search_Empleados_GET);
+
 
 module.exports = router;

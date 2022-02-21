@@ -25,67 +25,67 @@ funcion.getInfoEmpleado = (empleado) => {
 
 
 
-funcion.insertSolicitud= (insert) => {
+funcion.insertSolicitud = (insert) => {
     return new Promise((resolve, reject) => {
-        
-    let sql  = `INSERT INTO solicitud (solicitud,solicitante, empleado,turno, jefe, horas, motivo, area_actual, area_req, fecha, status,confirmado, fecha_conf, costo_hra) VALUES ?`;
-            
-    dbT(sql, [insert])
-    .then((result) => {
-        resolve(result.affectedRows)
 
-    })
-    .catch((error) => { console.error(error); reject(error) })
+        let sql = `INSERT INTO solicitud (solicitud,solicitante, empleado,turno, jefe, horas, motivo, area_actual, area_req, fecha, status,confirmado, fecha_conf, costo_hra) VALUES ?`;
+
+        dbT(sql, [insert])
+            .then((result) => {
+                resolve(result.affectedRows)
+
+            })
+            .catch((error) => { console.error(error); reject(error) })
 
     })
 }
 
 
-funcion.insertUtilizado= (insert) => {
+funcion.insertUtilizado = (insert) => {
     return new Promise((resolve, reject) => {
-        
-    let sql  = `INSERT INTO utilizado (solicitud,solicitante, empleado,turno, jefe, horas, motivo, area_actual, area_req, fecha, fecha_utilizado, costo_hra) VALUES ?`;
-            
-    dbT(sql, [insert])
-    .then((result) => {
-        resolve(result.affectedRows)
 
-    })
-    .catch((error) => { console.error(error); reject(error) })
+        let sql = `INSERT INTO utilizado (solicitud,solicitante, empleado,turno, jefe, horas, motivo, area_actual, area_req, fecha, fecha_utilizado, costo_hra) VALUES ?`;
 
-    })
-}
+        dbT(sql, [insert])
+            .then((result) => {
+                resolve(result.affectedRows)
 
-
-
-funcion.insertSolicitudHoras= (insert) => {
-    return new Promise((resolve, reject) => {
-        
-    let sql  = `INSERT INTO horas_solicitud (solicitud,solicitante, empleado,dobles, triples, descanso,status, fecha, costo_total) VALUES ?`;
-            
-    dbT(sql, [insert])
-    .then((result) => {
-        resolve(result.affectedRows)
-
-    })
-    .catch((error) => { console.error(error); reject(error) })
+            })
+            .catch((error) => { console.error(error); reject(error) })
 
     })
 }
 
 
 
-funcion.insertHorasUtilizadas= (insert) => {
+funcion.insertSolicitudHoras = (insert) => {
     return new Promise((resolve, reject) => {
-        
-    let sql  = `INSERT INTO horas_utilizado (solicitud,solicitante, empleado,dobles, triples, descanso, fecha, costo_total) VALUES ?`;
-            
-    dbT(sql, [insert])
-    .then((result) => {
-        resolve(result.affectedRows)
+
+        let sql = `INSERT INTO horas_solicitud (solicitud,solicitante, empleado,dobles, triples, descanso,status, fecha, costo_total) VALUES ?`;
+
+        dbT(sql, [insert])
+            .then((result) => {
+                resolve(result.affectedRows)
+
+            })
+            .catch((error) => { console.error(error); reject(error) })
 
     })
-    .catch((error) => { console.error(error); reject(error) })
+}
+
+
+
+funcion.insertHorasUtilizadas = (insert) => {
+    return new Promise((resolve, reject) => {
+
+        let sql = `INSERT INTO horas_utilizado (solicitud,solicitante, empleado,dobles, triples, descanso, fecha, costo_total) VALUES ?`;
+
+        dbT(sql, [insert])
+            .then((result) => {
+                resolve(result.affectedRows)
+
+            })
+            .catch((error) => { console.error(error); reject(error) })
 
     })
 }
@@ -300,7 +300,7 @@ funcion.getCostoGerenteTotalUtilizado = (arrayEmpleados, week_start, week_end) =
 }
 
 
-funcion.getCostoPlantaTotalUtilizado = ( week_start, week_end) => {
+funcion.getCostoPlantaTotalUtilizado = (week_start, week_end) => {
     return new Promise((resolve, reject) => {
 
         dbT(`SELECT SUM (costo_total) AS costo
@@ -340,7 +340,7 @@ funcion.getTotalSupervisoresGerenteUtilizado = (arrayEmpleados, week_start, week
 
 
 
-funcion.getTotalGerentesGerente = ( week_start, week_end) => {
+funcion.getTotalGerentesGerente = (week_start, week_end) => {
     return new Promise((resolve, reject) => {
 
         dbT(`SELECT *
@@ -355,7 +355,7 @@ funcion.getTotalGerentesGerente = ( week_start, week_end) => {
 }
 
 
-funcion.getTotalGerentesGerenteUtilizado = ( week_start, week_end) => {
+funcion.getTotalGerentesGerenteUtilizado = (week_start, week_end) => {
     return new Promise((resolve, reject) => {
 
         dbT(`SELECT *
@@ -370,7 +370,7 @@ funcion.getTotalGerentesGerenteUtilizado = ( week_start, week_end) => {
 }
 
 
-funcion.getSolicitudesFechaPlanta= ( week_start, week_end) => {
+funcion.getSolicitudesFechaPlanta = (week_start, week_end) => {
     return new Promise((resolve, reject) => {
 
         dbT(`SELECT * FROM utilizado WHERE
@@ -419,7 +419,7 @@ funcion.getEmpleadoId = (username) => {
 
 
 funcion.getMyEmpleados = (emp_id) => {
-    
+
     return new Promise((resolve, reject) => {
         dbE(`
         SELECT 
@@ -523,7 +523,7 @@ funcion.getMyHistorialFinalizado = (idEmp) => {
 //             solicitud 
 //         WHERE
 //             status= "Confirmado" 
-     
+
 //         GROUP BY 
 //             solicitud
 //         ORDER BY 
@@ -739,7 +739,7 @@ funcion.getSolicitudesPendientesConf = (arrayEmpleados) => {
 }
 
 
-funcion.updateAprobar= (id, emp_id, status) => {
+funcion.updateAprobar = (id, emp_id, status) => {
     return new Promise((resolve, reject) => {
 
         dbT(`UPDATE solicitud
@@ -879,7 +879,7 @@ funcion.getInfoDescansoUtilizado = (empleado, descanso) => {
 }
 
 
-funcion.getConfirmadoStatus = (solicitud)=>{
+funcion.getConfirmadoStatus = (solicitud) => {
     return new Promise((resolve, reject) => {
 
         dbT(`
@@ -896,7 +896,7 @@ funcion.getConfirmadoStatus = (solicitud)=>{
     })
 }
 
-funcion.getSolicitante = (id)=>{
+funcion.getSolicitante = (id) => {
     return new Promise((resolve, reject) => {
 
         dbE(`
@@ -913,7 +913,7 @@ funcion.getSolicitante = (id)=>{
     })
 }
 
-funcion.getIdJefe = (solicitante)=>{
+funcion.getIdJefe = (solicitante) => {
     return new Promise((resolve, reject) => {
 
         dbE(`
@@ -930,7 +930,7 @@ funcion.getIdJefe = (solicitante)=>{
     })
 }
 
-funcion.getEmpleadoNombre = (solicitante)=>{
+funcion.getEmpleadoNombre = (solicitante) => {
     return new Promise((resolve, reject) => {
 
         dbE(`
@@ -960,9 +960,9 @@ funcion.getManagerHorasEmpleados = (week_start, week_end, arrayempleados) => {
         AND
             status != "Rechazado"
             `)
-        
 
-            .then((result) => {  resolve(result) })
+
+            .then((result) => { resolve(result) })
             .catch((error) => { reject(error) })
     })
 }
@@ -977,9 +977,9 @@ funcion.getManagerHorasEmpleadosUtilizado = (week_start, week_end, arrayempleado
         AND 
             (fecha BETWEEN "${week_start}" AND "${week_end}")
             `)
-        
 
-            .then((result) => {  resolve(result) })
+
+            .then((result) => { resolve(result) })
             .catch((error) => { reject(error) })
     })
 }
@@ -993,7 +993,7 @@ funcion.getPlantManagerHorasEmpleados = (week_start, week_end) => {
             status != "Rechazado"
         `)
 
-            .then((result) => {  resolve(result) })
+            .then((result) => { resolve(result) })
             .catch((error) => { reject(error) })
     })
 }
@@ -1006,13 +1006,13 @@ funcion.getPlantManagerHorasEmpleadosUtilizado = (week_start, week_end) => {
 
         `)
 
-            .then((result) => {  resolve(result) })
+            .then((result) => { resolve(result) })
             .catch((error) => { reject(error) })
     })
 }
 
 
-funcion.getInfoExtraManager = (empleado,solicitantes, week_start, week_end) => {
+funcion.getInfoExtraManager = (empleado, solicitantes, week_start, week_end) => {
 
     return new Promise((resolve, reject) => {
 
@@ -1038,7 +1038,7 @@ funcion.getInfoExtraManager = (empleado,solicitantes, week_start, week_end) => {
 
 
 
-funcion.getInfoExtraManagerUtilizado = (empleado,solicitantes, week_start, week_end) => {
+funcion.getInfoExtraManagerUtilizado = (empleado, solicitantes, week_start, week_end) => {
 
     return new Promise((resolve, reject) => {
 
@@ -1103,7 +1103,7 @@ funcion.getInfoExtraPlantManagerUtilizado = (empleado, week_start, week_end) => 
 
 
 
-funcion.getInfoDescansoManager = (empleado,solicitantes, descanso) => {
+funcion.getInfoDescansoManager = (empleado, solicitantes, descanso) => {
     return new Promise((resolve, reject) => {
 
         dbT(`SELECT SUM(horas) as horasDescanso
@@ -1126,7 +1126,7 @@ funcion.getInfoDescansoManager = (empleado,solicitantes, descanso) => {
 }
 
 
-funcion.getInfoDescansoManagerUtilizado = (empleado,solicitantes, descanso) => {
+funcion.getInfoDescansoManagerUtilizado = (empleado, solicitantes, descanso) => {
     return new Promise((resolve, reject) => {
 
         dbT(`SELECT SUM(horas) as horasDescanso
@@ -1264,7 +1264,7 @@ funcion.getSolicitudHorasUtilizado = (id) => {
 
 
 
-funcion.getWeekInfoEmpleado= (empleado, week_start, week_end) => {
+funcion.getWeekInfoEmpleado = (empleado, week_start, week_end) => {
     return new Promise((resolve, reject) => {
 
         dbT(`SELECT * FROM solicitud 
@@ -1402,7 +1402,7 @@ funcion.getSolicitudesPendienteUtilizado = () => {
 
 
 
-funcion.getCostoArea= (area) => {
+funcion.getCostoArea = (area) => {
 
     return new Promise((resolve, reject) => {
         dbT(`
@@ -1455,5 +1455,100 @@ funcion.InsertMotivo = (motivo) => {
 
 
 
+funcion.Discover_Search = (base, tabla) => {
+    return new Promise((resolve, reject) => {
 
+        dbE(`SHOW COLUMNS FROM  del_empleados`)
+            .then((result) => { resolve(result) })
+            .catch((error) => { reject(error) })
+    })
+
+
+}
+
+
+
+funcion.Insert_excel = (base, tabla, titulos, valores, callback) => {
+
+    return new Promise((resolve, reject) => {
+        let valor
+        let = valores_finales = []
+        let duplicate = []
+        let promises = []
+
+        //let date= new Date(valores[0][5]
+
+        for (let i = 0; i < valores.length; i++) {
+
+            valores_finales = []
+            duplicate = []
+            for (let y = 0; y < titulos.length; y++) {
+
+                if (y == 5) {
+                    if (typeof (valores[i][5]) === "object") {
+
+                        let date = new Date(valores[0][5])
+                        valor = `" ${date.toISOString().split("T")[0]}"`
+
+                    } else {
+                        valor = `"${valores[i][y]}"`
+                    }
+                } else {
+                    if (typeof (valores[i][y]) === "string") {
+                        valor = `"${valores[i][y]}"`
+                    } else if (typeof (valores[i][y])) {
+                        valor = valores[i][y]
+                    } else if (valores[i][y] === undefined) {
+                        valor = " "
+                    }
+                    else {
+                        valor = valores[i][y]
+                    }
+
+                }
+
+                valores_finales.push(valor)
+                duplicate.push(`${titulos[y]}=${valor}`)
+            }
+
+
+            let promise = dbE(`INSERT INTO ${tabla} (${titulos.join()}) VALUES (${valores_finales}) ON DUPLICATE KEY UPDATE ${duplicate} `)
+            promises.push(promise)
+
+        }
+
+        Promise.all(promises)
+            .then((result) => { resolve(result) })
+            .catch((error) => { reject(error) })
+
+    })
+
+}
+
+
+funcion.Search_Empledos = () => {
+    return new Promise((resolve, reject) => {
+        dbE(`SELECT * FROM del_empleados WHERE 1`)
+            .then((result) => { resolve(result) })
+            .catch((error) => { reject(error) })
+    })
+}
+
+
+funcion.getEmpleadoCorreo = (username) => {
+
+    return new Promise((resolve, reject) => {
+        dbE(`
+        SELECT 
+            emp_id
+        FROM
+            del_empleados 
+        WHERE 
+            emp_correo LIKE "${username}%"
+
+        `)
+            .then((result) => { resolve(result) })
+            .catch((error) => { reject(error) })
+    })
+}
 module.exports = funcion;

@@ -520,7 +520,7 @@ let getInfoEmpleado = (e) => {
 
         }else{
           $('#modalSuccess').modal({ backdrop: 'static', keyboard: false })
-          errorMessage.innerHTML="Costo de Area no Registrado"
+          errorMessage.innerHTML="Costo de Area no Registrado Contacte a Recursos Humanos"
         }
       
 

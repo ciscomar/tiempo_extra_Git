@@ -1,6 +1,7 @@
 
 const nodeSSPI = require('node-sspi');
 const middleware = {};
+const funcion = require('../functions/controllerFunctions');
 
 
 
@@ -35,17 +36,29 @@ middleware.userType = (req, res, next) => {
                 
             });
 
-            
-            if (access === "ok") {
+            funcion.getEmpleadoCorreo(user.substring(4))
+            .then((result) => {
 
-                userInfo.push(sidebar)
-                res.locals.authData=userInfo
-                next()
-                
-            }else{
-                res.render('acceso_denegado.ejs',{sidebar, user})
-                
-            }
+    
+                if(result.length != 1){
+                    sidebar="no"
+                }
+
+                if (access === "ok" && result.length===1) {
+
+                    userInfo.push(sidebar)
+                    res.locals.authData=userInfo
+                    next()
+                    
+                }else{
+                    res.render('acceso_denegado.ejs',{sidebar, user})
+                    
+                }
+
+            })
+
+            
+
 
 }
 

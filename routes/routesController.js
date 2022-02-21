@@ -5,7 +5,7 @@ const moment = require('moment')
 //Require Funciones
 const funcion = require('../public/js/functions/controllerFunctions');
 const schedule = require('../public/js/functions/controllerSchedule');
-
+const Excel = require('exceljs');
 
 
 // Require email and email template
@@ -44,15 +44,15 @@ controller.index_GET = (req, res) => {
     let user = req.res.locals.authData[0]
     let sidebar = req.res.locals.authData[1]
 
-    
 
-    res.render('index.ejs', {user,sidebar});
+
+    res.render('index.ejs', { user, sidebar });
 
 }
 
 
 controller.accesoDenegado_GET = (req, res) => {
-   // let user = req.res.locals.authData[0]
+    // let user = req.res.locals.authData[0]
     sidebar = "no"
     res.render('acceso_denegado.ejs', {
         sidebar, user
@@ -64,9 +64,9 @@ controller.crear_solicitud_GET = (req, res) => {
     let user = req.res.locals.authData[0]
     let sidebar = req.res.locals.authData[1]
 
-    if (sidebar === "supervisor" || sidebar==="admin" ) {
+    if (sidebar === "supervisor" || sidebar === "admin") {
 
-        res.render("solicitud.ejs", { user,sidebar})
+        res.render("solicitud.ejs", { user, sidebar })
 
     } else {
 
@@ -257,10 +257,9 @@ controller.sendSolicitud_POST = (req, res) => {
                         //console.log(empleados[i][12]);
                     }
                 }
-                
-                for (let i = 0; i < listaJefes.length; i++) 
-                { 
-                    sendConfirmacionMail(listaJefes[i]+"@tristone.com", solicitud, solicitante, "mail_confirmacion", "supervisor") 
+
+                for (let i = 0; i < listaJefes.length; i++) {
+                    sendConfirmacionMail(listaJefes[i] + "@tristone.com", solicitud, solicitante, "mail_confirmacion", "supervisor")
                 }
                 if (listaJefes.length == 0) {
 
@@ -318,14 +317,14 @@ controller.editarSolicitud_POST = (req, res) => {
                     if (empleados[i][12] != emp_id && listaJefes.indexOf(empleados[i][13]) === -1) {
                         listaJefes.push(empleados[i][13])
                     } else {
-                        
+
                         gerente = empleados[i][12]
-  
+
                     }
                 }
-                for (let i = 0; i < listaJefes.length; i++) { 
+                for (let i = 0; i < listaJefes.length; i++) {
 
-                    sendConfirmacionMail(listaJefes[i]+"@tristone.com", solicitud, solicitante, "mail_confirmacion", "supervisor") 
+                    sendConfirmacionMail(listaJefes[i] + "@tristone.com", solicitud, solicitante, "mail_confirmacion", "supervisor")
                 }
                 if (listaJefes.length == 0) {
 
@@ -411,17 +410,17 @@ function getArrayUtilizado(solicitud, solicitante, empleados, fecha, motivo) {
         empleados.forEach(emp => {
 
             let datenum = 0
-            let empLaboro=false
+            let empLaboro = false
 
             for (let y = 3; y < 10; y++) {
 
                 if (emp[y] > 0) {
-                    empLaboro=true
+                    empLaboro = true
                 }
 
             }
 
-            if(empLaboro){
+            if (empLaboro) {
 
                 for (let i = 3; i < 10; i++) {
                     let temp = []
@@ -438,29 +437,29 @@ function getArrayUtilizado(solicitud, solicitante, empleados, fecha, motivo) {
                         temp.push(fecha[datenum])
                         temp.push(myDate)
                         temp.push(emp[17])
-    
+
                         arreglo_insertar.push(temp)
                     }
                     datenum++
                 }
-            }else{
+            } else {
 
-                        let temp = []
-                        temp.push(solicitud)
-                        temp.push(solicitante)
-                        temp.push(emp[0])
-                        temp.push(emp[2])
-                        temp.push(emp[12])
-                        temp.push(emp[3])
-                        temp.push(motivo)
-                        temp.push(emp[10])
-                        temp.push(emp[11])
-                        temp.push(fecha[datenum])
-                        temp.push(myDate)
-                        temp.push(emp[17])
-    
-                        arreglo_insertar.push(temp)
-    
+                let temp = []
+                temp.push(solicitud)
+                temp.push(solicitante)
+                temp.push(emp[0])
+                temp.push(emp[2])
+                temp.push(emp[12])
+                temp.push(emp[3])
+                temp.push(motivo)
+                temp.push(emp[10])
+                temp.push(emp[11])
+                temp.push(fecha[datenum])
+                temp.push(myDate)
+                temp.push(emp[17])
+
+                arreglo_insertar.push(temp)
+
 
             }
 
@@ -546,7 +545,7 @@ controller.solicitud_list_GET = (req, res) => {
 
     if (sidebar === "supervisor" || sidebar === "admin") {
 
-        res.render("solicitud_list.ejs", { id, sidebar, user})
+        res.render("solicitud_list.ejs", { id, sidebar, user })
 
     } else {
         res.redirect("/acceso_denegado")
@@ -852,7 +851,7 @@ controller.confirmar_historial_id_GET = (req, res) => {
 
     if (sidebar === "supervisor" || sidebar === "admin" || sidebar === "rh") {
 
-        res.render('confirmar_historial_id.ejs', { id, sidebar, user});
+        res.render('confirmar_historial_id.ejs', { id, sidebar, user });
 
     } else {
         res.redirect("/acceso_denegado")
@@ -2481,7 +2480,7 @@ controller.solicitud_editar_GET = (req, res) => {
 
     if (sidebar === "supervisor" || sidebar === "admin") {
 
-        res.render('solicitud_editar.ejs', { id, sidebar,user });
+        res.render('solicitud_editar.ejs', { id, sidebar, user });
 
     } else {
         res.redirect("/acceso_denegado")
@@ -2646,7 +2645,7 @@ controller.horas_utilizadas_POST = (req, res) => {
 
         let insertUtilziadoTabla = await funcion.insertUtilizado(insert)
         res.json(insertUtilziadoTabla)
-        
+
         // funcion.insertUtilizado(insert)
         //     .then((result) => {
         //         for (let i = 0; i < empleados.length; i++) {
@@ -2735,6 +2734,144 @@ controller.InsertMotivo_POST = (req, res) => {
 
 
 
+}
+
+
+
+controller.catalogo_GET = (req, res) => {
+    let user = req.res.locals.authData[0]
+    let id = req.param.id
+    let sidebar = req.res.locals.authData[1]
+
+    if (sidebar === "rh" || sidebar === "admin") {
+
+        res.render("catalogo.ejs", { sidebar, id, user })
+
+    } else {
+        res.redirect("/acceso_denegado")
+    }
+
+}
+
+
+
+
+controller.insertar_catalogo_POST = (req, res) => {
+
+    let base = "empleados"
+    let tabla = "del_empleados"
+
+    let arreglo = [];
+    let titulos = [];
+    let titulos2 = [];
+    let valores = [];
+    let emp_id = [];
+    let emp_id2;
+    let count = 0;
+
+    const wb = new Excel.Workbook();
+
+    funcion.Discover_Search(base, tabla).then((formato) => {
+
+
+        wb.xlsx.load(req.file.buffer)
+            .then(() => {
+                worksheet = wb.worksheets[0]
+                worksheet.eachRow(function (row, rowNumber) {
+                    val = row.values
+                    for (let i = 0; i < val.length; i++) {
+                        if (val[i] === undefined) {
+                            val[i] = " "
+                        }
+
+                    }
+                    arreglo.push(val)
+                });
+            })
+            .then(() => {
+                for (let i = 0; i < arreglo.length; i++) {
+                    arreglo[i].shift()
+                }
+                for (let i = 0; i < arreglo[0].length; i++) {
+                    titulos.push(`\`${arreglo[0][i]}\``)
+                    titulos2.push((arreglo[0][i]).toUpperCase())
+                }
+            })
+            .then(() => {
+   
+                if (formato.length === titulos2.length) {
+                    for (let i = 0; i < titulos2.length; i++) {
+
+                        if (titulos2.includes((formato[i].Field).toUpperCase())) { count++ }
+                    }
+
+
+        
+
+                    if (formato.length != count) {
+
+                        res.json("Titulos del documento no coinciden con la base de datos")
+
+                    } else {
+
+                        for (let i = 0; i < titulos2.length; i++) {
+                            if (titulos2[i] == "EMP_ID") {
+                                emp_id2 = i
+                            }
+                        }
+                        for (let i = 0; i < arreglo.length; i++) {
+
+                            emp_id.push((arreglo[i][emp_id2]))
+                        }
+                        let unique = [...new Set(emp_id)];
+                        for (let i = 1; i < arreglo.length; i++) {
+
+                            valores.push(arreglo[i])
+                        }
+
+                        if (emp_id.length != unique.length) {
+
+                            res.json("Numero de Empleado duplicado verifique su informacion")
+
+                        } else {
+
+                            funcion.Insert_excel(base, tabla, titulos, valores)
+                                .then((result) => {
+
+                                    res.json("ok")
+                                })
+                                .catch((err) => { console.error(err) })
+
+
+                        }
+
+                    }
+                } else {
+
+                    res.json("Columnas del documento no coinciden con la base de datos")
+                }
+            })
+
+
+
+    })
+        .catch((err) => { console.error(err) })
+
+
+
+
+}
+
+
+controller.Search_Empleados_GET = (req, res) => {
+    funcion.Search_Empledos()
+        .then(result => {
+            etiquetas_empleados = result
+            base = "base"
+            tabla = "tabla"
+            res.json(etiquetas_empleados, base, tabla)
+        })
+        .catch(err => { console.error(err) })
 }
 
 
