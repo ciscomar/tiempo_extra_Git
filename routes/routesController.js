@@ -2743,7 +2743,7 @@ controller.catalogo_GET = (req, res) => {
     let id = req.param.id
     let sidebar = req.res.locals.authData[1]
 
-    if (sidebar === "rh" || sidebar === "admin") {
+    if (sidebar === "rh" || sidebar === "admin" || sidebar === "rhc") {
 
         res.render("catalogo.ejs", { sidebar, id, user })
 

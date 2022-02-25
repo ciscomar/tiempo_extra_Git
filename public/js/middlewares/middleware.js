@@ -33,6 +33,7 @@ middleware.userType = (req, res, next) => {
                 if (element === "TFT\\TFT.DEL.PAGES_TiempoExtra_GerentePlanta") {access = "ok", sidebar="planta"}
                 if (element === "TFT\\TFT.DEL.PAGES_TiempoExtra_RH") {access = "ok", sidebar="rh"}
                 if (element === "TFT\\TFT.DEL.PAGES_TiempoExtra_Admin") {access = "ok", sidebar="admin"}
+                if (element === "TFT\\TFT.DEL.PAGES_TiempoExtra_RH_Catalogo") {access = "ok", sidebar="rhc"}
                 
             });
 

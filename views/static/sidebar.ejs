@@ -5,6 +5,7 @@
     let menugerente
     let menuplanta
     let menurh
+    let menurhc
 
 
 
@@ -42,6 +43,14 @@
       menugerente=""
       menuplanta=""
       menurh=""
+      manual="Manual_Supervisor.pdf"
+    }
+    if(usertype=="rhc"){
+      menusupervisor="hidden"
+      menugerente="hidden"
+      menuplanta="hidden"
+      menurh="hidden"
+      menurhc=""
       manual="Manual_Supervisor.pdf"
     }
     if(usertype=="no"){
@@ -195,6 +204,22 @@
 
         <ul>
           <a href="/catalogo" class="list-group-item list-group-item-action bg-dark hide_show5">
+            <span class="text-light fas fa-book-open"></span>
+            <span class="text-white"><span class="text-white text-center">Catalogo</span></span></a>
+        </ul> 
+      </li>
+    </ul>
+
+
+
+    <ul class="list-group">
+      <li class="list-group_item" <%=menurhc%>>
+        <a href="#" class="list-group-item list-group-item-action bg-dark" id="click_hide_show6"><span
+            class="text-light fas fa-angle-right"></span><span class="text-light fas fa-user-circle"></span> <span
+            class="text-white">HR Catalogo</span></a>
+
+        <ul>
+          <a href="/catalogo" class="list-group-item list-group-item-action bg-dark hide_show6">
             <span class="text-light fas fa-book-open"></span>
             <span class="text-white"><span class="text-white text-center">Catalogo</span></span></a>
         </ul> 
