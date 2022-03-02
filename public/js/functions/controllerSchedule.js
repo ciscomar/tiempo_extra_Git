@@ -16,7 +16,7 @@ const { promisify } = require('util');
 const rechazar_horas = schedule.scheduleJob('1 * * * * *', function(){
     
 
-    dbT(`SELECT DISTINCT solicitud,solicitante,fecha_solicitud FROM solicitud WHERE status != 'Finalizado' AND status !='Rechazado'`)
+    dbT(`SELECT DISTINCT solicitud,solicitante,fecha_solicitud FROM solicitud WHERE status != 'Finalizado' AND status !='Rechazado' AND status !='Aprobado'`)
         .then((result) => {
 
              for (let i = 0; i < result.length; i++) {
