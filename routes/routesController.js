@@ -1864,7 +1864,9 @@ controller.getHorasGerente_POST = (req, res) => {
             solicitudes = await funcion.getManagerHorasEmpleados(startDate, endDate, arrayEmpleados)
 
         } else {
-            solicitudes = await funcion.getManagerHorasEmpleadosUtilizado(startDate, endDate, arrayEmpleados)
+            solicitudes = await funcion.getManagerHorasEmpleados(startDate, endDate, arrayEmpleados)
+            //Se comenta linea para remover horas utilizado por aprobado 
+            //solicitudes = await funcion.getManagerHorasEmpleadosUtilizado(startDate, endDate, arrayEmpleados)
 
         }
 
@@ -1903,9 +1905,15 @@ controller.getHorasGerente_POST = (req, res) => {
                 getInfoDescanso2 = await funcion.getInfoDescansoManager(empSolicitud[y], arrayEmpleados, descanso2)
 
             } else {
-                getInfoExtra = await funcion.getInfoExtraManagerUtilizado(empSolicitud[y], arrayEmpleados, inicio, fin)
-                getInfoDescanso1 = await funcion.getInfoDescansoManagerUtilizado(empSolicitud[y], arrayEmpleados, descanso1)
-                getInfoDescanso2 = await funcion.getInfoDescansoManagerUtilizado(empSolicitud[y], arrayEmpleados, descanso2)
+
+                getInfoExtra = await funcion.getInfoExtraManager(empSolicitud[y], arrayEmpleados, inicio, fin)
+                getInfoDescanso1 = await funcion.getInfoDescansoManager(empSolicitud[y], arrayEmpleados, descanso1)
+                getInfoDescanso2 = await funcion.getInfoDescansoManager(empSolicitud[y], arrayEmpleados, descanso2)
+                
+                // Se comenta para remover tiempo utilizado
+                // getInfoExtra = await funcion.getInfoExtraManagerUtilizado(empSolicitud[y], arrayEmpleados, inicio, fin)
+                // getInfoDescanso1 = await funcion.getInfoDescansoManagerUtilizado(empSolicitud[y], arrayEmpleados, descanso1)
+                // getInfoDescanso2 = await funcion.getInfoDescansoManagerUtilizado(empSolicitud[y], arrayEmpleados, descanso2)
 
             }
 
@@ -1980,11 +1988,15 @@ controller.getHorasGerentePlanta_POST = (req, res) => {
         let fin
 
 
+
         let solicitudes
         if (tabla == "aprobado") {
             solicitudes = await funcion.getPlantManagerHorasEmpleados(startDate, endDate)
         } else {
-            solicitudes = await funcion.getPlantManagerHorasEmpleadosUtilizado(startDate, endDate)
+            //Se elimina funcionalidad de horas laboradas
+           // solicitudes = await funcion.getPlantManagerHorasEmpleadosUtilizado(startDate, endDate)
+
+           solicitudes = await funcion.getPlantManagerHorasEmpleados(startDate, endDate)
         }
 
 
@@ -2023,9 +2035,13 @@ controller.getHorasGerentePlanta_POST = (req, res) => {
                 getInfoDescanso1 = await funcion.getInfoDescansoPlantManager(empSolicitud[y], descanso1)
                 getInfoDescanso2 = await funcion.getInfoDescansoPlantManager(empSolicitud[y], descanso2)
             } else {
-                getInfoExtra = await funcion.getInfoExtraPlantManagerUtilizado(empSolicitud[y], inicio, fin)
-                getInfoDescanso1 = await funcion.getInfoDescansoPlantManagerUtilizado(empSolicitud[y], descanso1)
-                getInfoDescanso2 = await funcion.getInfoDescansoPlantManagerUtilizado(empSolicitud[y], descanso2)
+                getInfoExtra = await funcion.getInfoExtraPlantManager(empSolicitud[y], inicio, fin)
+                getInfoDescanso1 = await funcion.getInfoDescansoPlantManager(empSolicitud[y], descanso1)
+                getInfoDescanso2 = await funcion.getInfoDescansoPlantManager(empSolicitud[y], descanso2)
+                //Se elimina la funcionalidad de laborado
+                // getInfoExtra = await funcion.getInfoExtraPlantManagerUtilizado(empSolicitud[y], inicio, fin)
+                // getInfoDescanso1 = await funcion.getInfoDescansoPlantManagerUtilizado(empSolicitud[y], descanso1)
+                // getInfoDescanso2 = await funcion.getInfoDescansoPlantManagerUtilizado(empSolicitud[y], descanso2)
 
             }
 
@@ -2267,9 +2283,9 @@ controller.acumulado_planta_fecha_POST = (req, res) => {
                 fin = friday
             }
 
-            let getInfoExtra = await funcion.getInfoExtraUtilizado(empSolicitud[y], inicio, fin)
-            let getInfoDescanso1 = await funcion.getInfoDescansoUtilizado(empSolicitud[y], descanso1)
-            let getInfoDescanso2 = await funcion.getInfoDescansoUtilizado(empSolicitud[y], descanso2)
+            let getInfoExtra = await funcion.getInfoExtraFinalizado(empSolicitud[y], inicio, fin)
+            let getInfoDescanso1 = await funcion.getInfoDescansoFinalizado(empSolicitud[y], descanso1)
+            let getInfoDescanso2 = await funcion.getInfoDescansoFinalizado(empSolicitud[y], descanso2)
             temp.push(empSolicitud[y])
             temp.push(getInfoExtra[0].horasExtra)
             temp.push(getInfoDescanso1[0].horasDescanso)

@@ -23,12 +23,12 @@ $(document).ready(function () {
 
   var url = window.location.href;
   var idurl = url.substring(url.lastIndexOf('/') + 1);
-  if(idurl == "Finalizado"){
-    $('#modalSuccess').modal({ backdrop: 'static', keyboard: false })
-  }
-  if(idurl == "Rechazado"){
-    $('#modalRechazado').modal({ backdrop: 'static', keyboard: false })
-  }
+  // if(idurl == "Finalizado"){
+  //   $('#modalSuccess').modal({ backdrop: 'static', keyboard: false })
+  // }
+  // if(idurl == "Rechazado"){
+  //   $('#modalRechazado').modal({ backdrop: 'static', keyboard: false })
+  // }
 
 axios({
   method: 'post',

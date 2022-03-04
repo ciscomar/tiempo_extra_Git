@@ -373,8 +373,9 @@ funcion.getTotalGerentesGerenteUtilizado = (week_start, week_end) => {
 funcion.getSolicitudesFechaPlanta = (week_start, week_end) => {
     return new Promise((resolve, reject) => {
 
-        dbT(`SELECT * FROM utilizado WHERE
+        dbT(`SELECT * FROM solicitud WHERE
         (fecha BETWEEN  "${week_start}" AND "${week_end}")
+        AND status = "Finalizado"
 
 
         `
@@ -844,15 +845,18 @@ funcion.getInfoDescanso = (empleado, descanso) => {
 
 
 
-funcion.getInfoExtraUtilizado = (empleado, week_start, week_end) => {
+
+funcion.getInfoExtraFinalizado = (empleado, week_start, week_end) => {
     return new Promise((resolve, reject) => {
 
         dbT(`SELECT SUM(horas) as horasExtra
         FROM 
-            utilizado 
+            solicitud 
         WHERE
             empleado = "${empleado}"
         AND (fecha BETWEEN  "${week_start}" AND "${week_end}")
+
+        AND status = "Finalizado"
             `)
 
             .then((result) => { resolve(result) })
@@ -861,22 +865,59 @@ funcion.getInfoExtraUtilizado = (empleado, week_start, week_end) => {
 }
 
 
-funcion.getInfoDescansoUtilizado = (empleado, descanso) => {
+funcion.getInfoDescansoFinalizado = (empleado, descanso) => {
     return new Promise((resolve, reject) => {
 
         dbT(`SELECT SUM(horas) as horasDescanso
         FROM 
-            utilizado 
+            solicitud 
         WHERE
             empleado = "${empleado}"
         AND fecha="${descanso}"
 
+        AND status = "Finalizado"
             `)
 
             .then((result) => { resolve(result) })
             .catch((error) => { reject(error) })
     })
 }
+
+//Se elimina funcionalidad de horas laboradas
+
+// funcion.getInfoExtraUtilizado = (empleado, week_start, week_end) => {
+//     return new Promise((resolve, reject) => {
+
+//         dbT(`SELECT SUM(horas) as horasExtra
+//         FROM 
+//             utilizado 
+//         WHERE
+//             empleado = "${empleado}"
+//         AND (fecha BETWEEN  "${week_start}" AND "${week_end}")
+//             `)
+
+//             .then((result) => { resolve(result) })
+//             .catch((error) => { reject(error) })
+//     })
+// }
+
+
+// funcion.getInfoDescansoUtilizado = (empleado, descanso) => {
+//     return new Promise((resolve, reject) => {
+
+//         dbT(`SELECT SUM(horas) as horasDescanso
+//         FROM 
+//             utilizado 
+//         WHERE
+//             empleado = "${empleado}"
+//         AND fecha="${descanso}"
+
+//             `)
+
+//             .then((result) => { resolve(result) })
+//             .catch((error) => { reject(error) })
+//     })
+// }
 
 
 funcion.getConfirmadoStatus = (solicitud) => {
@@ -958,7 +999,7 @@ funcion.getManagerHorasEmpleados = (week_start, week_end, arrayempleados) => {
         AND 
             (fecha BETWEEN "${week_start}" AND "${week_end}")
         AND
-            status != "Rechazado"
+            status = "Aprobado"
             `)
 
 
@@ -990,7 +1031,7 @@ funcion.getPlantManagerHorasEmpleados = (week_start, week_end) => {
 
         dbT(`SELECT * FROM solicitud WHERE fecha BETWEEN "${week_start}" AND "${week_end}"
         AND
-            status != "Rechazado"
+            status = "Finalizado"
         `)
 
             .then((result) => { resolve(result) })
@@ -1028,7 +1069,7 @@ funcion.getInfoExtraManager = (empleado, solicitantes, week_start, week_end) => 
         AND (fecha BETWEEN  "${week_start}" AND "${week_end}")
 
         AND
-            status != "Rechazado"
+            (status = "Aprobado" || status= "Finalizado")
             `)
 
             .then((result) => { resolve(result) })
@@ -1073,7 +1114,7 @@ funcion.getInfoExtraPlantManager = (empleado, week_start, week_end) => {
            
         AND (fecha BETWEEN  "${week_start}" AND "${week_end}")
         AND
-            status != "Rechazado"
+            status = "Finalizado"
             `)
 
             .then((result) => { resolve(result) })
@@ -1117,7 +1158,7 @@ funcion.getInfoDescansoManager = (empleado, solicitantes, descanso) => {
         AND 
             fecha="${descanso}"
         AND
-            status != "Rechazado"
+            (status = "Aprobado" || status="Finalizado")
             `)
 
             .then((result) => { resolve(result) })
@@ -1158,7 +1199,7 @@ funcion.getInfoDescansoPlantManager = (empleado, descanso) => {
             
         AND fecha="${descanso}"
         AND
-            status != "Rechazado"
+            status = "Finalizado"
             `)
 
             .then((result) => { resolve(result) })
@@ -1383,12 +1424,12 @@ funcion.updateFechaUtilizado = (id) => {
 }
 
 
-funcion.getSolicitudesPendienteUtilizado = () => {
+funcion.getSolicitudesPendienteFinalizar = () => {
     return new Promise((resolve, reject) => {
 
         dbT(`SELECT *
         FROM 
-            solicitud WHERE fecha_utilizado IS NULL AND status != "Rechazado"
+            solicitud WHERE  (status = "Aprobado" || status="Pendiente" || status="Confirmado")
         GROUP BY 
             solicitud
         ORDER BY 

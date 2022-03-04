@@ -1,5 +1,5 @@
 let fechas = [];
-
+let fileDate
 
 let table = $('#table2').DataTable(
     {
@@ -16,12 +16,13 @@ let table = $('#table2').DataTable(
         },
         {
           extend: 'csvHtml5',
-          title: "Tiempo Extra"
+          title: `Tiempo Extra ${fileDate}`,
+          filename: `Tiempo Extra  ${fileDate}`,
         },
         {
           extend: 'excelHtml5',
-          title: null,
-          filename: "Tiempo Extra"
+          title: `Tiempo Extra ${fileDate}`,
+          filename: `Tiempo Extra  ${fileDate}`,
         },
       ]
     }
@@ -74,6 +75,9 @@ $(document).ready(function () {
       $('#btnSeleccionar').show();
 
       $('#week').val($.datepicker.formatDate(dateFormat, startDate, inst.settings) + "   a   " + $.datepicker.formatDate(dateFormat, endDate, inst.settings))
+
+      fileDate= $.datepicker.formatDate(dateFormat, startDate, inst.settings) + " / " + $.datepicker.formatDate(dateFormat, endDate, inst.settings)
+      //console.log(fileDate);
 
       week_start = $.datepicker.formatDate(dateFormat, startDate, inst.settings)
       week_end = $.datepicker.formatDate(dateFormat, endDate, inst.settings)

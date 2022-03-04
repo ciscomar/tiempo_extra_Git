@@ -85,23 +85,23 @@ $(document).ready(function () {
         id="${d[0]}" onClick="search(this.id)">${icon}`
 
 
-        if (d[4] != 'Finalizado') { icon = `<span class="icoSidebar fas fa-stopwatch text-secondary""></span>`; enabled = "disabled" } else
-          if (d[4] == 'Finalizado' && d[5] != null) { icon = `<span class="icoSidebar fas fa-check text-success""></span>`; enabled = "" }
-        if (d[4] == 'Finalizado' && d[5] == null) { icon = `<span class="icoSidebar fas fa-times text-danger""></span>`; enabled = "" }
+        // if (d[4] != 'Finalizado') { icon = `<span class="icoSidebar fas fa-stopwatch text-secondary""></span>`; enabled = "disabled" } else
+        //   if (d[4] == 'Finalizado' && d[5] != null) { icon = `<span class="icoSidebar fas fa-check text-success""></span>`; enabled = "" }
+        // if (d[4] == 'Finalizado' && d[5] == null) { icon = `<span class="icoSidebar fas fa-times text-danger""></span>`; enabled = "" }
 
 
 
-        if (d[4] == 'Finalizado' && d[5] != null) {
+        // if (d[4] == 'Finalizado' && d[5] != null) {
 
-          real = `<button type="submit" class="btn"
-          id="${d[0]}" onClick="solicitud_utilizado_historial(this.id)" ${enabled}>${icon}`
+        //   real = `<button type="submit" class="btn"
+        //   id="${d[0]}" onClick="solicitud_utilizado_historial(this.id)" ${enabled}>${icon}`
 
-        }else {
+        // }else {
           
-          real = `<button type="submit" class="btn"
-          id="${d[0]}" onClick="solicitud_utilizado(this.id)" ${enabled}>${icon}`
+        //   real = `<button type="submit" class="btn"
+        //   id="${d[0]}" onClick="solicitud_utilizado(this.id)" ${enabled}>${icon}`
 
-        }
+        // }
 
 
 
@@ -131,8 +131,8 @@ $(document).ready(function () {
           d[0],
           d[2],
           s + "    /    " + e,
-          d[3],
-          real
+          d[3]//,
+          //real
         ]).draw(false);
 
       });

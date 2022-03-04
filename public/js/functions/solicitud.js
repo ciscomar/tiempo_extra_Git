@@ -303,7 +303,7 @@ let send = () => {
 let getInfoEmpleado = (e) => {
 
   let id = e.id.substring(1);
-
+  let duplicated=0
   if (e.value === "") {
     valorInput = 0
   } else {
@@ -318,210 +318,229 @@ let getInfoEmpleado = (e) => {
     data: JSON.stringify(data),
     headers: { 'content-type': 'application/json' }
   })
-    .then((result) => {
-
+    .then((result) => {      
 
       if (result.data.result != undefined) {
-        let arrayPend =result.data.result[1]
-        let pendientes=arrayPend[5]
-        let cantpendiente=pendientes[0].pendiente
-        let costoArray= arrayPend[6]
 
-        if(costoArray != ""){
+        let empleadoIdAll = document.querySelectorAll(".empleado")
+        for (var i = 0, len = empleadoIdAll.length; i < len; i++) {
+          if(valorInput===empleadoIdAll[i].value){
+            duplicated++
+          }
+        }
 
-          let costo=costoArray[0].costo
+        if(duplicated===1){
 
-          if(cantpendiente<1){
 
-            let infoEmpleado = result.data.result[0]
-            let infoArray = result.data.result[1]
-            let infoJefe = infoArray[0]
-            let horasExtraInfo = infoArray[1]
-            let horasDescansoInfo1 = infoArray[2]
-            let horasDescansoInfo2 = infoArray[3]
-            let horasExtra = horasExtraInfo[0].horasExtra
-            let horasDescanso1 = parseFloat(horasDescansoInfo1[0].horasDescanso)
-            let horasDescanso2 = parseFloat(horasDescansoInfo2[0].horasDescanso)
-            let solicitudesEmpleado = infoArray[4]
-    
-    
-            let name = document.getElementById("n" + id)
-            let actual = document.getElementById("a" + id)
-            let jefe = document.getElementById("je" + id)
-            let jefeid = document.getElementById("jeid" + id)
-            let turno = document.getElementById("tu" + id)
-            let extrax2 = document.getElementById("te" + id)
-            let extrax3 = document.getElementById("tem" + id)
-            let descanso = document.getElementById("dl" + id)
-    
-            let descanso1Inicial = document.getElementById("descanso1Inicial" + id)
-            let descanso2Inicial = document.getElementById("descanso2Inicial" + id)
-            let extrax2Incial = document.getElementById("extrax2Inicial" + id)
-            let extrax3Incial = document.getElementById("extrax3Inicial" + id)
+          let arrayPend =result.data.result[1]
+          let pendientes=arrayPend[5]
+          let cantpendiente=pendientes[0].pendiente
+          let costoArray= arrayPend[6]
   
-            let costohra = document.getElementById("costohra" + id)
+          if(costoArray != ""){
+  
+            let costo=costoArray[0].costo
+  
+            if(cantpendiente<1){
+  
+              let infoEmpleado = result.data.result[0]
+              let infoArray = result.data.result[1]
+              let infoJefe = infoArray[0]
+              let horasExtraInfo = infoArray[1]
+              let horasDescansoInfo1 = infoArray[2]
+              let horasDescansoInfo2 = infoArray[3]
+              let horasExtra = horasExtraInfo[0].horasExtra
+              let horasDescanso1 = parseFloat(horasDescansoInfo1[0].horasDescanso)
+              let horasDescanso2 = parseFloat(horasDescansoInfo2[0].horasDescanso)
+              let solicitudesEmpleado = infoArray[4]
+      
+      
+              let name = document.getElementById("n" + id)
+              let actual = document.getElementById("a" + id)
+              let jefe = document.getElementById("je" + id)
+              let jefeid = document.getElementById("jeid" + id)
+              let turno = document.getElementById("tu" + id)
+              let extrax2 = document.getElementById("te" + id)
+              let extrax3 = document.getElementById("tem" + id)
+              let descanso = document.getElementById("dl" + id)
+      
+              let descanso1Inicial = document.getElementById("descanso1Inicial" + id)
+              let descanso2Inicial = document.getElementById("descanso2Inicial" + id)
+              let extrax2Incial = document.getElementById("extrax2Inicial" + id)
+              let extrax3Incial = document.getElementById("extrax3Inicial" + id)
     
-    
-    
-            name.value = infoEmpleado[0].emp_nombre
-            actual.value = infoEmpleado[0].emp_area
-            jefe.value = infoJefe[0].emp_correo.substring(0, infoJefe[0].emp_correo.indexOf('@'))
-            jefeid.value = infoJefe[0].emp_id
-            turno.value = infoEmpleado[0].emp_turno
-            costohra.value= costo
-    
-    
-    
-    
-            extrax2.value = 0
-            extrax3.value = 0
-            descanso.value = 0
-            extrax2.value = horasExtra
-    
-    
-            //Horas extra dobles y triples
-            if (horasExtra == null) {
-              horasExtra = 0
-            }
-            if (horasExtra <= 9) {
+              let costohra = document.getElementById("costohra" + id)
+      
+      
+      
+              name.value = infoEmpleado[0].emp_nombre
+              actual.value = infoEmpleado[0].emp_area
+              jefe.value = infoJefe[0].emp_correo.substring(0, infoJefe[0].emp_correo.indexOf('@'))
+              jefeid.value = infoJefe[0].emp_id
+              turno.value = infoEmpleado[0].emp_turno
+              costohra.value= costo
+      
+      
+      
+      
+              extrax2.value = 0
+              extrax3.value = 0
+              descanso.value = 0
               extrax2.value = horasExtra
-            } else {
-              extrax2.value = 9
-              extrax3.value = horasExtra - 9
-              extrax3.classList.remove("extraS");
-              extrax3.classList.add("danger");
-            }
-    
-            //Horas descanso laborado1
-    
-            if (isNaN(horasDescanso1) || horasDescanso1==null) {
-              horasDescanso1 = 0
-            }
-    
-            let doble = parseFloat(extrax2.value)
-            let triple = parseFloat(extrax3.value)
-    
-            if (horasDescanso1 <= 8) {
-              descanso.value = horasDescanso1
-            } else {
-              descanso.value = 8
-              restante = horasDescanso1 - 8
-    
-              if ((doble + restante) <= 9) {
-                extrax2.value = doble + restante
+      
+      
+              //Horas extra dobles y triples
+              if (horasExtra == null) {
+                horasExtra = 0
+              }
+              if (horasExtra <= 9) {
+                extrax2.value = horasExtra
               } else {
-    
                 extrax2.value = 9
-                extrax3.value = triple + ((doble + restante) - 9)
+                extrax3.value = horasExtra - 9
                 extrax3.classList.remove("extraS");
                 extrax3.classList.add("danger");
-    
               }
-    
-            }
       
-    
-    
-            //Horas descanso laborado2
-            
-            if (isNaN(horasDescanso2) || horasDescanso2==null) {
-            
-              horasDescanso2 = 0
-            }
-    
-            let doble2 = parseFloat(extrax2.value)
-            let triple2 = parseFloat(extrax3.value)
-    
-            if (horasDescanso2 <= 8) {
-              descanso.value = parseFloat(descanso.value) + horasDescanso2
-            } else {
-              descanso.value = parseFloat(descanso.value) + 8
-              restante2 = horasDescanso2 - 8
-    
-              if ((doble2 + restante2) <= 9) {
-                extrax2.value = doble2 + restante2
+              //Horas descanso laborado1
+      
+              if (isNaN(horasDescanso1) || horasDescanso1==null) {
+                horasDescanso1 = 0
+              }
+      
+              let doble = parseFloat(extrax2.value)
+              let triple = parseFloat(extrax3.value)
+      
+              if (horasDescanso1 <= 8) {
+                descanso.value = horasDescanso1
               } else {
-    
+                descanso.value = 8
+                restante = horasDescanso1 - 8
+      
+                if ((doble + restante) <= 9) {
+                  extrax2.value = doble + restante
+                } else {
+      
                   extrax2.value = 9
-                  extrax3.value = triple2 + ((doble2 + restante2) - 9)
+                  extrax3.value = triple + ((doble + restante) - 9)
                   extrax3.classList.remove("extraS");
                   extrax3.classList.add("danger");
-    
+      
+                }
+      
               }
-    
-            }
-    
-    
-            descanso1Inicial.value=horasDescanso1
-            descanso2Inicial.value=horasDescanso2
-            extrax2Incial.value=parseFloat(extrax2.value)
-            extrax3Incial.value=parseFloat(extrax3.value)
-    
-            // dobleEmpleado = parseFloat(extrax2.value)
-            // tripleEmpleado = parseFloat(extrax3.value)
-            // descanso1Empleado=horasDescanso1
-            // descanso2Empleado=horasDescanso2
-    
-    
-            enableUserInfo(id, "enable")
-    
-    
-    
-            for (let i = 0; i < fechas.length; i++) {
+        
+      
+      
+              //Horas descanso laborado2
               
-              for (let y = 0; y < solicitudesEmpleado.length; y++) {
-                if(solicitudesEmpleado[y].fecha.substring(0,solicitudesEmpleado[y].fecha.indexOf("T"))==fechas[i])
-                {
-  
+              if (isNaN(horasDescanso2) || horasDescanso2==null) {
+              
+                horasDescanso2 = 0
+              }
+      
+              let doble2 = parseFloat(extrax2.value)
+              let triple2 = parseFloat(extrax3.value)
+      
+              if (horasDescanso2 <= 8) {
+                descanso.value = parseFloat(descanso.value) + horasDescanso2
+              } else {
+                descanso.value = parseFloat(descanso.value) + 8
+                restante2 = horasDescanso2 - 8
+      
+                if ((doble2 + restante2) <= 9) {
+                  extrax2.value = doble2 + restante2
+                } else {
+      
+                    extrax2.value = 9
+                    extrax3.value = triple2 + ((doble2 + restante2) - 9)
+                    extrax3.classList.remove("extraS");
+                    extrax3.classList.add("danger");
+      
+                }
+      
+              }
+      
+      
+              descanso1Inicial.value=horasDescanso1
+              descanso2Inicial.value=horasDescanso2
+              extrax2Incial.value=parseFloat(extrax2.value)
+              extrax3Incial.value=parseFloat(extrax3.value)
+      
+              // dobleEmpleado = parseFloat(extrax2.value)
+              // tripleEmpleado = parseFloat(extrax3.value)
+              // descanso1Empleado=horasDescanso1
+              // descanso2Empleado=horasDescanso2
+      
+      
+              enableUserInfo(id, "enable")
+      
+      
+      
+              for (let i = 0; i < fechas.length; i++) {
+                
+                for (let y = 0; y < solicitudesEmpleado.length; y++) {
+                  if(solicitudesEmpleado[y].fecha.substring(0,solicitudesEmpleado[y].fecha.indexOf("T"))==fechas[i])
+                  {
     
-                  if(i==0){let dl = document.getElementById("l"+ id); dl.disabled=true}
-                  if(i==1){let dm = document.getElementById("m"+ id); dm.disabled=true}
-                  if(i==2){let dmc = document.getElementById("mc"+ id); dmc.disabled=true}
-                  if(i==3){let dj = document.getElementById("j"+ id); dj.disabled=true}
-                  if(i==4){let dv = document.getElementById("v"+ id); dv.disabled=true}
-                  if(i==5){let ds = document.getElementById("s"+ id); ds.disabled=true}
-                  if(i==6){let dd = document.getElementById("d"+ id); dd.disabled=true}
-    
+      
+                    if(i==0){let dl = document.getElementById("l"+ id); dl.disabled=true}
+                    if(i==1){let dm = document.getElementById("m"+ id); dm.disabled=true}
+                    if(i==2){let dmc = document.getElementById("mc"+ id); dmc.disabled=true}
+                    if(i==3){let dj = document.getElementById("j"+ id); dj.disabled=true}
+                    if(i==4){let dv = document.getElementById("v"+ id); dv.disabled=true}
+                    if(i==5){let ds = document.getElementById("s"+ id); ds.disabled=true}
+                    if(i==6){let dd = document.getElementById("d"+ id); dd.disabled=true}
+      
+                  }
+                  
                 }
                 
               }
-              
+    
+    
+            }else{
+    
+              $('#modalSuccess').modal({ backdrop: 'static', keyboard: false })
+              errorMessage.innerHTML="Empleado con Solicitud Pendiente"
+    
+              let name = document.getElementById("n" + id)
+              let actual = document.getElementById("a" + id)
+              let jefe = document.getElementById("je" + id)
+              let jefeid = document.getElementById("jeid" + id)
+              let turno = document.getElementById("tu" + id)
+              let te = document.getElementById("te" + id)
+              let tem = document.getElementById("tem" + id)
+              let dl = document.getElementById("dl" + id)
+      
+              name.value = ""
+              actual.value = ""
+              jefe.value = ""
+              jefeid.value = ""
+              turno.value = ""
+              te.value = ""
+              tem.value = ""
+              dl.value = ""
+      
+              enableUserInfo(id, "disable")
+    
             }
   
   
+  
           }else{
-  
             $('#modalSuccess').modal({ backdrop: 'static', keyboard: false })
-            errorMessage.innerHTML="Empleado con Solicitud Pendiente"
-  
-            let name = document.getElementById("n" + id)
-            let actual = document.getElementById("a" + id)
-            let jefe = document.getElementById("je" + id)
-            let jefeid = document.getElementById("jeid" + id)
-            let turno = document.getElementById("tu" + id)
-            let te = document.getElementById("te" + id)
-            let tem = document.getElementById("tem" + id)
-            let dl = document.getElementById("dl" + id)
-    
-            name.value = ""
-            actual.value = ""
-            jefe.value = ""
-            jefeid.value = ""
-            turno.value = ""
-            te.value = ""
-            tem.value = ""
-            dl.value = ""
-    
-            enableUserInfo(id, "disable")
-  
+            errorMessage.innerHTML="Costo de Area no Registrado Contacte a Recursos Humanos"
           }
-
-
 
         }else{
           $('#modalSuccess').modal({ backdrop: 'static', keyboard: false })
-          errorMessage.innerHTML="Costo de Area no Registrado Contacte a Recursos Humanos"
+          errorMessage.innerHTML="Empleado Duplicado"
         }
+
+///////////
+
+
       
 
       } else {
