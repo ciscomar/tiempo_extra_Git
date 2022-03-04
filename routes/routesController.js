@@ -555,7 +555,7 @@ controller.solicitud_list_GET = (req, res) => {
 
 
 
-controller.pendiente_utilizado_GET = (req, res) => {
+controller.pendiente_rh_GET = (req, res) => {
     let user = req.res.locals.authData[0]
     let id = req.param.id
     let sidebar = req.res.locals.authData[1]
@@ -563,7 +563,7 @@ controller.pendiente_utilizado_GET = (req, res) => {
     if (sidebar === "rh" || sidebar === "admin") {
 
 
-        res.render("pendiente_utilizado.ejs", { sidebar, id, user })
+        res.render("pendiente_rh.ejs", { sidebar, id, user })
 
     } else {
         res.redirect("/acceso_denegado")
@@ -2699,7 +2699,7 @@ controller.horas_utilizadas_POST = (req, res) => {
 
 
 
-controller.getSolicitudesPendienteUtilizado_POST = (req, res) => {
+controller.getSolicitudesPendienteRH_POST = (req, res) => {
     resultado = []
 
     async function waitForPromise() {
@@ -2707,7 +2707,7 @@ controller.getSolicitudesPendienteUtilizado_POST = (req, res) => {
         let allEmpleados = await funcion.getAllEmpleados()
         resultado.push(allEmpleados)
 
-        funcion.getSolicitudesPendienteUtilizado()
+        funcion.getSolicitudesPendienteRH()
             .then((result) => {
                 resultado.push(result)
                 res.json(resultado)

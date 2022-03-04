@@ -1424,7 +1424,7 @@ funcion.updateFechaUtilizado = (id) => {
 }
 
 
-funcion.getSolicitudesPendienteFinalizar = () => {
+funcion.getSolicitudesPendienteRH = () => {
     return new Promise((resolve, reject) => {
 
         dbT(`SELECT *

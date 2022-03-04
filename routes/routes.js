@@ -64,8 +64,8 @@ router.get('/solicitud_utilizado/:id', middleware.sspi, middleware.userType, rou
 router.post('/solicitud_utilizado_id', middleware.sspi, middleware.userType, routesController.solicitud_utilizado_id_POST);
 router.get('/solicitud_utilizado_historial/:id', middleware.sspi, middleware.userType, routesController.solicitud_utilizado_historial_GET);
 router.post('/horas_utilizadas', middleware.sspi, middleware.userType, routesController.horas_utilizadas_POST);
-router.get('/pendiente_utilizado/:id', middleware.sspi, middleware.userType, routesController.pendiente_utilizado_GET);
-router.post('/getSolicitudesPendienteUtilizado', middleware.sspi, middleware.userType, routesController.getSolicitudesPendienteUtilizado_POST);
+router.get('/pendiente_rh/:id', middleware.sspi, middleware.userType, routesController.pendiente_rh_GET);
+router.post('/getSolicitudesPendienteRH', middleware.sspi, middleware.userType, routesController.getSolicitudesPendienteRH_POST);
 router.get('/configuracion', middleware.sspi, middleware.userType, routesController.configuracion_GET);
 router.post('/getCostos', middleware.sspi, middleware.userType, routesController.getCostos_POST);
 router.post('/deleteMotivo', middleware.sspi, middleware.userType, routesController.deleteMotivo_POST);

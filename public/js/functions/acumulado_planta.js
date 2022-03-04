@@ -12,17 +12,14 @@ let table = $('#table2').DataTable(
       buttons: [
         {
           extend: 'copyHtml5',
-          title: "Tiempo Extra"
         },
         {
           extend: 'csvHtml5',
-          title: `Tiempo Extra ${fileDate}`,
-          filename: `Tiempo Extra  ${fileDate}`,
+          filename: `Sistema Tiempo Extra`,
         },
         {
           extend: 'excelHtml5',
-          title: `Tiempo Extra ${fileDate}`,
-          filename: `Tiempo Extra  ${fileDate}`,
+          filename: `Sistema Tiempo Extra`,
         },
       ]
     }
@@ -94,6 +91,7 @@ $(document).ready(function () {
       table.clear().draw();
       tableAcumulado.clear().draw();
 
+      $('#modalSpinner').modal({ backdrop: 'static', keyboard: false })
       //Axios
       data = { "fecha_inicial": `${$.datepicker.formatDate(dateFormat, startDate, inst.settings)}`, "fecha_final": `${$.datepicker.formatDate(dateFormat, endDate, inst.settings)}` }
       axios({
@@ -104,6 +102,7 @@ $(document).ready(function () {
       })
         .then((result) => {
     
+          setTimeout(function () { $('#modalSpinner').modal('hide') }, 500);
           data = result.data.result[0]
           dataempleados = result.data.result[1]
           dataHoras = result.data.result[2]

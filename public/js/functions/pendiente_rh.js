@@ -17,7 +17,7 @@ $(document).ready(function () {
 
 axios({
   method: 'post',
-  url: `/getSolicitudesPendienteUtilizado`,
+  url: `/getSolicitudesPendienteRH`,
   headers: { 'content-type': 'application/json' }
 })
   .then((result) => {
