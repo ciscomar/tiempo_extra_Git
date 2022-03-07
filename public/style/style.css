@@ -749,14 +749,13 @@ table td {
 #clock {
   font-family: 'Orbitron', sans-serif;
 }
-/*# sourceMappingURL=style.css.map */
 
-.danger{
+.danger {
   background-color: #d9534f;
   color: #f7f7f7;
 }
 
-.icoSidebar{
+.icoSidebar {
   cursor: pointer;
 }
 
@@ -766,19 +765,23 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
-.extraA{
+.extraA {
   /* background-color: #dac04f; */
   background-color: #ffcb3c;
   color: #030303;
 }
 
-.extraS{
+.extraS {
   background-color: #ffcb3c;
   color: #030303;
 }
 
-.hide{
+.hide {
+  visibility: hidden;
+}
 
-  visibility: hidden
-  
-  }
+.display-5 {
+  font-size: 3rem;
+  font-weight: 100;
+}
+/*# sourceMappingURL=style.css.map */

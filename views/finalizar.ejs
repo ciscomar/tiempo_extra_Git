@@ -3,111 +3,114 @@
         <%- include ("./static/navbar") %>
 
 
-           
-        <div class="container-fluid mb-4">
-                    <div class="row mt-5">
 
-
-
-                        <div class="col-4"></div>
-                        <div class="col-4">
-                            <img src="/img/TristoneLogo.png" class="img-logo rounded mx-auto d-block"
-                                alt="Tristone Flowtech">
-                            <h1 class="display-4 text-center csvTitulo">Finalizar Solicitud #<%= id %>
-                            </h1>
-                            <input type="text" class="form-control text-center" name="id" id="id" value="<%= id %>"
-                                hidden>
-                            <p class="lead text-center"></p>
-                        </div>
-                        <div class="col-auto" style="margin: 0 auto">
-                            <h5 class="text-center">Aprobado</h5>
-                            <table id="tableAcumulado"
-                                class="table table-responsive-sm table-striped table-bordered table-hover text-center">
-                                <thead>
-                                    <tr>
-                                        <th colspan="3" class=" bg-info text-white"
-                                            style="border-top-left-radius: 30px !important;" id="numero_semana"></th>
-                                    </tr>
-                                    <tr>
-                                        <th>X2</th>
-                                        <th>X3</th>
-                                        <th>x2DL</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-
-                                </tbody>
-                            </table>
-                        </div>
-
+            <div class="container-fluid ">
+                <div class="row">
+                    <div class="col-lg-1"></div>
+                    <div class="col-10">
+                        <!-- <img src="/img/TristoneLogo.png" class="img-logo rounded mx-auto d-block" alt="Tristone Flowtech"> -->
+                        <h1  class="display-5 text-left csvTitulo"> Finalizar Solicitud #<%= id %>
+                        </h1>
+                        <input type="text" class="form-control text-center" name="id" id="id" value="<%= id %>" hidden>
+                        <p class="lead text-center"></p>
                     </div>
-
+                    <div class="col-lg-1"></div>
                 </div>
-         
-
-
-
-
-
-
-
-
-
-
-            <div class="container">
-
-                <div class="card-header text-white bg-dark ">
-                    <div class="row">
-
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label>Semana</label>
-                                <div>
-                                    <input type="text" class="form-control text-center" name="semana" id="semana"
-                                        readonly>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label>Motivo</label>
-                                <div>
-                                    <input type="text" class="form-control text-center" name="motivo" id="motivo"
-                                        readonly>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                    <div class="col-lg-6 text-center">
-                        <div class="form-group">
-                            <input type="text" class="form-control text-center" name="startDate" id="startDate"
-                                placeholder="YYYY-MM-DD" value="" hidden>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 text-center">
-                        <div class="form-group">
-                            <input type="text" class="form-control text-center" name="endDate" id="endDate"
-                                placeholder="YYYY-MM-DD" value="" hidden>
-                        </div>
-                    </div>
-
-                </div>
-
-
-                <div class="mb-4 mt-4">
-                    <button id="btnAprobar" class="btn btn-success"><span class="fas fa-check"></span>
-                        Finalizar</button>
-                    <button id="btnRechazar" class="btn btn-danger"><span class="fas fa-times"></span> Rechazar</button>
-                </div>
-
-
             </div>
+
+
             <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-1"></div>
+                    <div class="col lg-8">
+                        <div class="card-header text-white bg-dark ">
+
+                            <div class="row">
+
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label>Semana</label>
+                                        <div>
+                                            <input type="text" class="form-control text-center" name="semana"
+                                                id="semana" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label>Motivo</label>
+                                        <div>
+                                            <input type="text" class="form-control text-center" name="motivo"
+                                                id="motivo" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 text-center">
+                                <div class="form-group">
+                                    <input type="text" class="form-control text-center" name="startDate" id="startDate"
+                                        placeholder="YYYY-MM-DD" value="" hidden>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 text-center">
+                                <div class="form-group">
+                                    <input type="text" class="form-control text-center" name="endDate" id="endDate"
+                                        placeholder="YYYY-MM-DD" value="" hidden>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <!-- <h5 class="text-center">Aprobado</h5> -->
+                                <table id="tableAcumulado"
+                                    class="table table-responsive-sm table-striped table-bordered table-hover text-center">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="3" class=" bg-info text-white"
+                                                style="border-top-left-radius: 30px !important;" id="numero_semana">
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th>X2</th>
+                                            <th>X3</th>
+                                            <th>x2DL</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-lg-auto"></div>
+                           
+                            <div class="col-lg-auto">
+                                <button id="btnAprobar" class="btn btn-success btn-block"><span
+                                        class="fas fa-check"></span>Finalizar</button>
+                            </div>
+                            <div class="col-lg-auto">
+                                <button id="btnRechazar" class="btn btn-danger btn-block"><span class="fas fa-times"></span>
+                                    Rechazar</button>
+                            </div>
+                            <div class="col-lg-auto"></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-1"></div>
+                </div>
+            </div>
+
+
+            <div class="container-fluid mt-3">
                 <div class="table-responsive mt-2">
                     <div class="containerTable">
                         <div class="table table-responsive" id="table">
@@ -119,31 +122,31 @@
                                         <th colspan="3" class="bg-dark ">Solicitud Actual</th>
                                         <th colspan="3" class="bg-transparent border-top-0"></th>
                                         <th colspan="3" class="bg-dark ">Acumulado</th>
- 
+
                                     </tr>
-                                    
+
                                     <tr>
-                                    <th width="1%"><span></span> Empleado</th>
-                                    <th width="20%"><span></span> Nombre</th>
-                                    <th width="5%"><span></span> Turno</th>
-                                    <th width="4%"><span></span> L</th>
-                                    <th width="4%"><span></span> M</th>
-                                    <th width="4%"><span></span> Mc</th>
-                                    <th width="4%"><span></span> J </th>
-                                    <th width="4%"><span></span> V</th>
-                                    <th width="4%"><span></span> S</th>
-                                    <th width="4%"><span></span> D</th>
-                                    <th width="4%"><span></span>x2</th>
-                                    <th width="4%"><span></span>x3</th>
-                                    <th width="4%"><span></span>x2DL</th>
-                                    <th width="10%"><span></span> Area Actual</th>
-                                    <th  width="15%"><span></span> Area a Laborar</th>
-                                    <th  width="15%"><span></span>Jefe</th>
-                                    <th width="4%"><span></span>x2</th>
-                                    <th width="4%"><span></span>x3</th>
-                                    <th width="4%"><span></span>x2DL</th>
-                                    <th  width="15%"><span></span>Status</th>
-                                </tr>
+                                        <th width="1%"><span></span> Empleado</th>
+                                        <th width="20%"><span></span> Nombre</th>
+                                        <th width="5%"><span></span> Turno</th>
+                                        <th width="4%"><span></span> L</th>
+                                        <th width="4%"><span></span> M</th>
+                                        <th width="4%"><span></span> Mc</th>
+                                        <th width="4%"><span></span> J </th>
+                                        <th width="4%"><span></span> V</th>
+                                        <th width="4%"><span></span> S</th>
+                                        <th width="4%"><span></span> D</th>
+                                        <th width="4%"><span></span>x2</th>
+                                        <th width="4%"><span></span>x3</th>
+                                        <th width="4%"><span></span>x2DL</th>
+                                        <th width="10%"><span></span> Area Actual</th>
+                                        <th width="15%"><span></span> Area a Laborar</th>
+                                        <th width="15%"><span></span>Jefe</th>
+                                        <th width="4%"><span></span>x2</th>
+                                        <th width="4%"><span></span>x3</th>
+                                        <th width="4%"><span></span>x2DL</th>
+                                        <th width="15%"><span></span>Status</th>
+                                    </tr>
 
 
 
@@ -274,5 +277,5 @@
 
 
 
-            <%- include ("./static/footer") %>
-                <script src="/js/functions/finalizar.js"></script>
+                <%- include ("./static/footer") %>
+                    <script src="/js/functions/finalizar.js"></script>
