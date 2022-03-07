@@ -156,3 +156,40 @@ table{
   #clock {
     font-family: 'Orbitron', sans-serif;
   }
+
+  .danger{
+    background-color: #d9534f;
+    color: #f7f7f7;
+  }
+  
+  .icoSidebar{
+    cursor: pointer;
+  }
+  
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  .extraA{
+    /* background-color: #dac04f; */
+    background-color: #ffcb3c;
+    color: #030303;
+  }
+  
+  .extraS{
+    background-color: #ffcb3c;
+    color: #030303;
+  }
+  
+  .hide{
+  
+    visibility: hidden
+    
+    }
+
+.display-5{
+    font-size: 3rem;
+    font-weight: 100;
+}
