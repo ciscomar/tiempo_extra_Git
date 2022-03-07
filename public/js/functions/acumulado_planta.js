@@ -31,8 +31,6 @@ let table = $('#table2').DataTable(
       bFilter: false,
       bInfo: false,
       paging: false,
-      scrollY:false,
-      scrollX:false,
       ordering: false
   
     }
