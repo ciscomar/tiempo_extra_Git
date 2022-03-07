@@ -6,6 +6,9 @@ let btnRechazar = document.getElementById("btnRechazar")
 let comentario = document.getElementById("comentario")
 let btnCerrar = document.getElementById("btnCerrar")
 let span_solicitante_nombre = document.getElementById("span_solicitante_nombre")
+let IdSemana = document.getElementById("IdSemana")
+
+
 
 let table = $('#table2').DataTable(
   {
@@ -329,6 +332,7 @@ $(document).ready(function () {
         week_number=resultados[1]
   
         numero_semana.textContent="Semana: " +week_number
+        IdSemana.textContent="Semana: " +week_number+ " (AAAA/MM/DD)"
   
         let dobles=0
         let triples=0

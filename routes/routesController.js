@@ -777,20 +777,20 @@ controller.getSolicitudesFinalizar_POST = (req, res) => {
         let result = []
         let allEmpleados = await funcion.getAllEmpleados()
         let solicitudesAprob = await funcion.getSolicitudesAprobadas()
-        let solicitudesPend = await funcion.getSolicitudesPendientes()
+        //let solicitudesPend = await funcion.getSolicitudesPendientes()
         let sumahorasAprob = await funcion.getSolicitudesSumaAprobado()
 
 
-        for (let i = 0; i < solicitudesAprob.length; i++) {
-            for (let y = 0; y < solicitudesPend.length; y++) {
-                if (solicitudesAprob.length > 0) {
-                    if (solicitudesAprob[i].solicitud == solicitudesPend[y].solicitud) {
-                        solicitudesAprob.splice(i, 1)
-                    }
-                }
-            }
+        // for (let i = 0; i < solicitudesAprob.length; i++) {
+        //     for (let y = 0; y < solicitudesPend.length; y++) {
+        //         if (solicitudesAprob.length > 0) {
+        //             if (solicitudesAprob[i].solicitud == solicitudesPend[y].solicitud) {
+        //                 solicitudesAprob.splice(i, 1)
+        //             }
+        //         }
+        //     }
 
-        }
+        // }
 
         result.push(allEmpleados)
         result.push(solicitudesAprob)
@@ -2372,10 +2372,11 @@ controller.gerente_gerentes_fecha_POST = (req, res) => {
         if (tabla == "aprobado") {
             suma = await funcion.getTotalGerentesGerente(fecha_inicial, fecha_final)
             costototal = await funcion.getCostoPlantaTotalAprobado(fecha_inicial, fecha_final)
-        } else {
-            suma = await funcion.getTotalGerentesGerenteUtilizado(fecha_inicial, fecha_final)
-            costototal = await funcion.getCostoPlantaTotalUtilizado(fecha_inicial, fecha_final)
-        }
+        } 
+        // else {
+        //     suma = await funcion.getTotalGerentesGerenteUtilizado(fecha_inicial, fecha_final)
+        //     costototal = await funcion.getCostoPlantaTotalUtilizado(fecha_inicial, fecha_final)
+        // }
 
         let empleados = await funcion.getAllEmpleados()
         let input = suma
