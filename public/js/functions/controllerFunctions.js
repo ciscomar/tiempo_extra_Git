@@ -273,6 +273,8 @@ funcion.getCostoPlantaTotalAprobado = (week_start, week_end) => {
             horas_solicitud 
         WHERE
             (fecha BETWEEN  "${week_start}" AND "${week_end}")
+        AND
+        status="Finalizado"
 
         
         `
@@ -614,7 +616,7 @@ funcion.getSolicitudesAprobadas = () => {
             status = "Aprobado"
         AND 
             aprobado IS NOT NULL
-            
+
         GROUP BY 
             solicitud`)
 
