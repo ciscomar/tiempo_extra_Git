@@ -344,8 +344,8 @@ funcion.getTotalGerentesGerente = (week_start, week_end) => {
     return new Promise((resolve, reject) => {
 
         dbT(`SELECT *
-        FROM (SELECT *, SUM(dobles) AS doble, SUM(triples) AS triple, SUM(descanso) AS descan FROM horas_solicitud WHERE status !="Rechazado" AND (fecha BETWEEN  "${week_start}" AND "${week_end}") GROUP BY solicitud,solicitante) h
-         RIGHT JOIN (SELECT DISTINCT solicitud,solicitante, aprobado FROM solicitud WHERE status="Aprobado" OR status="Finalizado" AND (fecha BETWEEN  "${week_start}" AND "${week_end}") ) s 
+        FROM (SELECT *, SUM(dobles) AS doble, SUM(triples) AS triple, SUM(descanso) AS descan FROM horas_solicitud WHERE status ="Finalizado" AND (fecha BETWEEN  "${week_start}" AND "${week_end}") GROUP BY solicitud,solicitante) h
+         RIGHT JOIN (SELECT DISTINCT solicitud,solicitante, aprobado FROM solicitud WHERE status="Finalizado" AND (fecha BETWEEN  "${week_start}" AND "${week_end}") ) s 
         ON h.solicitud = s.solicitud
         `
         )
@@ -611,7 +611,10 @@ funcion.getSolicitudesAprobadas = () => {
         FROM 
             solicitud 
         WHERE
-            status = "Aprobado" 
+            status = "Aprobado"
+        AND 
+            aprobado IS NOT NULL
+            
         GROUP BY 
             solicitud`)
 
@@ -630,7 +633,9 @@ funcion.getSolicitudesPendientes = () => {
         WHERE
             status = "Pendiente"
         OR
-            status = "Rechazado"  
+            status = "Rechazado" 
+        OR
+            status = "Confirmado" 
 
         GROUP BY 
             solicitud`)

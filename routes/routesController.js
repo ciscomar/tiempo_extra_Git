@@ -777,20 +777,20 @@ controller.getSolicitudesFinalizar_POST = (req, res) => {
         let result = []
         let allEmpleados = await funcion.getAllEmpleados()
         let solicitudesAprob = await funcion.getSolicitudesAprobadas()
-        let solicitudesPend = await funcion.getSolicitudesPendientes()
+        //let solicitudesPend = await funcion.getSolicitudesPendientes()
         let sumahorasAprob = await funcion.getSolicitudesSumaAprobado()
 
 
-        for (let i = 0; i < solicitudesAprob.length; i++) {
-            for (let y = 0; y < solicitudesPend.length; y++) {
-                if (solicitudesAprob.length > 0) {
-                    if (solicitudesAprob[i].solicitud == solicitudesPend[y].solicitud) {
-                        solicitudesAprob.splice(i, 1)
-                    }
-                }
-            }
+        // for (let i = 0; i < solicitudesAprob.length; i++) {
+        //     for (let y = 0; y < solicitudesPend.length; y++) {
+        //         if (solicitudesAprob.length > 0) {
+        //             if (solicitudesAprob[i].solicitud == solicitudesPend[y].solicitud) {
+        //                 solicitudesAprob.splice(i, 1)
+        //             }
+        //         }
+        //     }
 
-        }
+        // }
 
         result.push(allEmpleados)
         result.push(solicitudesAprob)
