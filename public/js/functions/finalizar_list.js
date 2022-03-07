@@ -66,7 +66,7 @@ axios({
         temp.push(data[i].motivo)
         temp.push(data[i].status)
         solicitud.push(temp)
-
+        
       }else{
         if(data[i].status=="Pendiente"){
           solicitud.pop()
@@ -92,24 +92,21 @@ axios({
           solicitud.push(temp)
         }
         
-      }
-
-      
+      }      
     }
 
 
-    solicitud.forEach(d => {
+    solicitud.forEach(solicitud_actual => {
 
-      if (d[5] == 'Pendiente') { icon = `<span class="icoSidebar fas fa-user-clock text-secondary""></span>` } else
-      if (d[5] == 'Confirmado') { icon = `<span class="icoSidebar fas fa-user-plus text-info""></span>` } else
-        if (d[5] == 'Rechazado') { icon = `<span class="icoSidebar fas fa-user-times text-danger""></span>` } else
-          if (d[5] == 'Aprobado') { icon = `<span class="icoSidebar fas fa-user-check text-primary""></span>` } else
-            if (d[5] == 'Finalizado') { icon = `<span class="icoSidebar fas fa-user-tie text-success""></span>` }
+      if (solicitud_actual[5] == 'Pendiente') { icon = `<span class="icoSidebar fas fa-user-clock text-secondary""></span>` } else
+      if (solicitud_actual[5] == 'Confirmado') { icon = `<span class="icoSidebar fas fa-user-plus text-info""></span>` } else
+        if (solicitud_actual[5] == 'Rechazado') { icon = `<span class="icoSidebar fas fa-user-times text-danger""></span>` } else
+          if (solicitud_actual[5] == 'Aprobado') { icon = `<span class="icoSidebar fas fa-user-check text-primary""></span>` } else
+            if (solicitud_actual[5] == 'Finalizado') { icon = `<span class="icoSidebar fas fa-user-tie text-success""></span>` }
 
-        revisar=`<button type="submit" class="btn"
-        id="${d[0]}" onClick="search(this.id)">${icon}` 
+        revisar=`<button type="submit" class="btn" id="${solicitud_actual[0]}" onClick="search(this.id)">${icon}` 
 
-        let date = new Date(d[2])
+        let date = new Date(solicitud_actual[2])
         momentdate=moment(date)
         week_day=momentdate.weekday()
         let sumdays1
@@ -123,11 +120,11 @@ axios({
 
         table.row.add([
             revisar,
-            d[0],
-            d[1],
-            d[3],
+            solicitud_actual[0],
+            solicitud_actual[1],
+            solicitud_actual[3],
             s+"    /    "+e,
-            d[4]
+            solicitud_actual[4]
 
 
 

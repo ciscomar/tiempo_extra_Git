@@ -5,6 +5,7 @@ let btnAprobar = document.getElementById("btnAprobar")
 let btnRechazar = document.getElementById("btnRechazar")
 let comentario = document.getElementById("comentario")
 let btnCerrar = document.getElementById("btnCerrar")
+let span_solicitante_nombre = document.getElementById("span_solicitante_nombre")
 
 let table = $('#table2').DataTable(
   {
@@ -72,7 +73,9 @@ $(document).ready(function () {
     headers: { 'content-type': 'application/json' }
   })
     .then((result) => {
-
+      
+      let solicitante = result.data.result[1][0].solicitante
+      let solicitante_nombre
       let supervisor=result.data.result[0]
       data = result.data.result[1]
       dataempleados = result.data.result[2]
@@ -136,7 +139,12 @@ $(document).ready(function () {
         if (empleados_jefe[i] != null) {
           for (let y = 0; y < dataempleados.length; y++) {
             if (empleados_jefe[i] == dataempleados[y].emp_id) {
+              
               jefe_nombre.push(dataempleados[y].emp_correo.substring(0, dataempleados[y].emp_correo.indexOf('@')))
+            }
+            if (solicitante == dataempleados[y].emp_id){
+              span_solicitante_nombre.innerHTML = dataempleados[y].emp_correo.substring(0, dataempleados[y].emp_correo.indexOf('@'));
+     
             }
           }
         } else {
