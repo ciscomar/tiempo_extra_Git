@@ -2372,10 +2372,11 @@ controller.gerente_gerentes_fecha_POST = (req, res) => {
         if (tabla == "aprobado") {
             suma = await funcion.getTotalGerentesGerente(fecha_inicial, fecha_final)
             costototal = await funcion.getCostoPlantaTotalAprobado(fecha_inicial, fecha_final)
-        } else {
-            suma = await funcion.getTotalGerentesGerenteUtilizado(fecha_inicial, fecha_final)
-            costototal = await funcion.getCostoPlantaTotalUtilizado(fecha_inicial, fecha_final)
-        }
+        } 
+        // else {
+        //     suma = await funcion.getTotalGerentesGerenteUtilizado(fecha_inicial, fecha_final)
+        //     costototal = await funcion.getCostoPlantaTotalUtilizado(fecha_inicial, fecha_final)
+        // }
 
         let empleados = await funcion.getAllEmpleados()
         let input = suma
