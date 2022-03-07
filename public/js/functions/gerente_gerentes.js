@@ -15,8 +15,6 @@ let tableAcumulado = $('#tableAcumulado').DataTable(
     bFilter: false,
     bInfo: false,
     paging: false,
-    scrollY: false,
-    scrollX: false,
     ordering: false
 
   }
@@ -37,8 +35,6 @@ let tableAcumuladoUtilizado = $('#tableAcumuladoUtilizado').DataTable(
     bFilter: false,
     bInfo: false,
     paging: false,
-    scrollY: false,
-    scrollX: false,
     ordering: false
 
   }
@@ -147,51 +143,51 @@ $(document).ready(function () {
 
 
 
-        data = { "fecha_inicial": `${$.datepicker.formatDate(dateFormat, startDate, inst.settings)}`, "fecha_final": `${$.datepicker.formatDate(dateFormat, endDate, inst.settings)}`, "tabla":"utilizado" }
-      axios({
-        method: 'post',
-        url: `/gerente_gerentes_fecha`,
-        data: JSON.stringify(data),
-        headers: { 'content-type': 'application/json' }
-      })
-        .then((result) => {
-          let data = result.data.result
-          let datasupervisores = data[0]
-          let dataempleados = data[1]
-          let costo = data[2]
+      //   data = { "fecha_inicial": `${$.datepicker.formatDate(dateFormat, startDate, inst.settings)}`, "fecha_final": `${$.datepicker.formatDate(dateFormat, endDate, inst.settings)}`, "tabla":"utilizado" }
+      // axios({
+      //   method: 'post',
+      //   url: `/gerente_gerentes_fecha`,
+      //   data: JSON.stringify(data),
+      //   headers: { 'content-type': 'application/json' }
+      // })
+      //   .then((result) => {
+      //     let data = result.data.result
+      //     let datasupervisores = data[0]
+      //     let dataempleados = data[1]
+      //     let costo = data[2]
 
-          if(costo[0].costo==null){
-            costoLaborado.textContent="Costo: $0 pesos"
-          }else{
-          costoLaborado.textContent="Costo: $"+(costo[0].costo).toFixed(2)+" pesos"
-          }
+      //     if(costo[0].costo==null){
+      //       costoLaborado.textContent="Costo: $0 pesos"
+      //     }else{
+      //     costoLaborado.textContent="Costo: $"+(costo[0].costo).toFixed(2)+" pesos"
+      //     }
 
 
 
-          let temp = []
-          let row = []
-          for (let i = 0; i < datasupervisores.length; i++) {
+      //     let temp = []
+      //     let row = []
+      //     for (let i = 0; i < datasupervisores.length; i++) {
 
-            temp.push(datasupervisores[i].aprobado)
+      //       temp.push(datasupervisores[i].aprobado)
 
-            for (let y = 0; y < dataempleados.length; y++) {
+      //       for (let y = 0; y < dataempleados.length; y++) {
 
-              if (datasupervisores[i].aprobado == dataempleados[y].emp_id) {
-                temp.push(dataempleados[y].emp_nombre)
+      //         if (datasupervisores[i].aprobado == dataempleados[y].emp_id) {
+      //           temp.push(dataempleados[y].emp_nombre)
                 
-              }
-            }
+      //         }
+      //       }
 
-            temp.push(datasupervisores[i].doble)
-            temp.push(datasupervisores[i].triple)
-            temp.push(datasupervisores[i].descan)
-            row.push(temp)
-            tableUtilizado.row.add(temp).draw(false);
-            temp = []
+      //       temp.push(datasupervisores[i].doble)
+      //       temp.push(datasupervisores[i].triple)
+      //       temp.push(datasupervisores[i].descan)
+      //       row.push(temp)
+      //       tableUtilizado.row.add(temp).draw(false);
+      //       temp = []
 
-          }
-        })
-        .catch((err) => { console.error(err) })
+      //     }
+      //   })
+      //   .catch((err) => { console.error(err) })
 
 
 
@@ -314,117 +310,117 @@ $(document).ready(function () {
 
 
 
-        data2 = { "fecha_inicial": `${$.datepicker.formatDate(dateFormat, startDate, inst.settings)}`, "fecha_final": `${$.datepicker.formatDate(dateFormat, endDate, inst.settings)}`,"tabla":"utilizado" }
-        axios({
-          method: 'post',
-          url: `/getHorasGerentePlanta`,
-          data: JSON.stringify(data2),
-          headers: { 'content-type': 'application/json' }
-        })
-          .then((result) => {
+        // data2 = { "fecha_inicial": `${$.datepicker.formatDate(dateFormat, startDate, inst.settings)}`, "fecha_final": `${$.datepicker.formatDate(dateFormat, endDate, inst.settings)}`,"tabla":"utilizado" }
+        // axios({
+        //   method: 'post',
+        //   url: `/getHorasGerentePlanta`,
+        //   data: JSON.stringify(data2),
+        //   headers: { 'content-type': 'application/json' }
+        // })
+        //   .then((result) => {
         
-            resultados=  result.data.result
-            dataHoras= resultados[0]
-            week_number=resultados[1]
+        //     resultados=  result.data.result
+        //     dataHoras= resultados[0]
+        //     week_number=resultados[1]
             
       
-            numero_semana2.textContent="Semana: " +week_number
+        //     numero_semana2.textContent="Semana: " +week_number
       
-            let dobles=0
-            let triples=0
-            let descansoAcumulado=0
-            let temp=[]
+        //     let dobles=0
+        //     let triples=0
+        //     let descansoAcumulado=0
+        //     let temp=[]
       
-            for (let z = 0; z < dataHoras.length; z++) {
+        //     for (let z = 0; z < dataHoras.length; z++) {
       
-              let extrax2 = 0
-              let extrax3 = 0
-              let descanso = 0
-              let horasExtra = dataHoras[z][1]
-              let horasDescanso1 = dataHoras[z][2]
-              let horasDescanso2 = dataHoras[z][3]
+        //       let extrax2 = 0
+        //       let extrax3 = 0
+        //       let descanso = 0
+        //       let horasExtra = dataHoras[z][1]
+        //       let horasDescanso1 = dataHoras[z][2]
+        //       let horasDescanso2 = dataHoras[z][3]
       
-              extrax2 = horasExtra
+        //       extrax2 = horasExtra
       
-              //Horas extra dobles y triples
-              if (horasExtra == null) {
-                horasExtra = 0
-              }
-              if (horasExtra <= 9) {
-                extrax2 = horasExtra
-              } else {
-                extrax2 = 9
-                extrax3 = horasExtra - 9
-              }
+        //       //Horas extra dobles y triples
+        //       if (horasExtra == null) {
+        //         horasExtra = 0
+        //       }
+        //       if (horasExtra <= 9) {
+        //         extrax2 = horasExtra
+        //       } else {
+        //         extrax2 = 9
+        //         extrax3 = horasExtra - 9
+        //       }
       
-              //Horas descanso laborado1
+        //       //Horas descanso laborado1
       
-              if (isNaN(horasDescanso1)) {
-                horasDescanso1 = 0
-              }
+        //       if (isNaN(horasDescanso1)) {
+        //         horasDescanso1 = 0
+        //       }
       
-              let doble = extrax2
-              let triple = extrax3
+        //       let doble = extrax2
+        //       let triple = extrax3
       
-              if (horasDescanso1 <= 8) {
-                descanso = horasDescanso1
-              } else {
-                descanso = 8
-                restante = horasDescanso1 - 8
+        //       if (horasDescanso1 <= 8) {
+        //         descanso = horasDescanso1
+        //       } else {
+        //         descanso = 8
+        //         restante = horasDescanso1 - 8
       
-                if ((doble + restante) <= 9) {
-                  extrax2 = doble + restante
-                } else {
+        //         if ((doble + restante) <= 9) {
+        //           extrax2 = doble + restante
+        //         } else {
       
-                  extrax2 = 9
-                  extrax3 = triple + ((doble + restante) - 9)
+        //           extrax2 = 9
+        //           extrax3 = triple + ((doble + restante) - 9)
       
-                }
+        //         }
       
-              }
+        //       }
       
-              //Horas descanso laborado2
+        //       //Horas descanso laborado2
       
-              if (isNaN(horasDescanso2)) {
-                horasDescanso2 = 0
-              }
+        //       if (isNaN(horasDescanso2)) {
+        //         horasDescanso2 = 0
+        //       }
       
-              let doble2 = extrax2
-              let triple2 = extrax3
+        //       let doble2 = extrax2
+        //       let triple2 = extrax3
       
-              if (horasDescanso2 <= 8) {
-                descanso = descanso + horasDescanso2
-              } else {
-                descanso = descanso + 8
-                restante2 = horasDescanso2 - 8
+        //       if (horasDescanso2 <= 8) {
+        //         descanso = descanso + horasDescanso2
+        //       } else {
+        //         descanso = descanso + 8
+        //         restante2 = horasDescanso2 - 8
       
-                if ((doble2 + restante2) <= 9) {
-                  extrax2 = doble2 + restante2
-                } else {
+        //         if ((doble2 + restante2) <= 9) {
+        //           extrax2 = doble2 + restante2
+        //         } else {
       
-                  extrax2 = 9
-                  extrax3 = triple2 + ((doble2 + restante2) - 9)
+        //           extrax2 = 9
+        //           extrax3 = triple2 + ((doble2 + restante2) - 9)
       
-                }
+        //         }
       
-              }
+        //       }
       
-              dobles=dobles+extrax2
-              triples=triples+extrax3
-              descansoAcumulado=descansoAcumulado+descanso
+        //       dobles=dobles+extrax2
+        //       triples=triples+extrax3
+        //       descansoAcumulado=descansoAcumulado+descanso
       
-            }
-            let classColor=""
-            if(triples>0){classColor="danger"}else{classColor=""}
-            temp.push(`<input type="text"  style="width: 100%; text-align:center;" name="idPlan" id="test" value="${dobles}" disabled>`)
-            temp.push(`<input type="text" class="${classColor}" style="width: 100%; text-align:center;" name="idPlan" id="test" value="${triples}" disabled>`)
-            temp.push(`<input type="text"  style="width: 100%; text-align:center;" name="idPlan" id="test" value="${descansoAcumulado}" disabled>`)
+        //     }
+        //     let classColor=""
+        //     if(triples>0){classColor="danger"}else{classColor=""}
+        //     temp.push(`<input type="text"  style="width: 100%; text-align:center;" name="idPlan" id="test" value="${dobles}" disabled>`)
+        //     temp.push(`<input type="text" class="${classColor}" style="width: 100%; text-align:center;" name="idPlan" id="test" value="${triples}" disabled>`)
+        //     temp.push(`<input type="text"  style="width: 100%; text-align:center;" name="idPlan" id="test" value="${descansoAcumulado}" disabled>`)
       
-            tableAcumuladoUtilizado.row.add(temp)
-            tableAcumuladoUtilizado.draw(false);
+        //     tableAcumuladoUtilizado.row.add(temp)
+        //     tableAcumuladoUtilizado.draw(false);
       
-          })
-          .catch((err) => { console.error(err) })
+        //   })
+        //   .catch((err) => { console.error(err) })
 
 
 
