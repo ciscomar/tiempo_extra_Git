@@ -243,7 +243,7 @@ let agregar = () => {
     `<td><input class="triples extraA" id="ta${rowNumber}" style="width: 100%;" type="text" disabled></td>`,
     `<td><input class="descanso extraA" id="desca${rowNumber}" style="width: 100%;" type="text" disabled></td>`,
     `<td><input class="actual" id="a${rowNumber}" style="width: 100%;" type="text" disabled></td>`,
-    `<td><input class="laborar" id="lab${rowNumber}" style="width: 100%;" type="text" disabled></td>`,
+    `<td><input class="laborar" id="lab${rowNumber}" style="width: 100%;" type="text" maxlength="35" disabled></td>`,
     `<td><input class="jefe" id="je${rowNumber}" style="width: 100%;" type="text" disabled></td>`,
     `<td><input class="textra extraS" id="te${rowNumber}" style="width: 100%; text-align:center;" type="text" disabled></td>`,
     `<td><input class="textra2 extraS" id="tem${rowNumber}" style="width: 100%; text-align:center;" type="text" disabled></td>`,
@@ -729,7 +729,7 @@ function getTableInfo(){
 
 
         temp.push(`<td><input class="actual" id="a${rowNumber}" style="width: 100%;" type="text" value="${area_actual}" disabled></td>`)
-        temp.push(`<td><input class="laborar" id="lab${rowNumber}" style="width: 100%;" type="text"  value="${area_req}" disabled></td>`)
+        temp.push(`<td><input class="laborar" id="lab${rowNumber}" style="width: 100%;" type="text"  value="${area_req}" maxlength="35" disabled></td>`)
         temp.push(`<td><input class="jefe" id="je${rowNumber}" style="width: 100%;" type="text" value="${jefe_nombre[i]}"disabled></td>`)
 
 

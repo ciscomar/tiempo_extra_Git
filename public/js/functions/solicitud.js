@@ -246,7 +246,7 @@ let agregar = () => {
     `<td><input class="triples extraA" id="ta${row}" style="width: 100%;" type="text" disabled></td>`,
     `<td><input class="descanso extraA" id="desca${row}" style="width: 100%;" type="text" disabled></td>`,
     `<td><input class="actual" id="a${row}" style="width: 100%;" type="text" disabled></td>`,
-    `<td><input class="laborar" id="lab${row}" style="width: 100%;" type="text" disabled></td>`,
+    `<td><input class="laborar" id="lab${row}" style="width: 100%;" type="text" disabled maxlength="35"></td>`,
     `<td><input class="jefe" id="je${row}" style="width: 100%;" type="text" disabled></td>`,
     `<td><input class="textra extraS" id="te${row}" style="width: 100%; text-align:center;" type="text" disabled></td>`,
     `<td><input class="textra2 extraS" id="tem${row}" style="width: 100%; text-align:center;" type="text" disabled></td>`,
