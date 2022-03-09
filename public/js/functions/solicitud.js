@@ -193,9 +193,9 @@ function changeValue(e) {
     da.value= extrax2.value-dobleEmpleado
     ta.value= extrax3.value-tripleEmpleado
 
-    if(descanso1Empleado>8 && descanso2Empleado<8){desca.value=parseFloat(descansolab.value)-(8+descanso2Empleado)}else
-    if(descanso2Empleado>8 && descanso1Empleado<8){desca.value=parseFloat(descansolab.value)-(8+descanso1Empleado)}else
-    if(descanso2Empleado>8 && descanso1Empleado>8){desca.value=parseFloat(descansolab.value)-16}else
+    if(descanso1Empleado>=8 && descanso2Empleado<8){desca.value=parseFloat(descansolab.value)-(8+descanso2Empleado)}else
+    if(descanso2Empleado>=8 && descanso1Empleado<8){desca.value=parseFloat(descansolab.value)-(8+descanso1Empleado)}else
+    if(descanso2Empleado>=8 && descanso1Empleado>=8){desca.value=parseFloat(descansolab.value)-16}else
     if(descanso2Empleado<8 && descanso1Empleado<8){desca.value=parseFloat(descansolab.value)-(descanso1Empleado+descanso2Empleado)}
 
 
@@ -218,13 +218,20 @@ function changeValue(e) {
  //Reviewd Decimales -->
 
 
+ let deleteRow = (row) => {
+
+  table.row(`#${row}`).remove().draw();
+
+}
+
 let row = 2
 let agregar = () => {
 
   btnAgregar.disabled=true
 
   table.row.add([
-
+  
+    `<button type="submit" class="btn" id="btnDelete${row}" onClick="deleteRow(${row})"> <span class="icoSidebar fas fa-trash text-danger""></span> `,
     `<td><input class="empleado" id="e${row}" style="width: 100%;" type="number" min="0" onkeyup="getInfoEmpleado(this)"></td>`,
     `<td><input class="nombre" id="n${row}" style="width: 100%;" type="text" disabled></td>`,
     `<td><input class="turno" id="tu${row}" style="width: 100%;" type="text" disabled></td>`,
@@ -252,7 +259,8 @@ let agregar = () => {
     `<td ><input class="costohra" id="costohra${row}" style="width: 100%;" type="text" hidden></td>`,
     `<td ><input class="costototal" id="costototal${row}" style="width: 100%;" type="text" hidden></td>`,
 
-  ]).draw(false);
+  ]).node().id = `${row}`;
+  table.draw(false);
 
 
   row++

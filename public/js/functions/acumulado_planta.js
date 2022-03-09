@@ -1,29 +1,34 @@
+
 let fechas = [];
 let fileDate
+let btnExcelDownloadSin = document.getElementById("btnExcelDownloadSin")
+let btnExcelDownloadCon = document.getElementById("btnExcelDownloadCon")
+let tableSinFormato
+let table2
+let reloadCounter=0
+// let table = $('#table2').DataTable(
+//     {
+//       bFilter: false,
+//       bInfo: false,
+//       paging: false,
 
-let table = $('#table2').DataTable(
-    {
-      bFilter: false,
-      bInfo: false,
-      paging: false,
-
-      "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-      dom: 'Blfrtip',
-      buttons: [
-        {
-          extend: 'copyHtml5',
-        },
-        {
-          extend: 'csvHtml5',
-          filename: `Sistema Tiempo Extra`,
-        },
-        {
-          extend: 'excelHtml5',
-          filename: `Sistema Tiempo Extra`,
-        },
-      ]
-    }
-  );
+//       "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+//       dom: 'Blfrtip',
+//       buttons: [
+//         // {
+//         //   extend: 'copyHtml5',
+//         // },
+//         // {
+//         //   extend: 'csvHtml5',
+//         //   filename: `Sistema Tiempo Extra`,
+//         // },
+//         // {
+//         //   extend: 'excelHtml5',
+//         //   filename: `Sistema Tiempo Extra`,
+//         // },
+//       ]
+//     }
+//   );
 
   let numero_semana = document.getElementById("numero_semana")
   let tableAcumulado = $('#tableAcumulado').DataTable(
@@ -35,6 +40,21 @@ let table = $('#table2').DataTable(
   
     }
   );
+
+
+
+
+
+  btnExcelDownloadSin.addEventListener("click", () => {
+
+    tableSinFormato.button('0').trigger()
+
+})
+btnExcelDownloadCon.addEventListener("click", () => {
+
+  table2.button('0').trigger()
+
+})
 
 
 $(document).ready(function () {
@@ -85,9 +105,10 @@ $(document).ready(function () {
         fechas.push($.datepicker.formatDate(dateFormat, fecha, inst.settings))
       }
 
-      selectCurrentWeek();
-      table.clear().draw();
+      selectCurrentWeek(); 
       tableAcumulado.clear().draw();
+      if(reloadCounter>0){ tableSinFormato.clear().destroy(); table2.clear().destroy() }
+      
 
       $('#modalSpinner').modal({ backdrop: 'static', keyboard: false })
       //Axios
@@ -106,7 +127,9 @@ $(document).ready(function () {
           dataHoras = result.data.result[2]
           fecha = data[0].fecha
           let datef = new Date(fecha)
-    
+
+
+
 
           let semana = []
           for (let i = 1; i < 8; i++) {
@@ -276,13 +299,58 @@ $(document).ready(function () {
             
             temp.push(jefe_nombre[i])
             row.push(temp)
-            table.row.add(temp).draw(false);
+            //table.row.add(temp).draw(false);
             temp = []
-    
-    
           }
+
+
+          table2 = $('#table2').DataTable({
+            //dom: "<'row'<'col-lg-4'l><'col-lg-4 text-center'B><'col-lg-4'f>><'row'<'col-lg-2't>><'row'<'col-lg-3'i><'col-lg-6'><'col-lg-3'p>>",
+            data: row,
+            bInfo: false,
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    title: null,
+                    filename: `Tiempo Extra`,
+                    className: "d-none"
+
+                }
+
+            ]
+        })
+
     
-    
+          //// Tabla sin formato
+          
+          reloadCounter++
+          let tempData=[]
+          data.forEach(element => {
+
+            let info=[
+              element.empleado,
+              element.fecha.substring(0, element.fecha.indexOf("T")),
+              element.horas
+            ]
+            tempData.push(info)
+            
+          });
+          
+          tableSinFormato = $('#tableSinFormato').DataTable({
+            //dom: "<'row'<'col-lg-4'l><'col-lg-4 text-center'B><'col-lg-4'f>><'row'<'col-lg-2't>><'row'<'col-lg-3'i><'col-lg-6'><'col-lg-3'p>>",
+            data: tempData,
+            bInfo: false,
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    title: null,
+                    filename: `Tiempo Extra`,
+                    className: "d-none"
+
+                }
+
+            ]
+        })
     
     
         })

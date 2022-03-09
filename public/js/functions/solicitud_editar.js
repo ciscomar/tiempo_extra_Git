@@ -188,9 +188,9 @@ function changeValue(e) {
   da.value = extrax2.value - dobleEmpleado
   ta.value = extrax3.value - tripleEmpleado
 
-  if (descanso1Empleado > 8 && descanso2Empleado < 8) { desca.value = parseFloat(descansolab.value) - (8 + descanso2Empleado) } else
-    if (descanso2Empleado > 8 && descanso1Empleado < 8) { desca.value = parseFloat(descansolab.value) - (8 + descanso1Empleado) } else
-      if (descanso2Empleado > 8 && descanso1Empleado > 8) { desca.value = parseFloat(descansolab.value) - 16 } else
+  if (descanso1Empleado >= 8 && descanso2Empleado < 8) { desca.value = parseFloat(descansolab.value) - (8 + descanso2Empleado) } else
+    if (descanso2Empleado >= 8 && descanso1Empleado < 8) { desca.value = parseFloat(descansolab.value) - (8 + descanso1Empleado) } else
+      if (descanso2Empleado >= 8 && descanso1Empleado >= 8) { desca.value = parseFloat(descansolab.value) - 16 } else
         if (descanso2Empleado < 8 && descanso1Empleado < 8) { desca.value = parseFloat(descansolab.value) - (descanso1Empleado + descanso2Empleado) }
 
 
@@ -214,8 +214,7 @@ function changeValue(e) {
 
 let deleteRow = (row) => {
 
-  console.log(row);
-  table.row(`:eq(${row-1})`).remove().draw();
+  table.row(`#${row}`).remove().draw();
 
 }
 
@@ -257,7 +256,8 @@ let agregar = () => {
     `<td class="hide"class="hide"><input class="costohra" id="costohra${rowNumber}" style="width: 100%;" type="text" hidden></td>`,
     `<td class="hide"class="hide"><input class="costototal" id="costototal${rowNumber}" style="width: 100%;" type="text" hidden></td>`,
 
-  ]).draw(false);
+  ]).node().id = `${rowNumber}`;
+  table.draw(false);
 
   rowNumber++
 
@@ -835,7 +835,8 @@ function getTableInfo(){
         
 
         row.push(temp)
-        table.row.add(temp).draw(false);
+        table.row.add(temp).node().id = `${rowNumber}`;
+        table.draw(false);
         temp = []
         rowNumber++
         let diasInput = document.querySelectorAll(".dias")
