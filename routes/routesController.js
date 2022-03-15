@@ -2894,4 +2894,27 @@ controller.Search_Empleados_GET = (req, res) => {
 
 
 
+controller.cancelar_solicitud_POST = (req, res) => {
+
+    let id = req.body.id
+    let solicitante = req.connection.user.substring(4)
+
+    async function waitForPromise() {
+    let emp_id = await funcion.getEmpleadoId(solicitante)
+    let comment = await funcion.insertHistorial(id, emp_id, "Rechazado", "Solicitud Cancelada")
+
+    funcion.cancelarSolicitud(id)
+        .then((result) => {
+            res.json(result)
+        })
+        .catch((err) => { res.json(err) })
+
+    }
+    waitForPromise()
+
+}
+
+
+
+
 module.exports = controller;

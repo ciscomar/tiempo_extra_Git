@@ -106,7 +106,9 @@ $(document).ready(function () {
           let dataempleados = data[1]
           let costo = data[2]
 
+
           console.log(datasupervisores);
+        
 
           if(costo[0].costo==null){
             costoAprobado.textContent="Costo: $0 pesos"
@@ -135,7 +137,7 @@ $(document).ready(function () {
             temp.push(datasupervisores[i].descan)
             row.push(temp)
 
-            console.log(temp);
+            
             table.row.add(temp).draw(false);
             temp = []
 

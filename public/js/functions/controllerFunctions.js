@@ -1599,4 +1599,21 @@ funcion.getEmpleadoCorreo = (username) => {
             .catch((error) => { reject(error) })
     })
 }
+
+
+
+funcion.cancelarSolicitud = (id) => {
+    return new Promise((resolve, reject) => {
+
+        dbT(`UPDATE solicitud
+        SET 
+            status = "Rechazado"
+        WHERE 
+            solicitud = ${id}
+        `)
+            .then((result) => { resolve(result) })
+            .catch((error) => { reject(error) })
+    })
+}
+
 module.exports = funcion;

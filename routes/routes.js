@@ -76,6 +76,7 @@ router.post('/InsertMotivo', middleware.sspi, middleware.userType, routesControl
 router.get('/catalogo', middleware.sspi, middleware.userType, routesController.catalogo_GET);
 router.post('/insertar_catalogo', middleware.sspi, middleware.userType, upload.single("excelFile"), routesController.insertar_catalogo_POST);
 router.get('/search_empleados',middleware.sspi, middleware.userType, routesController.Search_Empleados_GET);
+router.post('/cancelar_solicitud', middleware.sspi, middleware.userType, routesController.cancelar_solicitud_POST);
 
 
 module.exports = router;

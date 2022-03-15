@@ -4,6 +4,7 @@ let semanaInput = document.getElementById("semana")
 let motio = document.getElementById("motivo")
 let btnCerrar = document.getElementById("btnCerrar")
 let btnEditar = document.getElementById("btnEditar")
+let btnCancelar = document.getElementById("btnCancelar")
 
 let table = $('#table2').DataTable(
   {
@@ -245,8 +246,8 @@ $(document).ready(function () {
 
 
         if (status == 'Pendiente') { icon = `<span class="icoSidebar fas fa-user-clock text-secondary" onclick="historial()"></span>` } else
-          if (status == 'Confirmado') { icon = `<span class="icoSidebar fas fa-user-plus text-info" onclick="historial()"></span>` } else
-            if (status == 'Rechazado') { icon = `<span class="icoSidebar fas fa-user-times text-danger" onclick="historial()"></span>`;btnEditar.hidden=false } else
+          if (status == 'Confirmado') { icon = `<span class="icoSidebar fas fa-user-plus text-info" onclick="historial()"></span>`; btnCancelar.hidden=false } else
+            if (status == 'Rechazado') { icon = `<span class="icoSidebar fas fa-user-times text-danger" onclick="historial()"></span>`; btnEditar.hidden=false } else
               if (status == 'Aprobado') { icon = `<span class="icoSidebar fas fa-user-check text-primary" onclick="historial()"></span>` } else
                 if (status == 'Finalizado') { icon = `<span class="icoSidebar fas fa-user-tie text-success" onclick="historial()"></span>` }
 
@@ -330,5 +331,26 @@ btnCerrar.addEventListener("click", () => {
 btnEditar.addEventListener("click", () => {
 
   window.location = `/solicitud_editar/${id}`
+  
+})
+
+btnCancelar.addEventListener("click", () => {
+
+  data = { "id": `${id}` }
+
+  axios({
+    method: 'post',
+    url: `/cancelar_solicitud`,
+    data: JSON.stringify(data),
+    headers: { 'content-type': 'application/json' }
+  })
+    .then((result) => {
+
+      window.location = `/solicitud_historial/${id}`
+
+  })
+
+  
+  
   
 })
