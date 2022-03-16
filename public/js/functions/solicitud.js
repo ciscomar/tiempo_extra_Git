@@ -231,7 +231,7 @@ let agregar = () => {
 
   table.row.add([
   
-    `<button type="submit" class="btn" id="btnDelete${row}" onClick="deleteRow(${row})"> <span class="icoSidebar fas fa-trash text-danger""></span> `,
+    `<button type="submit" class="btn" id="btnDelete${row}" onClick="deleteRow(${row})"> <span class="icoSidebar fas fa-trash text-danger""></span>`,
     `<td><input class="empleado" id="e${row}" style="width: 100%;" type="number" min="0" onkeyup="getInfoEmpleado(this)"></td>`,
     `<td><input class="nombre" id="n${row}" style="width: 100%;" type="text" disabled></td>`,
     `<td><input class="turno" id="tu${row}" style="width: 100%;" type="text" disabled></td>`,

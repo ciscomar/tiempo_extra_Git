@@ -630,6 +630,7 @@ controller.solicitud_historial_GET = (req, res) => {
 }
 
 
+//TODAY
 controller.solicitud_historial_id_POST = (req, res) => {
 
     let id = req.body.id
@@ -673,8 +674,10 @@ controller.solicitud_historial_id_POST = (req, res) => {
             }
         }
 
+        let infoWeekEmpleado=[]
         for (let y = 0; y < empSolicitud.length; y++) {
             let temp = []
+            
 
             if (empturno[y] == 3) {
 
@@ -698,10 +701,16 @@ controller.solicitud_historial_id_POST = (req, res) => {
             temp.push(getInfoDescanso2[0].horasDescanso)
             arrayHorasEmp.push(temp)
 
+            
+            let getWeekInfoEmpleado = await funcion.getWeekInfoEmpleadoEditar(empSolicitud[y], startDate, endDate, id)
+            //console.log(getWeekInfoEmpleado);
+            infoWeekEmpleado.push(getWeekInfoEmpleado)
+
         }
         result.push(arrayHorasEmp)
         let solicitudHoras = await funcion.getSolicitudHoras(id)
         result.push(solicitudHoras)
+        result.push(infoWeekEmpleado)
         res.json({ result })
     }
 

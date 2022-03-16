@@ -1332,6 +1332,27 @@ funcion.getWeekInfoEmpleado = (empleado, week_start, week_end) => {
 }
 
 
+funcion.getWeekInfoEmpleadoEditar = (empleado, week_start, week_end, id) => {
+    return new Promise((resolve, reject) => {
+
+        dbT(`SELECT * FROM solicitud 
+        WHERE
+            empleado=${empleado}
+        AND
+            (fecha BETWEEN  "${week_start}" AND "${week_end}")
+        AND
+            status != "Rechazado"
+        AND solicitud !=${id}
+
+
+        `
+        )
+            .then((result) => { resolve(result) })
+            .catch((error) => { reject(error) })
+    })
+}
+
+
 funcion.deleteSolicitud = (id) => {
     return new Promise((resolve, reject) => {
         dbT(`
