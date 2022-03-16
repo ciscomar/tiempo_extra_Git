@@ -840,7 +840,7 @@ function getTableInfo() {
         temp = []
 
 
-        
+        //test
         for (let q = 0; q < infoWeekEmpleados.length; q++) {
 
           for (let w = 0; w < infoWeekEmpleados[q].length; w++) {
