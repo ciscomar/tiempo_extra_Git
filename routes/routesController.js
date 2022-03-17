@@ -1281,8 +1281,6 @@ controller.confirmar_solicitud_POST = (req, res) => {
             let update = await funcion.updateConfirmarRechazar(id, aprobador, status)
         }
 
-
-
         let comment = await funcion.insertHistorial(id, aprobador, status, comentario)
         let confirmadoStatus = await funcion.getConfirmadoStatus(id)
         let updateHoras = await funcion.updateHorasStatus(id, status)

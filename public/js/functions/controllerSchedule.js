@@ -11,6 +11,8 @@ const path = require('path')
 const fs = require('fs')
 const { promisify } = require('util');
 
+const funcion = require('../functions/controllerFunctions');
+
 
 
 const rechazar_horas = schedule.scheduleJob('1 * * * * *', function(){
@@ -49,6 +51,83 @@ const rechazar_horas = schedule.scheduleJob('1 * * * * *', function(){
 
         }).catch((error) => { console.log(error); })
 });
+
+
+
+
+
+const vacaciones_supervisor = schedule.scheduleJob('5 * * * * *', function(){
+    
+    let todayDate = moment()
+    let myDate = moment(todayDate).format('YYYY-MM-DD');
+
+    dbT(`SELECT * FROM vacaciones WHERE tipo='Supervisor' AND fecha >= '${myDate}'`)
+        .then((result) => {
+            console.log(result);
+
+            for (let i = 0; i < result.length; i++) {
+
+                dbT(`SELECT * FROM solicitud WHERE jefe = ${result[i].empleado} AND status = 'Pendiente' GROUP BY solicitud`)
+                .then((pendientes) => {
+                    
+                    for (let y = 0; y < pendientes.length; y++) {
+                        
+                        async function waitForPromise() {
+
+                            let nombreSolicitante = await funcion.getEmpleadoNombre(pendientes[y].solicitante)
+                            let id_jefe = await funcion.getIdJefe(pendientes[y].solicitante)
+                            let gerente = await funcion.getEmpleadoNombre(id_jefe[0].emp_id_jefe)
+
+                            let update = await funcion.updateConfirmarConfirmar(pendientes[y].solicitud, pendientes[y].jefe, "Confirmado")
+                            let comment = await funcion.insertHistorial(pendientes[y].solicitud, pendientes[y].jefe, "Confirmado", "Confirmado Automatico")
+                            let updateHoras = await funcion.updateHorasStatus(pendientes[y].solicitud, "Confirmado")
+                            let confirmadoStatus = await funcion.getConfirmadoStatus(pendientes[y].solicitud)
+
+                            let pendiente = 0
+                            confirmadoStatus.forEach(element => {
+                                if (element.status != "Confirmado") pendiente++
+                            })
+                            if (pendiente == 0) sendConfirmacionMail(gerente[0].emp_correo, pendientes[y].solicitud, nombreSolicitante[0].emp_correo, "mail_gerente", "gerencial")
+                            
+                            }
+                             waitForPromise()                        
+                    }
+
+                }).catch((error) => { console.error(error); })
+                
+            }
+
+        }).catch((error) => { console.log(error); })
+});
+
+
+
+
+
+
+async function sendConfirmacionMail(to, solicitud, solicitante, corre_template, nivel) {
+
+    const data = await ejs.renderFile(path.join(__dirname, `../../mail/${corre_template}.ejs`), { supervisor: solicitante, solicitud: solicitud });
+    let mailOptions = {
+        from: "noreply@tristone.com",
+        to: `${to}`,
+        subject: `Aprobacion de tiempo extra nivel ${nivel} #${solicitud} `,
+        text: "",
+        html: data,
+    };
+
+
+    nodeMailer.transport.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.error(error);
+        } else {
+            console.info(info);
+        }
+    })
+}
+
+
+
 
 
 // const confirmar_solicitud = schedule.scheduleJob('1 1 6 * * *', function(){
