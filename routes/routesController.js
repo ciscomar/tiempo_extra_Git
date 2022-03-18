@@ -196,9 +196,11 @@ controller.infoEmpleado_POST = (req, res) => {
                     let getEmpleadoPendiente = await funcion.getEmpleadoPendiente(empleado)
                     let getCostoArea = await funcion.getCostoArea(area_actual)
 
+                    let allEmpleados = await funcion.getAllEmpleados()
+
 
                     result.push(info)
-                    Promise.all([getInfoEmpleado, getInfoExtra, getInfoDescanso1, getInfoDescanso2, getWeekInfoEmpleado, getEmpleadoPendiente, getCostoArea])
+                    Promise.all([getInfoEmpleado, getInfoExtra, getInfoDescanso1, getInfoDescanso2, getWeekInfoEmpleado, getEmpleadoPendiente, getCostoArea,allEmpleados])
                         .then((r) => {
                             result.push(r)
                             res.json({ result })
@@ -2482,10 +2484,32 @@ controller.deleteCosto_POST = (req, res) => {
 
 }
 
+controller.deleteVacaciones_POST = (req, res) => {
+
+    id = req.body.id
+
+    funcion.deleteVacaciones(id)
+        .then((result) => {
+            res.json(result)
+        })
+        .catch((err) => { res.json(err) })
+
+}
+
 
 controller.getCostos_POST = (req, res) => {
 
     funcion.getCostos()
+        .then((result) => {
+            res.json(result)
+        })
+        .catch((err) => { res.json(err) })
+
+}
+
+controller.getVacaciones_POST = (req, res) => {
+
+    funcion.getVacaciones()
         .then((result) => {
             res.json(result)
         })
@@ -2735,6 +2759,23 @@ controller.InsertCosto_POST = (req, res) => {
     costo = req.body.costo
 
     funcion.InsertCosto(area, costo)
+        .then((result) => {
+            res.json(result)
+        })
+        .catch((err) => { console.error(err) })
+
+
+
+}
+
+
+controller.InsertVacaciones_POST = (req, res) => {
+    empleado = req.body.empleado
+    nombre = req.body.nombre
+    tipo = req.body.tipo
+    fecha = req.body.fecha
+
+    funcion.InsertVacaciones(empleado, nombre, tipo, fecha)
         .then((result) => {
             res.json(result)
         })

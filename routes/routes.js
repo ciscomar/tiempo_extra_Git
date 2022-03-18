@@ -77,6 +77,9 @@ router.get('/catalogo', middleware.sspi, middleware.userType, routesController.c
 router.post('/insertar_catalogo', middleware.sspi, middleware.userType, upload.single("excelFile"), routesController.insertar_catalogo_POST);
 router.get('/search_empleados',middleware.sspi, middleware.userType, routesController.Search_Empleados_GET);
 router.post('/cancelar_solicitud', middleware.sspi, middleware.userType, routesController.cancelar_solicitud_POST);
+router.post('/getVacaciones', middleware.sspi, middleware.userType, routesController.getVacaciones_POST);
+router.post('/deleteVacaciones', middleware.sspi, middleware.userType, routesController.deleteVacaciones_POST);
+router.post('/InsertVacaciones', middleware.sspi, middleware.userType, routesController.InsertVacaciones_POST);
 
 
 module.exports = router;

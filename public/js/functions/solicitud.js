@@ -343,7 +343,11 @@ let getInfoEmpleado = (e) => {
           let arrayPend =result.data.result[1]
           let pendientes=arrayPend[5]
           let cantpendiente=pendientes[0].pendiente
+          let solicitantePendiente=pendientes[0].solicitante
+          let solicitudPendiente=pendientes[0].solicitud
           let costoArray= arrayPend[6]
+          let allEmpleados= arrayPend[7]
+
   
           if(costoArray != ""){
   
@@ -510,7 +514,15 @@ let getInfoEmpleado = (e) => {
             }else{
     
               $('#modalSuccess').modal({ backdrop: 'static', keyboard: false })
-              errorMessage.innerHTML="Empleado con Solicitud Pendiente"
+              let nombreSolicitante=""
+              for (let i = 0; i < allEmpleados.length; i++) {
+                
+                if(allEmpleados[i].emp_id == solicitantePendiente)
+                nombreSolicitante=allEmpleados[i].emp_correo.substring(0, allEmpleados[i].emp_correo.indexOf('@'))
+                
+              }
+
+              errorMessage.innerHTML="Empleado Pendiente en Solicitud #"+solicitudPendiente+" Creada por: "+nombreSolicitante
     
               let name = document.getElementById("n" + id)
               let actual = document.getElementById("a" + id)

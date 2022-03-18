@@ -1279,6 +1279,21 @@ funcion.getCostos = () => {
     })
 }
 
+funcion.getVacaciones = () => {
+    return new Promise((resolve, reject) => {
+        dbT(`
+        SELECT 
+            *
+        FROM
+            vacaciones
+
+        `)
+            .then((result) => { resolve(result) })
+            .catch((error) => { reject(error) })
+    })
+}
+
+
 funcion.getSolicitudHoras = (id) => {
     return new Promise((resolve, reject) => {
         dbT(`
@@ -1400,6 +1415,21 @@ funcion.deleteCosto = (id) => {
     })
 }
 
+funcion.deleteVacaciones = (id) => {
+    return new Promise((resolve, reject) => {
+        dbT(`
+        DELETE 
+            
+        FROM
+            vacaciones
+        WHERE 
+            id=${id}
+        `)
+            .then((result) => { resolve(result) })
+            .catch((error) => { reject(error) })
+    })
+}
+
 
 funcion.deleteSolicitudHoras = (id) => {
     return new Promise((resolve, reject) => {
@@ -1421,7 +1451,7 @@ funcion.getEmpleadoPendiente = (empleado) => {
 
     return new Promise((resolve, reject) => {
         dbT(`
-        SELECT COUNT(*) as pendiente 
+        SELECT COUNT(*) as pendiente, solicitante, solicitud
             
         FROM
             solicitud 
@@ -1523,6 +1553,22 @@ funcion.InsertMotivo = (motivo) => {
 }
 
 
+
+
+funcion.InsertVacacaiones = (empleado, nombre, tipo, fecha) => {
+
+
+    return new Promise((resolve, reject) => {
+        dbT(`
+        INSERT INTO 
+            vacaciones(empleado, nombre, tipo, fecha)
+        VALUES
+            ('${empleado}','${nombre}','${tipo}','${fecha}')
+            `)
+            .then((result) => { resolve(result) })
+            .catch((error) => { reject(error) })
+    })
+}
 
 funcion.Discover_Search = (base, tabla) => {
     return new Promise((resolve, reject) => {

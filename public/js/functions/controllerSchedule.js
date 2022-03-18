@@ -30,7 +30,7 @@ const rechazar_horas = schedule.scheduleJob('1 * * * * *', function(){
                 let numDiaSemana=serialDate.weekday();
                 
                 if(numDiaSemana === 0 || numDiaSemana === 5 || numDiaSemana === 6){
-                    if(hours>=72){     
+                    if(hours>=150){  //72 normal   
                         dbT(`UPDATE solicitud SET status = "Rechazado" WHERE solicitud = ${result[i].solicitud}`).then((result) => { }).catch((error) => { console.error(error); })
                         dbT(`UPDATE horas_solicitud SET status = "Rechazado" WHERE solicitud = ${result[i].solicitud}`).then((result) => { }).catch((error) => { console.error(error); })
                         dbT(`INSERT INTO historial(solicitud,empleado,comentario,status) VALUES ('${result[i].solicitud}','${result[i].solicitante}','Rechazo Automatico 72 Hrs','Rechazado')`).then((result) => { }).catch((error) => { console.error(error); })
@@ -63,7 +63,6 @@ const vacaciones_supervisor = schedule.scheduleJob('5 * * * * *', function(){
 
     dbT(`SELECT * FROM vacaciones WHERE tipo='Supervisor' AND fecha >= '${myDate}'`)
         .then((result) => {
-            console.log(result);
 
             for (let i = 0; i < result.length; i++) {
 
