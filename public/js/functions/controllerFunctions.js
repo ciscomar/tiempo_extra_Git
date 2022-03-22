@@ -1447,7 +1447,7 @@ funcion.deleteSolicitudHoras = (id) => {
 }
 
 
-funcion.getEmpleadoPendiente = (empleado) => {
+funcion.getEmpleadoPendiente = (empleado, week_start, week_end) => {
 
     return new Promise((resolve, reject) => {
         dbT(`
@@ -1457,6 +1457,8 @@ funcion.getEmpleadoPendiente = (empleado) => {
             solicitud 
         WHERE 
             empleado=${empleado}
+        AND
+            (fecha BETWEEN  "${week_start}" AND "${week_end}")
         AND
             (status != "Finalizado" && status != "Rechazado")
         `)

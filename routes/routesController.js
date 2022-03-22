@@ -187,13 +187,14 @@ controller.infoEmpleado_POST = (req, res) => {
 
                 let area_actual = info[0].emp_area
 
+
                 async function waitForPromise() {
                     let getInfoEmpleado = await funcion.getInfoEmpleado(info[0].emp_id_jefe)
                     let getInfoExtra = await funcion.getInfoExtra(empleado, inicio, fin)
                     let getInfoDescanso1 = await funcion.getInfoDescanso(empleado, descanso1)
                     let getInfoDescanso2 = await funcion.getInfoDescanso(empleado, descanso2)
                     let getWeekInfoEmpleado = await funcion.getWeekInfoEmpleado(empleado, week_start, week_end)
-                    let getEmpleadoPendiente = await funcion.getEmpleadoPendiente(empleado)
+                    let getEmpleadoPendiente = await funcion.getEmpleadoPendiente(empleado, week_start, week_end)
                     let getCostoArea = await funcion.getCostoArea(area_actual)
 
                     let allEmpleados = await funcion.getAllEmpleados()
