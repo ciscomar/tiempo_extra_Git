@@ -28,7 +28,7 @@ const rechazar_horas = schedule.scheduleJob('1 * * * * *', function(){
                 let serialDate = (moment(result[i].fecha_solicitud))
                 let hours= todayDate.diff(serialDate, 'hours')
                 let numDiaSemana=serialDate.weekday();
-                
+                /*
                 if(numDiaSemana === 0 || numDiaSemana === 5 || numDiaSemana === 6){
                     if(hours>=150){  //72 normal   
                         dbT(`UPDATE solicitud SET status = "Rechazado" WHERE solicitud = ${result[i].solicitud}`).then((result) => { }).catch((error) => { console.error(error); })
@@ -36,14 +36,15 @@ const rechazar_horas = schedule.scheduleJob('1 * * * * *', function(){
                         dbT(`INSERT INTO historial(solicitud,empleado,comentario,status) VALUES ('${result[i].solicitud}','${result[i].solicitante}','Rechazo Automatico 72 Hrs','Rechazado')`).then((result) => { }).catch((error) => { console.error(error); })
                     }
                 }else{
+                    */
 
-                    if(hours>=24){     
+                    if(hours>=170){     
                         dbT(`UPDATE solicitud SET status = "Rechazado" WHERE solicitud = ${result[i].solicitud}`).then((result) => { }).catch((error) => { console.error(error); })
                         dbT(`UPDATE horas_solicitud SET status = "Rechazado" WHERE solicitud = ${result[i].solicitud}`).then((result) => { }).catch((error) => { console.error(error); })
                         dbT(`INSERT INTO historial(solicitud,empleado,comentario,status) VALUES ('${result[i].solicitud}','${result[i].solicitante}','Rechazo Automatico 24 Hrs','Rechazado')`).then((result) => { }).catch((error) => { console.error(error); })
                     }
 
-                }
+                //}
 
 
                  

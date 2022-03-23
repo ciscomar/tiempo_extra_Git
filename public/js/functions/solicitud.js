@@ -353,7 +353,7 @@ let getInfoEmpleado = (e) => {
   
             let costo=costoArray[0].costo
   
-            if(cantpendiente<1){
+           // if(cantpendiente<1){
   
               let infoEmpleado = result.data.result[0]
               let infoArray = result.data.result[1]
@@ -510,7 +510,7 @@ let getInfoEmpleado = (e) => {
                 
               }
     
-    
+            /*
             }else{
     
               $('#modalSuccess').modal({ backdrop: 'static', keyboard: false })
@@ -545,7 +545,7 @@ let getInfoEmpleado = (e) => {
               enableUserInfo(id, "disable")
     
             }
-  
+            */
   
   
           }else{
