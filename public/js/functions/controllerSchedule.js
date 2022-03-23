@@ -41,7 +41,7 @@ const rechazar_horas = schedule.scheduleJob('1 * * * * *', function(){
                     if(hours>=170){     
                         dbT(`UPDATE solicitud SET status = "Rechazado" WHERE solicitud = ${result[i].solicitud}`).then((result) => { }).catch((error) => { console.error(error); })
                         dbT(`UPDATE horas_solicitud SET status = "Rechazado" WHERE solicitud = ${result[i].solicitud}`).then((result) => { }).catch((error) => { console.error(error); })
-                        dbT(`INSERT INTO historial(solicitud,empleado,comentario,status) VALUES ('${result[i].solicitud}','${result[i].solicitante}','Rechazo Automatico 24 Hrs','Rechazado')`).then((result) => { }).catch((error) => { console.error(error); })
+                        dbT(`INSERT INTO historial(solicitud,empleado,comentario,status) VALUES ('${result[i].solicitud}','${result[i].solicitante}','Rechazo Automatico 1 Semana','Rechazado')`).then((result) => { }).catch((error) => { console.error(error); })
                     }
 
                 //}
