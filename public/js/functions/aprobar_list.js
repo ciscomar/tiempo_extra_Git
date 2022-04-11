@@ -64,6 +64,7 @@ axios({
         }
         temp.push(data[i].motivo)
         temp.push(data[i].status)
+        temp.push(data[i].fecha_solicitud.substring(0, data[i].fecha_solicitud.indexOf("T")))
         solicitud.push(temp)
 
       }else{
@@ -88,6 +89,7 @@ axios({
           }
           temp.push(data[i].motivo)
           temp.push(data[i].status)
+          temp.push(data[i].fecha_solicitud.substring(0, data[i].fecha_solicitud.indexOf("T")))
           solicitud.push(temp)
         }
         
@@ -125,7 +127,8 @@ axios({
             d[1],
             d[3],
             s+"    /    "+e,
-            d[4]
+            d[4],
+            d[6]
 
 
 

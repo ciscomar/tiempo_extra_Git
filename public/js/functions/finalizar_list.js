@@ -43,7 +43,10 @@ axios({
     let solicitud=[]
 
 
+
+
     for (let i = 0; i < data.length; i++) {
+
       if (solicitudId.indexOf(data[i].solicitud) === -1) {
         solicitudId.push(data[i].solicitud)
   
@@ -65,6 +68,8 @@ axios({
         }
         temp.push(data[i].motivo)
         temp.push(data[i].status)
+        temp.push(data[i].fecha_solicitud.substring(0, data[i].fecha_solicitud.indexOf("T")))
+        
         solicitud.push(temp)
         
       }else{
@@ -89,14 +94,19 @@ axios({
           }
           temp.push(data[i].motivo)
           temp.push(data[i].status)
+          temp.push(data[i].fecha_solicitud.substring(0, data[i].fecha_solicitud.indexOf("T")))
+          
+        
           solicitud.push(temp)
         }
         
-      }      
+      }   
+
     }
 
 
     solicitud.forEach(solicitud_actual => {
+
 
       if (solicitud_actual[5] == 'Pendiente') { icon = `<span class="icoSidebar fas fa-user-clock text-secondary""></span>` } else
       if (solicitud_actual[5] == 'Confirmado') { icon = `<span class="icoSidebar fas fa-user-plus text-info""></span>` } else
@@ -124,7 +134,8 @@ axios({
             solicitud_actual[1],
             solicitud_actual[3],
             s+"    /    "+e,
-            solicitud_actual[4]
+            solicitud_actual[4],
+            solicitud_actual[6]
 
 
 

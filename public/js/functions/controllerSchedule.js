@@ -105,6 +105,137 @@ const vacaciones_supervisor = schedule.scheduleJob('5 * * * * *', function(){
 
 
 
+const vacaciones_gerente = schedule.scheduleJob('5 * * * * *', function(){
+
+
+    let todayDate = moment()
+    let myDate = moment(todayDate).format('YYYY-MM-DD');
+
+    dbT(`SELECT * FROM vacaciones WHERE tipo='Gerente' AND fecha >= '${myDate}'`)
+        .then((result) => {
+
+
+            for (let i = 0; i < result.length; i++) {
+
+                let aprobadorVacaciones=result[i].empleado
+                let username=result[i].nombre
+
+                async function waitForPromise() {
+
+                    let myEmpleados = await funcion.getMyEmpleados(aprobadorVacaciones)
+            
+                    let arrayEmpleados = ""
+                    let inc = 0
+                    myEmpleados.forEach(emp => {
+            
+                        if (inc == 0) {
+                            arrayEmpleados += `solicitante="${emp.emp_id}"`
+            
+                        } else {
+                            arrayEmpleados += ` OR solicitante= "${emp.emp_id}"`
+                        }
+                        inc++
+                    });
+            
+                    let solicitudesConf = await funcion.getSolicitudesConfirmadas(arrayEmpleados)
+                    let solicitudesPend = await funcion.getSolicitudesPendientesConf(arrayEmpleados)
+
+            
+                    for (let i = 0; i < solicitudesConf.length; i++) {
+                        for (let y = 0; y < solicitudesPend.length; y++) {
+                            if (solicitudesConf.length > 0) {
+                                if (solicitudesConf[i].solicitud == solicitudesPend[y].solicitud) {
+                                    solicitudesConf.splice(i, 1)
+                                }
+                            }
+                        }
+            
+                    }
+
+
+
+
+
+                    for (let y = 0; y < solicitudesConf.length; y++) {
+                        
+                        
+                       let id = solicitudesConf[y].solicitud
+                       let status = "Aprobado"
+                      
+                    // let status = req.body.status
+                    // let username = req.connection.user.substring(4)
+                    // let comentario = req.body.comentario
+                
+                    // info solicitud_horas
+                    // let empleados = req.body.empleados
+                    // let fechas = req.body.fechas
+                    // let motivo = ""
+                    // let solicitante = req.body.solicitante
+                    //
+                
+                    //if (comentario == "") { comentario = status }
+                
+                    
+                    async function waitForPromise() {
+                
+                        //let aprobador = await funcion.getEmpleadoId(username)
+                        let update = await funcion.updateAprobar(id, aprobadorVacaciones, status)
+                        let comment = await funcion.insertHistorial(id, aprobadorVacaciones, status, "Aprobado Automatico")
+                        let updateHoras = await funcion.updateHorasStatus(id, status)
+                
+                
+                
+                        let solicitante_id = await funcion.getSolicitante(id)
+                        let soilicitante_nombre = await funcion.getEmpleadoNombre(solicitante_id[0].solicitante)
+                
+                        // if (status != "Aprobado") {
+                        //     sendConfirmacionMail(soilicitante_nombre[0].emp_correo, id, username, "mail_rechazo", "gerencial: Rechazo")
+                        // } else {
+                
+                            // insert solicitud_horas
+                            //let deleteSolicitudHoras = await funcion.deleteSolicitudHoras(id)
+                            //let arrayHoras = await getArrayHoras(id, solicitante, empleados, fechas, motivo);
+                            //let insertHoras = await funcion.insertSolicitudHoras(arrayHoras)
+                            let updateHorasA = await funcion.updateHorasStatus(id, "Aprobado")
+                            //
+                
+                            let gerentePlanta_id = await funcion.getIdJefe(aprobadorVacaciones)
+                            let gerentePlanta_nombre = await funcion.getEmpleadoNombre(gerentePlanta_id[0].emp_id_jefe)
+                            sendConfirmacionMail(gerentePlanta_nombre[0].emp_correo, id, username, "mail_gerente_planta", "Gerencial Planta")
+                        //}
+                
+                        //res.json(comment)
+                    }
+                
+                    waitForPromise()
+
+                        
+                    }
+
+
+
+
+                }
+                waitForPromise()
+
+                
+
+
+
+            }
+
+        }).catch((error) => { console.log(error); })
+
+});
+
+
+
+
+
+
+
+
+
 async function sendConfirmacionMail(to, solicitud, solicitante, corre_template, nivel) {
 
     const data = await ejs.renderFile(path.join(__dirname, `../../mail/${corre_template}.ejs`), { supervisor: solicitante, solicitud: solicitud });

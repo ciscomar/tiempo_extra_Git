@@ -80,6 +80,9 @@ router.post('/cancelar_solicitud', middleware.sspi, middleware.userType, routesC
 router.post('/getVacaciones', middleware.sspi, middleware.userType, routesController.getVacaciones_POST);
 router.post('/deleteVacaciones', middleware.sspi, middleware.userType, routesController.deleteVacaciones_POST);
 router.post('/InsertVacaciones', middleware.sspi, middleware.userType, routesController.InsertVacaciones_POST);
+router.get('/busqueda/:id', middleware.sspi, middleware.userType, routesController.busqueda_GET);
+router.post('/getBusqueda', middleware.sspi, middleware.userType, routesController.getBusqueda_POST);
+router.post('/infoEmpleadoConfig', middleware.sspi, middleware.userType, routesController.infoEmpleadoConfig_POST);
 
 
 module.exports = router;

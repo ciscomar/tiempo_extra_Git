@@ -11,18 +11,20 @@
 
                     <div class="col-4"></div>
                     <div class="col-4">
-                        <img src="/img/TristoneLogo.png" class="img-logo rounded mx-auto d-block" alt="Tristone Flowtech">
+                        <img src="/img/TristoneLogo.png" class="img-logo rounded mx-auto d-block"
+                            alt="Tristone Flowtech">
                         <h1 class="display-5 text-center csvTitulo">Tiempo Aprobado
                         </h1>
-                    
+
                         <p class="lead text-center"></p>
                     </div>
-                    <div class="col-auto" style="margin: 0 auto">
+                    <div class="col-2" style="margin: 0 auto">
                         <table id="tableAcumulado"
                             class="table table-responsive-sm table-striped table-bordered table-hover text-center">
                             <thead>
                                 <tr>
-                                    <th colspan="3" class=" bg-info text-white" style="border-top-left-radius: 30px !important;" id="numero_semana"></th>
+                                    <th colspan="3" class=" bg-info text-white"
+                                        style="border-top-left-radius: 30px !important;" id="numero_semana"></th>
                                 </tr>
                                 <tr>
                                     <th>X2</th>
@@ -31,7 +33,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-    
+
 
                             </tbody>
                         </table>
@@ -40,7 +42,7 @@
                 </div>
 
             </div>
-      
+
 
 
 
@@ -52,46 +54,53 @@
 
                         <div class="col-lg-12  text-center">
                             <div class="col-lg-6 offset-lg-3">
-                            <div class="form-group">
-                                <label>Semana</label>
-                                <div>
-                                    <input type="text" class="form-control text-center week-picker" name="week" id="week" autocomplete="off">
+                                <div class="form-group">
+                                    <label>Semana</label>
+                                    <div>
+                                        <input type="text" class="form-control text-center week-picker" name="week"
+                                            id="week" autocomplete="off">
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    </div>
 
-                    
+
 
                     <div class="col-lg-6 text-center">
                         <div class="form-group">
-                            <input type="text" class="form-control text-center" name="startDate" id="startDate" placeholder="YYYY-MM-DD" value="" hidden >
+                            <input type="text" class="form-control text-center" name="startDate" id="startDate"
+                                placeholder="YYYY-MM-DD" value="" hidden>
                         </div>
                     </div>
                     <div class="col-lg-6 text-center">
                         <div class="form-group">
-                            <input type="text" class="form-control text-center" name="endDate" id="endDate" placeholder="YYYY-MM-DD" value="" hidden >
+                            <input type="text" class="form-control text-center" name="endDate" id="endDate"
+                                placeholder="YYYY-MM-DD" value="" hidden>
                         </div>
                     </div>
 
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-4"></div>
-                <div class="col-2 text-center mt-2 mb-2">
-
-                    <button class="btn btn-success"  id="btnExcelDownloadCon"><span
-                        class="fas fa-file-excel 2x"></span> Con Formato</button>
+            <div class="container">
+                <div class="row">
+                    <div class="col-4"></div>
+                    <div class="col-2 text-center mt-2 mb-2">
+    
+                        <button class="btn btn-success" id="btnExcelDownloadCon"><span class="fas fa-file-excel 2x"></span>
+                            Con Formato</button>
+                    </div>
+                    <div class="col-2 text-center mt-2 mb-2">
+                        <button class="btn btn-success" id="btnExcelDownloadSin"><span class="fas fa-file-excel 2x"></span>
+                            Sin Formato</button>
+                    </div>
+                    <div class="col-4"></div>
+    
                 </div>
-                <div class="col-2 text-center mt-2 mb-2">
-                    <button class="btn btn-success"  id="btnExcelDownloadSin"><span
-                        class="fas fa-file-excel 2x"></span> Sin Formato</button>
-                </div>
-                <div class="col-4"></div>
 
             </div>
+
 
             <div class="container-fluid">
                 <div class="table-responsive mt-2">
@@ -113,7 +122,7 @@
                                     <th width="4%"><span></span>x2</th>
                                     <th width="4%"><span></span>x3</th>
                                     <th width="4%"><span></span>x2DL</th>
-                                    <th  width="15%"><span></span>Jefe</th>
+                                    <th width="15%"><span></span>Jefe</th>
 
 
                                 </thead>
@@ -127,7 +136,7 @@
                             </table>
                         </div>
                     </div>
-                </div> 
+                </div>
             </div>
 
 
@@ -137,7 +146,8 @@
                 <div class="table-responsive mt-2">
                     <div class="containerTable">
                         <div class="table table-responsive" id="table">
-                            <table id="tableSinFormato" class="table table-bordered table-striped table-sm hover text-center">
+                            <table id="tableSinFormato"
+                                class="table table-bordered table-striped table-sm hover text-center">
                                 <thead class="thead-dark">
 
                                     <th width="1%"><span></span> Empleado</th>
@@ -156,7 +166,7 @@
                             </table>
                         </div>
                     </div>
-                </div> 
+                </div>
             </div>
 
 
@@ -189,5 +199,5 @@
 
 
             <%- include ("./static/guia") %>
-            <%- include ("./static/footer") %>
-                <script src="/js/functions/acumulado_planta.js"></script>
+                <%- include ("./static/footer") %>
+                    <script src="/js/functions/acumulado_planta.js"></script>

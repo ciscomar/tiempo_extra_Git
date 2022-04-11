@@ -248,13 +248,14 @@ let agregar = () => {
     `<td><input class="textra extraS" id="te${rowNumber}" style="width: 100%; text-align:center;" type="text" disabled></td>`,
     `<td><input class="textra2 extraS" id="tem${rowNumber}" style="width: 100%; text-align:center;" type="text" disabled></td>`,
     `<td><input class="dlaborado extraS" id="dl${rowNumber}" style="width: 100%; text-align:center;" type="text" disabled></td>`,
-    `<td class="hide"><input class="jefeid" id="jeid${rowNumber}" style="width: 100%;" type="text" hidden></td>`,
-    `<td class="hide"><input class="descans1Inicialc" id="descanso1Inicial${rowNumber}" style="width: 100%;" type="text" hidden></td>`,
-    `<td class="hide"><input class="descans2Inicialc" id="descanso2Inicial${rowNumber}" style="width: 100%;" type="text" hidden></td>`,
-    `<td class="hide"><input class="extrax2Inicialc" id="extrax2Inicial${rowNumber}" style="width: 100%;" type="text" hidden></td>`,
-    `<td class="hide"><input class="extrax3Inicialc" id="extrax3Inicial${rowNumber}" style="width: 100%;" type="text" hidden></td>`,
-    `<td class="hide"class="hide"><input class="costohra" id="costohra${rowNumber}" style="width: 100%;" type="text" hidden></td>`,
-    `<td class="hide"class="hide"><input class="costototal" id="costototal${rowNumber}" style="width: 100%;" type="text" hidden></td>`,
+    //hidden
+    `<td class="hide"><input class="jefeid" id="jeid${rowNumber}" style="width: 100%;" type="text" hidden ></td>`,
+    `<td class="hide"><input class="descans1Inicialc" id="descanso1Inicial${rowNumber}" style="width: 100%;" type="text" hidden ></td>`,
+    `<td class="hide"><input class="descans2Inicialc" id="descanso2Inicial${rowNumber}" style="width: 100%;" type="text" hidden ></td>`,
+    `<td class="hide"><input class="extrax2Inicialc" id="extrax2Inicial${rowNumber}" style="width: 100%;" type="text" hidden ></td>`,
+    `<td class="hide"><input class="extrax3Inicialc" id="extrax3Inicial${rowNumber}" style="width: 100%;" type="text" hidden ></td>`,
+    `<td class="hide"class="hide"><input class="costohra" id="costohra${rowNumber}" style="width: 100%;" type="text" hidden ></td>`,
+    `<td class="hide"class="hide"><input class="costototal" id="costototal${rowNumber}" style="width: 100%;" type="text" hidden ></td>`,
 
   ]).node().id = `${rowNumber}`;
   table.draw(false);
@@ -574,11 +575,11 @@ $(document).ready(function () {
 
 
 
-function getTableInfo() {
+function getTableInfo() { 
 
 
 
-  data = { "id": `${id}` }
+  data = { "id": `${id}`, "paso": "crear" }
   axios({
     method: 'post',
     url: `/solicitud_historial_id`,
@@ -590,7 +591,7 @@ function getTableInfo() {
       data = result.data.result[0]
       dataempleados = result.data.result[1]
       dataHoras = result.data.result[2]
-      dataSolicitudHoras = result.data.result[3]
+      //dataSolicitudHoras = result.data.result[3]
       infoWeekEmpleados = result.data.result[4]
 
 
@@ -709,22 +710,27 @@ function getTableInfo() {
         }
 
 
-        let costototal
-        for (let s = 0; s < dataSolicitudHoras.length; s++) {
+        //let costototal=0
+        // for (let s = 0; s < dataSolicitudHoras.length; s++) {
 
-          if (empleados[i] == dataSolicitudHoras[s].empleado) {
+        //   if (empleados[i] == dataSolicitudHoras[s].empleado) {
 
-            costototal = dataSolicitudHoras[s].costo_total
-            let classColor2 = ""
-            if (dataSolicitudHoras[s].triples > 0) { classColor2 = "danger" } else { classColor2 = "extraA" }
+        //     costototal = dataSolicitudHoras[s].costo_total
+        //     let classColor2 = ""
+        //     if (dataSolicitudHoras[s].triples > 0) { classColor2 = "danger" } else { classColor2 = "extraA" }
 
-            temp.push(`<td><input class="dobles extraA" id="da${rowNumber}" style="width: 100%;" type="text" value="0" disabled></td>`)
-            temp.push(`<td><input class="triples extraA" id="ta${rowNumber}" style="width: 100%;" type="text" value="0" disabled></td>`)
-            temp.push(`<td><input class="descanso extraA" id="desca${rowNumber}" style="width: 100%;" type="text" value="0" disabled></td>`)
+        //     temp.push(`<td><input class="dobles extraA" id="da${rowNumber}" style="width: 100%;" type="text" value="0" disabled></td>`)
+        //     temp.push(`<td><input class="triples extraA" id="ta${rowNumber}" style="width: 100%;" type="text" value="0" disabled></td>`)
+        //     temp.push(`<td><input class="descanso extraA" id="desca${rowNumber}" style="width: 100%;" type="text" value="0" disabled></td>`)
 
 
-          }
-        }
+        //   }
+        // }
+
+        
+        temp.push(`<td><input class="dobles extraA" id="da${rowNumber}" style="width: 100%;" type="text" value="0" disabled></td>`)
+        temp.push(`<td><input class="triples extraA" id="ta${rowNumber}" style="width: 100%;" type="text" value="0" disabled></td>`)
+        temp.push(`<td><input class="descanso extraA" id="desca${rowNumber}" style="width: 100%;" type="text" value="0" disabled></td>`)
 
 
         temp.push(`<td><input class="actual" id="a${rowNumber}" style="width: 100%;" type="text" value="${area_actual}" disabled></td>`)
@@ -823,14 +829,14 @@ function getTableInfo() {
 
 
           }
-        }
+        }//hidden
         temp.push(`<td class="hide"><input class="jefeid" id="jeid${rowNumber}" style="width: 100%;" type="text" value="${empleados_jefe[i]}" hidden ></td>`)
         temp.push(`<td class="hide"><input class="descans1Inicialc" id="descanso1Inicial${rowNumber}" style="width: 100%;" type="text" value="${horasDescanso1}" hidden ></td>`)
         temp.push(`<td class="hide"><input class="descans2Inicialc" id="descanso2Inicial${rowNumber}" style="width: 100%;" type="text" value="${horasDescanso2}" hidden ></td>`)
         temp.push(`<td class="hide"><input class="extrax2Inicialc" id="extrax2Inicial${rowNumber}" style="width: 100%;" type="text" value="${extrax2}" hidden ></td>`)
         temp.push(`<td class="hide"><input class="extrax3Inicialc" id="extrax3Inicial${rowNumber}" style="width: 100%;" type="text" value="${extrax3}" hidden ></td>`)
         temp.push(`<td class="hide"><input class="costohra" id="costohra${rowNumber}" style="width: 100%;" type="text" value="${empleados_costohra[i]}" hidden ></td>`)
-        temp.push(`<td class="hide"><input class="costototal" id="costototal${rowNumber}" style="width: 100%;" type="text" value="${costototal}" hidden ></td>`)
+        temp.push(`<td class="hide"><input class="costototal" id="costototal${rowNumber}" style="width: 100%;" type="text" hidden ></td>`)
 
 
 

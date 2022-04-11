@@ -11,7 +11,7 @@
 
                         <img src="/img/TristoneLogo.png" class="img-logo rounded mx-auto d-block"
                             alt="Tristone Flowtech">
-                        <h1 class="display-5 text-center csvTitulo">Mis Solicitudes</h1>
+                        <h1 class="display-5 text-center csvTitulo">Busqueda</h1>
                         <p class="lead text-center"></p>
 
                     </div>
@@ -31,14 +31,11 @@
                                         class="table table-bordered table-striped table-sm hover text-center">
                                         <thead class="thead-dark">
 
-                                            <th width="1%"><span></span> Revisar</th>
+                                            <th width="5%"><span></span> Revisar</th>
                                             <th width="10%"><span></span> Id Solicitud</th>
-                                            <th width="10%"><span></span> Horas</th>
+                                            <th width="20%"><span></span> Solicitante</th>
                                             <th width="20%"><span></span> Semana</th>
-                                            <th width="20%"><span></span> Motivo</th>
-                                            <!-- Se elimina funcionalidad de horas laboradas -->
-                                            <!-- <th width="10%"><span></span> Hrs. Laboradas</th> -->
-
+                                            <th width="15%"><span></span> Motivo</th>
 
                                         </thead>
 
@@ -53,6 +50,8 @@
                     </div>
                 </div>
             </div>
+
+
 
 
 
@@ -86,37 +85,10 @@
 
 
 
-            <div class="modal fade" id="modalConfirmado" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
-                aria-hidden="true">
-                <div class="modal-dialog modal-dialog-scrollable" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header card-mov">
-                            <img src="/img/TristoneLogo.png" alt="SAP" srcset="" class="card-mov">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-2">
-                                    <i class="fas fa-check-circle text-success" style="font-size: 2rem;"> </i>
-                                </div>
-                                <div class="col">
-                                    <h5>Horas Confirmadas</h5>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button id="btnCerrar_Success" type="button" class="btn btn-secondary btnCerrar"
-                                data-dismiss="modal">Cerrar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-
 
             <%- include ("./static/guia") %>
 
+
+
                 <%- include ("./static/footer") %>
-                    <script src="/js/functions/solicitud_list.js"></script>
+                    <script src="/js/functions/busqueda.js"></script>

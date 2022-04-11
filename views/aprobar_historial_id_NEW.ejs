@@ -2,6 +2,10 @@
     <%- include ("./static/sidebar") %>
         <%- include ("./static/navbar") %>
 
+
+
+
+      
         <div class="container-fluid mb-4">
                     <div class="row mt-5">
 
@@ -16,7 +20,7 @@
                             <p class="lead text-center"></p>
                         </div>
                         <div class="col-2" style="margin: 0 auto">
-                            <!-- <h5 class="text-center">Aprobado</h5> -->
+  
                             <table id="tableAcumulado"
                                 class="table table-responsive-sm table-striped table-bordered table-hover text-center">
                                 <thead>
@@ -40,7 +44,15 @@
                     </div>
 
                 </div>
-        
+  
+
+
+
+
+
+
+
+
 
 
 
@@ -106,27 +118,36 @@
                                     </tr>
                                     
                                     <tr>
-                                    <th width="1%"><span></span> Empleado</th>
-                                    <th width="20%"><span></span> Nombre</th>
-                                    <th width="5%"><span></span> Turno</th>
-                                    <th width="4%"><span></span> L</th>
-                                    <th width="4%"><span></span> M</th>
-                                    <th width="4%"><span></span> Mc</th>
-                                    <th width="4%"><span></span> J </th>
-                                    <th width="4%"><span></span> V</th>
-                                    <th width="4%"><span></span> S</th>
-                                    <th width="4%"><span></span> D</th>
-                                    <th width="4%"><span></span>x2</th>
-                                    <th width="4%"><span></span>x3</th>
-                                    <th width="4%"><span></span>x2DL</th>
-                                    <th width="10%"><span></span> Area Actual</th>
-                                    <th  width="15%"><span></span> Area a Laborar</th>
-                                    <th  width="15%"><span></span>Jefe</th>
-                                    <th width="4%"><span></span>x2</th>
-                                    <th width="4%"><span></span>x3</th>
-                                    <th width="4%"><span></span>x2DL</th>
-                                    <th  width="15%"><span></span>Status</th>
+                                        <th width="1%"><span></span> Empleado</th>
+                                        <th width="20%"><span></span> Nombre</th>
+                                        <th width="4%"><span></span> Turno</th>
+                                        <th width="4%"><span></span> L</th>
+                                        <th width="4%"><span></span> M</th>
+                                        <th width="4%"><span></span> Mc</th>
+                                        <th width="4%"><span></span> J </th>
+                                        <th width="4%"><span></span> V</th>
+                                        <th width="4%"><span></span> S</th>
+                                        <th width="4%"><span></span> D</th>
+                                        <th width="4%"><span></span>x2</th>
+                                        <th width="4%"><span></span>x3</th>
+                                        <th width="4%"><span></span>x2DL</th>
+                                        <th width="10%"><span></span> Area Actual</th>
+                                        <th width="15%"><span></span> Area a Laborar</th>
+                                        <th width="15%"><span></span>Jefe</th>                               
+                                        <th width="4%" ><span></span>x2</th>
+                                        <th width="4%" ><span></span>x3</th>
+                                        <th width="4%" ><span></span>x2DL</th>
+                                        <th  width="15%"><span></span>Status</th>
+                                        <th width="0%" hidden  ><span ></span>jefeid</th>
+                                        <th width="0%" hidden  ><span ></span>dl1</th>
+                                        <th width="0%" hidden  ><span ></span>dl2</th>
+                                        <th width="0%" hidden  ><span ></span>x2</th>
+                                        <th width="0%" hidden  ><span ></span>x3</th>
+                                        <th width="0%" hidden  ><span></span>costohra</th>
+                                        <th width="0%" hidden  ><span></span>costototal</th>
                                 </tr>
+
+
                                 </thead>
 
                                 <tbody>
@@ -139,8 +160,6 @@
                         </div>
                     </div>
                 </div>
-
-
 
                 <div class="modal fade bd-example-modal-lg" id="modalHistorial" tabindex="-1" role="dialog"
                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -159,37 +178,38 @@
                                                 <table id="tableHistorial"
                                                     class="table table-bordered table-striped table-sm hover text-center">
                                                     <thead class="thead-dark">
-    
+
                                                         <th width="10%"><span></span> Empleado</th>
                                                         <th width="50%"><span></span> Comentario</th>
                                                         <th width="5%"><span></span> Status</th>
                                                         <th width="5%"><span></span> Fecha</th>
                                                     </thead>
-    
+
                                                     <tbody>
-    
-    
+
+
                                                     </tbody>
                                                 </table>
                                             </div>
                                         </div>
                                     </div>
-    
+
                                 </div>
                             </div>
-    
+
                         </div>
-    
+
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary btnCerrar"
                                 data-dismiss="modal" id="btnCerrar">Cerrar</button>
                         </div>
                         </form>
-    
+
                     </div>
                 </div>
             </div>
-    
+
+
 
             </div>
 
@@ -205,5 +225,6 @@
 
 
 
+
             <%- include ("./static/footer") %>
-                <script src="/js/functions/finalizar_historial_id.js"></script>
+                <script src="/js/functions/aprobar_historial_id_NEW.js"></script>

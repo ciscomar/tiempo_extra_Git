@@ -359,7 +359,7 @@ $(document).ready(function () {
 
 
         data2 = { "fecha_inicial": `${$.datepicker.formatDate(dateFormat, startDate, inst.settings)}`, "fecha_final": `${$.datepicker.formatDate(dateFormat, endDate, inst.settings)}`,
-        "tabla":"utilizado"
+      "tabla":"aprobado"
        }
         axios({
           method: 'post',

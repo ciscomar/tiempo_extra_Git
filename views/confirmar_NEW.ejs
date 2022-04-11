@@ -9,7 +9,7 @@
                     <div class="col-lg-1"></div>
                     <div class="col-10">
                         <!-- <img src="/img/TristoneLogo.png" class="img-logo rounded mx-auto d-block" alt="Tristone Flowtech"> -->
-                        <h1 class="display-5 text-left csvTitulo"> Finalizar Solicitud #<%= id %>  - Solicitante: <span id="span_solicitante_nombre"></span>
+                        <h1 class="display-5 text-left csvTitulo"> Confirmar Solicitud #<%= id %>  - Solicitante: <span id="span_solicitante_nombre"></span>
                         </h1>
                         <input type="text" class="form-control text-center" name="id" id="id" value="<%= id %>" hidden>
                         <p class="lead text-center"></p>
@@ -39,12 +39,21 @@
 
                             </div>
                             <div class="row">
-                                <div class="col-lg-12">
+                                <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>Motivo</label>
                                         <div>
                                             <input type="text" class="form-control text-center" name="motivo"
                                                 id="motivo" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Fecha Creacion</label>
+                                        <div>
+                                            <input type="text" class="form-control text-center" name="fechaCreacion"
+                                                id="fechaCreacion" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -68,11 +77,9 @@
                     </div>
                     <div class="col-lg-2">
                         <div class="row">
-
-                            
                             <div class="col-lg-12 ">
                                 <div class="table-responsive-sm">
-                                    <table id="tableAcumulado"
+                                    <!-- <table id="tableAcumulado"
                                         class="table table-striped table-bordered table-hover text-center">
                                         <thead>
                                             <tr>
@@ -90,16 +97,19 @@
 
 
                                         </tbody>
-                                    </table>
+                                    </table> -->
                                 </div>
                             </div>
                         </div>
+                        <br>
+                        <br>
+                        <br>
                         <div class="row mt-3">
 
 
                             <div class="col-lg-6">
                                 <button id="btnAprobar" class="btn btn-success btn-block"><span
-                                        class="fas fa-check"></span> Finalizar</button>
+                                        class="fas fa-check"></span> Confirm</button>
                             </div>
                             <div class="col-lg-6">
                                 <button id="btnRechazar" class="btn btn-danger btn-block"><span
@@ -127,26 +137,33 @@
                             </tr>
 
                             <tr>
-                                <th ><span></span>Empleado</th>
-                                <th ><span></span>Nombre</th>
-                                <th ><span></span>Turno</th>
-                                <th ><span></span>L</th>
-                                <th ><span></span>M</th>
-                                <th ><span></span>Mc</th>
-                                <th ><span></span>J</th>
-                                <th ><span></span>V</th>
-                                <th ><span></span>S</th>
-                                <th ><span></span>D</th>
-                                <th ><span></span>x2</th>
-                                <th ><span></span>x3</th>
-                                <th ><span></span>x2DL</th>
-                                <th ><span></span>Area Actual</th>
-                                <th ><span></span>Area a Laborar</th>
-                                <th ><span></span>Jefe</th>
-                                <th ><span></span>x2</th>
-                                <th ><span></span>x3</th>
-                                <th ><span></span>x2DL</th>
-                                <th ><span></span>Status</th>
+                                        <th width="1%"><span></span> Empleado</th>
+                                        <th width="20%"><span></span> Nombre</th>
+                                        <th width="4%"><span></span> Turno</th>
+                                        <th width="4%"><span></span> L</th>
+                                        <th width="4%"><span></span> M</th>
+                                        <th width="4%"><span></span> Mc</th>
+                                        <th width="4%"><span></span> J </th>
+                                        <th width="4%"><span></span> V</th>
+                                        <th width="4%"><span></span> S</th>
+                                        <th width="4%"><span></span> D</th>
+                                        <th width="4%"><span></span>x2</th>
+                                        <th width="4%"><span></span>x3</th>
+                                        <th width="4%"><span></span>x2DL</th>
+                                        <th width="10%"><span></span> Area Actual</th>
+                                        <th width="15%"><span></span> Area a Laborar</th>
+                                        <th width="15%"><span></span>Jefe</th>                               
+                                        <th width="4%" ><span></span>x2</th>
+                                        <th width="4%" ><span></span>x3</th>
+                                        <th width="4%" ><span></span>x2DL</th>
+                                        <th  width="15%"><span></span>Status</th>
+                                        <th width="0%" hidden  ><span ></span>jefeid</th>
+                                        <th width="0%" hidden  ><span ></span>dl1</th>
+                                        <th width="0%" hidden  ><span ></span>dl2</th>
+                                        <th width="0%" hidden  ><span ></span>x2</th>
+                                        <th width="0%" hidden  ><span ></span>x3</th>
+                                        <th width="0%" hidden  ><span></span>costohra</th>
+                                        <th width="0%" hidden  ><span></span>costototal</th>
                             </tr>
 
 
@@ -271,4 +288,4 @@
 
             <%- include ("./static/guia") %>
                 <%- include ("./static/footer") %>
-                    <script src="/js/functions/finalizar.js"></script>
+                    <script src="/js/functions/confirmar_NEW.js"></script>

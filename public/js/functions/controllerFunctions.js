@@ -233,7 +233,8 @@ funcion.getTotalSupervisoresGerente = (arrayEmpleados, week_start, week_end) => 
         AND 
             (fecha BETWEEN  "${week_start}" AND "${week_end}")
         AND
-            status != "Rechazado"
+            (status = "Aprobado" || status="Finalizado")
+            
         GROUP BY 
             solicitante
         
@@ -813,7 +814,7 @@ funcion.getHistorial = (id) => {
 }
 
 
-funcion.getInfoExtra = (empleado, week_start, week_end) => {
+funcion.getInfoExtra = (empleado, week_start, week_end, id, condicion, signo) => {
     return new Promise((resolve, reject) => {
 
         dbT(`SELECT SUM(horas) as horasExtra
@@ -823,7 +824,10 @@ funcion.getInfoExtra = (empleado, week_start, week_end) => {
             empleado = "${empleado}"
         AND (fecha BETWEEN  "${week_start}" AND "${week_end}")
 
-        AND status != "Rechazado"
+        AND 
+            ${condicion}
+        AND 
+            solicitud ${signo} ${id}
             `)
 
             .then((result) => { resolve(result) })
@@ -832,7 +836,7 @@ funcion.getInfoExtra = (empleado, week_start, week_end) => {
 }
 
 
-funcion.getInfoDescanso = (empleado, descanso) => {
+funcion.getInfoDescanso = (empleado, descanso, id, condicion, signo) => {
     return new Promise((resolve, reject) => {
 
         dbT(`SELECT SUM(horas) as horasDescanso
@@ -842,7 +846,10 @@ funcion.getInfoDescanso = (empleado, descanso) => {
             empleado = "${empleado}"
         AND fecha="${descanso}"
 
-        AND status != "Rechazado"
+        AND 
+            ${condicion}
+        AND 
+            solicitud ${signo} ${id}
             `)
 
             .then((result) => { resolve(result) })
@@ -1006,7 +1013,7 @@ funcion.getManagerHorasEmpleados = (week_start, week_end, arrayempleados) => {
         AND 
             (fecha BETWEEN "${week_start}" AND "${week_end}")
         AND
-            status = "Aprobado"
+            (status = "Aprobado" || status = "Finalizado")
             `)
 
 
@@ -1503,6 +1510,25 @@ funcion.getSolicitudesPendienteRH = () => {
 
 
 
+funcion.getBusqueda = () => {
+    return new Promise((resolve, reject) => {
+
+        dbT(`SELECT *
+        FROM 
+            solicitud 
+        GROUP BY 
+            solicitud
+        ORDER BY 
+            solicitud DESC`)
+            .then((result) => { resolve(result) })
+            .catch((error) => { reject(error) })
+    })
+
+
+}
+
+
+
 funcion.getCostoArea = (area) => {
 
     return new Promise((resolve, reject) => {
@@ -1557,7 +1583,7 @@ funcion.InsertMotivo = (motivo) => {
 
 
 
-funcion.InsertVacacaiones = (empleado, nombre, tipo, fecha) => {
+funcion.InsertVacaciones = (empleado, nombre, tipo, fecha) => {
 
 
     return new Promise((resolve, reject) => {

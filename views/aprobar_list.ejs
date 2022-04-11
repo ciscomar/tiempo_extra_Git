@@ -3,70 +3,90 @@
         <%- include ("./static/navbar") %>
 
 
-        <div class="container-fluid mb-4">
-                    <div class="row mt-5">
+            <div class="container-fluid mb-4">
+                <div class="row mt-5">
 
 
-                        <div class="col-4"></div>
-                        <div class="col-4">
-                            <img src="/img/TristoneLogo.png" class="img-logo rounded mx-auto d-block"
-                                alt="Tristone Flowtech">
-                            <h1 class="display-5 text-center csvTitulo">Aprobar Solicitudes</h1>
-                            <p class="lead text-center"></p>
-                        </div>
-                        <div class="col-auto" style="margin: 0 auto">
-                            <h5 class="text-center">Aprobado</h5>
-                            <table id="tableAcumulado"
-                                class="table table-responsive-sm table-striped table-bordered table-hover text-center">
-                                <thead>
-                                    <tr>
-                                        <th colspan="3" class=" bg-info text-white" style="border-top-left-radius: 30px !important;" id="numero_semana"></th>
-                                    </tr>
-                                    <tr>
-                                        <th>X2</th>
-                                        <th>X3</th>
-                                        <th>x2DL</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-        
+                    <div class="col-4"></div>
+                    <div class="col-4">
+                        <img src="/img/TristoneLogo.png" class="img-logo rounded mx-auto d-block"
+                            alt="Tristone Flowtech">
+                        <h1 class="display-5 text-center csvTitulo">Aprobar Solicitudes</h1>
+                        <p class="lead text-center"></p>
+                    </div>
+                    <div class="col-2" style="margin: 0 auto">
+                        <table id="tableAcumulado"
+                            class="table table-responsive-sm table-striped table-bordered table-hover text-center">
+                            <thead>
+                                <tr>
+                                    <th colspan="3" class=" bg-info text-white"
+                                        style="border-top-left-radius: 30px !important;" id="numero_semana">
 
-                                </tbody>
-                            </table>
-                        </div>
+                                        <div class="spinner-grow spinner-grow-sm text-light mt cdelay-1" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                        <div class="spinner-grow spinner-grow-sm text-light mt cdelay-2" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                        <div class="spinner-grow spinner-grow-sm text-light mt cdelay-3" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                    
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>X2</th>
+                                    <th>X3</th>
+                                    <th>x2DL</th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
+
+                            </tbody>
+                        </table>
                     </div>
 
                 </div>
-      
-            <div class="container ">
 
-                <div class="table-responsive ">
-                    <div class="containerTable mt-4">
-                        <div class="table table-responsive" id="table">
-                            <table id="table2" class="table table-bordered table-striped table-sm hover text-center">
-                                <thead class="thead-dark">
+            </div>
 
-                                    <th width="1%"><span></span> Revisar</th>
-                                    <th width="10%"><span></span> Id Solicitud</th>
-                                    <th width="10%"><span></span> Solicitante</th>
-                                    <th width="10%"><span></span> Horas</th>
-                                    <th width="20%"><span></span> Semana</th>
-                                    <th width="20%"><span></span> Motivo</th>
+            <div class="container">
+
+                <div class="row">
+
+                    <div class="col-12">
 
 
-                                </thead>
+                        <div class="table-responsive ">
+                            <div class="containerTable mt-4">
+                                <div class="table table-responsive" id="table">
+                                    <table id="table2"
+                                        class="table table-bordered table-striped table-sm hover text-center">
+                                        <thead class="thead-dark">
 
-                                <tbody>
+                                            <th width="1%"><span></span> Revisar</th>
+                                            <th width="10%"><span></span> Id Solicitud</th>
+                                            <th width="10%"><span></span> Solicitante</th>
+                                            <th width="10%"><span></span> Horas</th>
+                                            <th width="20%"><span></span> Semana</th>
+                                            <th width="20%"><span></span> Motivo</th>
+                                            <th width="20%"><span></span> Creada</th>
 
 
-                                </tbody>
-                            </table>
+                                        </thead>
+
+                                        <tbody>
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-
 
 
             <div class="modal fade" id="modalSuccess" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
@@ -134,5 +154,5 @@
 
 
 
-            <%- include ("./static/footer") %>
-                <script src="/js/functions/aprobar_list.js"></script>
+                <%- include ("./static/footer") %>
+                    <script src="/js/functions/aprobar_list.js"></script>

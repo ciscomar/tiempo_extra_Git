@@ -1,8 +1,13 @@
 let selectedAreas = document.getElementById("selectedAreas")
 let btnGuardarCosto = document.getElementById("btnGuardarCosto")
 let btnGuardarMotivo = document.getElementById("btnGuardarMotivo")
+let btnGuardarVacaciones = document.getElementById("btnGuardarVacaciones")
 let costo = document.getElementById("costo")
 let inputmotivo = document.getElementById("inputmotivo")
+let inputEmpleadoNombre = document.getElementById("inputEmpleadoNombre")
+let inputEmpleado = document.getElementById("inputEmpleado")
+let inputEmpleadoTipo = document.getElementById("inputEmpleadoTipo")
+let inputEmpleadoFecha = document.getElementById("inputEmpleadoFecha")
 
 let table2 = $('#table2').DataTable(
     {
@@ -251,14 +256,14 @@ $('.week-picker').datepicker({
     onSelect: function (dateText, inst) {
         let date = $(this).datepicker('getDate');
 
-    
+
         let dateFormat = inst.settings.dateFormat || $.datepicker._defaults.dateFormat;
 
         $('#btnSeleccionar').show();
 
         $('#week').val($.datepicker.formatDate(dateFormat, date, inst.settings))
 
-       
+
 
     }
 });
@@ -286,7 +291,8 @@ function funcionvacaciones() {
                 eliminar,
                 v.empleado,
                 v.nombre,
-                v.fecha.substring(0,v.fecha.indexOf("T"))
+                v.fecha.substring(0, v.fecha.indexOf("T")),
+                v.tipo
 
             ]).draw(false);
         });
@@ -315,3 +321,65 @@ function eliminarVacaciones(id) {
     })
 
 }
+
+inputEmpleado.addEventListener('keyup', () => { getInfoEmpleado(inputEmpleado) })
+
+let getInfoEmpleado = (e) => {
+
+  
+    if (e.value === "") {
+        valorInput = 0
+    } else {
+        valorInput = e.value
+    }
+
+    let data = { "empleado": `${valorInput}` }
+
+    axios({
+        method: 'post',
+        url: `/infoEmpleadoConfig`,
+        data: JSON.stringify(data),
+        headers: { 'content-type': 'application/json' }
+    })
+        .then((result) => {
+
+            
+            if (result.data != "") {
+                
+                info=result.data[0]
+                inputEmpleadoNombre.value=info.emp_nombre
+            }else{
+                inputEmpleadoNombre.value=""
+            }
+        })
+}
+
+
+
+btnGuardarVacaciones.addEventListener('click', function (evt) {
+
+
+    if (inputEmpleado.value != "" && inputEmpleadoNombre.value != "" && inputEmpleadoTipo.value != "" && inputEmpleadoFecha.value !="")  {
+
+        data = { "empleado": `${inputEmpleado.value}`,"nombre": `${inputEmpleadoNombre.value}`, "tipo": `${inputEmpleadoTipo.value}`, "fecha": `${inputEmpleadoFecha.value}`}
+        axios({
+            method: 'post',
+            url: `/InsertVacaciones`,
+            data: JSON.stringify(data),
+            headers: { 'content-type': 'application/json' }
+        }).then((response) => {
+
+
+            table3.clear().draw();
+            funcionvacaciones();
+            inputEmpleado.value = ""
+            inputEmpleadoNombre.value = ""
+            inputEmpleadoTipo.value=""
+            inputEmpleadoFecha.value =""
+
+        })
+
+    }
+
+
+})

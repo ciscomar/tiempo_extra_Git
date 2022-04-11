@@ -187,12 +187,13 @@ controller.infoEmpleado_POST = (req, res) => {
 
                 let area_actual = info[0].emp_area
 
-
+                let condicion = 'status != "Rechazado"'
+                let signo = '!='
                 async function waitForPromise() {
                     let getInfoEmpleado = await funcion.getInfoEmpleado(info[0].emp_id_jefe)
-                    let getInfoExtra = await funcion.getInfoExtra(empleado, inicio, fin)
-                    let getInfoDescanso1 = await funcion.getInfoDescanso(empleado, descanso1)
-                    let getInfoDescanso2 = await funcion.getInfoDescanso(empleado, descanso2)
+                    let getInfoExtra = await funcion.getInfoExtra(empleado, inicio, fin, 0, condicion, signo)
+                    let getInfoDescanso1 = await funcion.getInfoDescanso(empleado, descanso1, 0, condicion, signo)
+                    let getInfoDescanso2 = await funcion.getInfoDescanso(empleado, descanso2, 0, condicion, signo)
                     let getWeekInfoEmpleado = await funcion.getWeekInfoEmpleado(empleado, week_start, week_end)
                     let getEmpleadoPendiente = await funcion.getEmpleadoPendiente(empleado, week_start, week_end)
                     let getCostoArea = await funcion.getCostoArea(area_actual)
@@ -201,7 +202,7 @@ controller.infoEmpleado_POST = (req, res) => {
 
 
                     result.push(info)
-                    Promise.all([getInfoEmpleado, getInfoExtra, getInfoDescanso1, getInfoDescanso2, getWeekInfoEmpleado, getEmpleadoPendiente, getCostoArea,allEmpleados])
+                    Promise.all([getInfoEmpleado, getInfoExtra, getInfoDescanso1, getInfoDescanso2, getWeekInfoEmpleado, getEmpleadoPendiente, getCostoArea, allEmpleados])
                         .then((r) => {
                             result.push(r)
                             res.json({ result })
@@ -575,6 +576,24 @@ controller.pendiente_rh_GET = (req, res) => {
 }
 
 
+
+controller.busqueda_GET = (req, res) => {
+    let user = req.res.locals.authData[0]
+    let id = req.param.id
+    let sidebar = req.res.locals.authData[1]
+
+    if (sidebar === "rh" || sidebar === "admin") {
+
+
+        res.render("busqueda.ejs", { sidebar, id, user })
+
+    } else {
+        res.redirect("/acceso_denegado")
+    }
+
+}
+
+
 controller.configuracion_GET = (req, res) => {
     let user = req.res.locals.authData[0]
     let id = req.param.id
@@ -622,7 +641,7 @@ controller.solicitud_historial_GET = (req, res) => {
 
     if (sidebar === "supervisor" || sidebar === "admin") {
 
-        res.render('solicitud_historial.ejs', { id, sidebar, user });
+        res.render('solicitud_historial_NEW.ejs', { id, sidebar, user });
 
     } else {
         res.redirect("/acceso_denegado")
@@ -640,6 +659,8 @@ controller.solicitud_historial_id_POST = (req, res) => {
     let empSolicitud = []
     let empturno = []
     let arrayHorasEmp = []
+    let paso = req.body.paso
+    let username = req.connection.user.substring(4)
     async function waitForPromise() {
         let result = []
         let solicitud = await funcion.getSolicitudId(id)
@@ -677,10 +698,10 @@ controller.solicitud_historial_id_POST = (req, res) => {
             }
         }
 
-        let infoWeekEmpleado=[]
+        let infoWeekEmpleado = []
         for (let y = 0; y < empSolicitud.length; y++) {
             let temp = []
-            
+
 
             if (empturno[y] == 3) {
 
@@ -695,16 +716,28 @@ controller.solicitud_historial_id_POST = (req, res) => {
                 fin = friday
             }
 
-            let getInfoExtra = await funcion.getInfoExtra(empSolicitud[y], inicio, fin)
-            let getInfoDescanso1 = await funcion.getInfoDescanso(empSolicitud[y], descanso1)
-            let getInfoDescanso2 = await funcion.getInfoDescanso(empSolicitud[y], descanso2)
+            let condicion
+            let signo
+            if (paso === "crear") { condicion = 'status != "Rechazado"', signo = '!=' }
+            else if (paso === "confirmar") { condicion = 'status != "Rechazado"', signo = '!=' }
+            else if (paso === "aprobar") { condicion = "(status = 'Aprobado' OR status='Finalizado')", signo = '!=' }
+            else if (paso === "finalizar") { condicion = "status = 'Finalizado'", signo = '!=' }
+            else if (paso === "historial_confirmar") { condicion = "status != 'Rechazado'", signo = '<' }
+            else if (paso === "historial_aprobar") { condicion = "(status = 'Aprobado' OR status='Finalizado')", signo = '<' }
+            else if (paso === "historial_finalizar") { condicion = "status = 'Finalizado'", signo = '<' }
+
+
+            let getInfoExtra = await funcion.getInfoExtra(empSolicitud[y], inicio, fin, id, condicion, signo)
+            let getInfoDescanso1 = await funcion.getInfoDescanso(empSolicitud[y], descanso1, id, condicion, signo)
+            let getInfoDescanso2 = await funcion.getInfoDescanso(empSolicitud[y], descanso2, id, condicion, signo)
+
             temp.push(empSolicitud[y])
             temp.push(getInfoExtra[0].horasExtra)
             temp.push(getInfoDescanso1[0].horasDescanso)
             temp.push(getInfoDescanso2[0].horasDescanso)
             arrayHorasEmp.push(temp)
 
-            
+
             let getWeekInfoEmpleado = await funcion.getWeekInfoEmpleadoEditar(empSolicitud[y], startDate, endDate, id)
             //console.log(getWeekInfoEmpleado);
             infoWeekEmpleado.push(getWeekInfoEmpleado)
@@ -714,6 +747,7 @@ controller.solicitud_historial_id_POST = (req, res) => {
         let solicitudHoras = await funcion.getSolicitudHoras(id)
         result.push(solicitudHoras)
         result.push(infoWeekEmpleado)
+        result.push(username)
         res.json({ result })
     }
 
@@ -826,7 +860,7 @@ controller.confirmar_GET = (req, res) => {
 
     if (sidebar === "supervisor" || sidebar === "admin") {
 
-        res.render('confirmar.ejs', { id, sidebar, user });
+        res.render('confirmar_NEW.ejs', { id, sidebar, user });
 
     } else {
         res.redirect("/acceso_denegado")
@@ -844,7 +878,7 @@ controller.finalizar_GET = (req, res) => {
 
     if (sidebar === "planta" || sidebar === "admin") {
 
-        res.render('finalizar.ejs', { id, user, sidebar });
+        res.render('finalizar_NEW.ejs', { id, user, sidebar });
 
     } else {
         res.redirect("/acceso_denegado")
@@ -863,7 +897,7 @@ controller.confirmar_historial_id_GET = (req, res) => {
 
     if (sidebar === "supervisor" || sidebar === "admin" || sidebar === "rh") {
 
-        res.render('confirmar_historial_id.ejs', { id, sidebar, user });
+        res.render('confirmar_historial_id_NEW.ejs', { id, sidebar, user });
 
     } else {
         res.redirect("/acceso_denegado")
@@ -880,7 +914,7 @@ controller.aprobar_historial_id_GET = (req, res) => {
 
     if (sidebar === "gerente" || sidebar === "admin") {
 
-        res.render('aprobar_historial_id.ejs', { id, sidebar, user });
+        res.render('aprobar_historial_id_NEW.ejs', { id, sidebar, user });
 
     } else {
         res.redirect("/acceso_denegado")
@@ -898,7 +932,7 @@ controller.finalizar_historial_id_GET = (req, res) => {
 
     if (sidebar === "planta" || sidebar === "admin") {
 
-        res.render('finalizar_historial_id.ejs', { id, sidebar, user });
+        res.render('finalizar_historial_id_NEW.ejs', { id, sidebar, user });
 
     } else {
         res.redirect("/acceso_denegado")
@@ -1310,6 +1344,13 @@ controller.finalizar_solicitud_POST = (req, res) => {
     let username = req.connection.user.substring(4)
     let comentario = req.body.comentario
 
+    // info solicitud_horas
+    let empleados = req.body.empleados
+    let fechas = req.body.fechas
+    let motivo = ""
+    let solicitante = req.body.solicitante
+    //
+
     if (comentario == "") { comentario = status }
 
     async function waitForPromise() {
@@ -1325,6 +1366,12 @@ controller.finalizar_solicitud_POST = (req, res) => {
         if (status != "Finalizado") {
             sendConfirmacionMail(soilicitante_nombre[0].emp_correo, id, username, "mail_rechazo", "Gerencial Planta: Rechazo")
         } else {
+            // insert solicitud_horas
+            let deleteSolicitudHoras = await funcion.deleteSolicitudHoras(id)
+            let arrayHoras = await getArrayHoras(id, solicitante, empleados, fechas, motivo);
+            let insertHoras = await funcion.insertSolicitudHoras(arrayHoras)
+            let updateHorasA = await funcion.updateHorasStatus(id, "Finalizado")
+            //
 
             sendConfirmacionMail(soilicitante_nombre[0].emp_correo, id, username, "mail_aprobacion", "Gerencial Planta")
         }
@@ -1559,7 +1606,7 @@ controller.aprobar_GET = (req, res) => {
 
     if (sidebar === "gerente" || sidebar === "admin") {
 
-        res.render('aprobar.ejs', { id, sidebar, user });
+        res.render('aprobar_NEW.ejs', { id, sidebar, user });
 
     } else {
         res.redirect("/acceso_denegado")
@@ -1578,6 +1625,13 @@ controller.aprobar_solicitud_POST = (req, res) => {
     let username = req.connection.user.substring(4)
     let comentario = req.body.comentario
 
+    // info solicitud_horas
+    let empleados = req.body.empleados
+    let fechas = req.body.fechas
+    let motivo = ""
+    let solicitante = req.body.solicitante
+    //
+
     if (comentario == "") { comentario = status }
 
     async function waitForPromise() {
@@ -1587,12 +1641,22 @@ controller.aprobar_solicitud_POST = (req, res) => {
         let comment = await funcion.insertHistorial(id, aprobador, status, comentario)
         let updateHoras = await funcion.updateHorasStatus(id, status)
 
+
+
         let solicitante_id = await funcion.getSolicitante(id)
         let soilicitante_nombre = await funcion.getEmpleadoNombre(solicitante_id[0].solicitante)
 
         if (status != "Aprobado") {
             sendConfirmacionMail(soilicitante_nombre[0].emp_correo, id, username, "mail_rechazo", "gerencial: Rechazo")
         } else {
+
+            // insert solicitud_horas
+            let deleteSolicitudHoras = await funcion.deleteSolicitudHoras(id)
+            let arrayHoras = await getArrayHoras(id, solicitante, empleados, fechas, motivo);
+            let insertHoras = await funcion.insertSolicitudHoras(arrayHoras)
+            let updateHorasA = await funcion.updateHorasStatus(id, "Aprobado")
+            //
+
             let gerentePlanta_id = await funcion.getIdJefe(aprobador)
             let gerentePlanta_nombre = await funcion.getEmpleadoNombre(gerentePlanta_id[0].emp_id_jefe)
             sendConfirmacionMail(gerentePlanta_nombre[0].emp_correo, id, username, "mail_gerente_planta", "Gerencial Planta")
@@ -1695,9 +1759,9 @@ controller.aprobar_id_POST = (req, res) => {
 controller.finalizar_id_POST = (req, res) => {
     let id = req.body.id
     let username = req.connection.user.substring(4)
-    let empSolicitud = []
-    let empturno = []
-    let arrayHorasEmp = []
+    // let empSolicitud = []
+    // let empturno = []
+    // let arrayHorasEmp = []
     async function waitForPromise() {
         let result = []
         let emp_id = await funcion.getEmpleadoId(username)
@@ -1718,54 +1782,54 @@ controller.finalizar_id_POST = (req, res) => {
 
         let week_start_moment = moment(startDate)
         let week_end_moment = moment(endDate)
-        let saturday = week_end_moment.subtract(1, "days").format('YYYY-MM-DD')
-        let friday = week_end_moment.subtract(1, "days").format('YYYY-MM-DD')
-        let tuesday = week_start_moment.add(1, "days").format('YYYY-MM-DD')
-        let descanso1
-        let descanso2
-        let inicio
-        let fin
+        // let saturday = week_end_moment.subtract(1, "days").format('YYYY-MM-DD')
+        // let friday = week_end_moment.subtract(1, "days").format('YYYY-MM-DD')
+        // let tuesday = week_start_moment.add(1, "days").format('YYYY-MM-DD')
+        // let descanso1
+        // let descanso2
+        // let inicio
+        // let fin
 
 
         result.push(emp_id)
         result.push(solicitud)
         result.push(empleados)
 
-        for (let i = 0; i < solicitud.length; i++) {
-            if (empSolicitud.indexOf(solicitud[i].empleado) === -1) {
-                empSolicitud.push(solicitud[i].empleado)
-                empturno.push(solicitud[i].turno)
-            }
-        }
+        // for (let i = 0; i < solicitud.length; i++) {
+        //     if (empSolicitud.indexOf(solicitud[i].empleado) === -1) {
+        //         empSolicitud.push(solicitud[i].empleado)
+        //         empturno.push(solicitud[i].turno)
+        //     }
+        // }
 
-        for (let y = 0; y < empSolicitud.length; y++) {
-            let temp = []
+        // for (let y = 0; y < empSolicitud.length; y++) {
+        //     let temp = []
 
-            if (empturno[y] == 3) {
+        //     if (empturno[y] == 3) {
 
-                descanso1 = startDate
-                descanso2 = endDate
-                inicio = tuesday
-                fin = saturday
-            } else {
-                descanso1 = saturday
-                descanso2 = endDate
-                inicio = startDate
-                fin = friday
-            }
+        //         descanso1 = startDate
+        //         descanso2 = endDate
+        //         inicio = tuesday
+        //         fin = saturday
+        //     } else {
+        //         descanso1 = saturday
+        //         descanso2 = endDate
+        //         inicio = startDate
+        //         fin = friday
+        //     }
 
-            let getInfoExtra = await funcion.getInfoExtra(empSolicitud[y], inicio, fin)
-            let getInfoDescanso1 = await funcion.getInfoDescanso(empSolicitud[y], descanso1)
-            let getInfoDescanso2 = await funcion.getInfoDescanso(empSolicitud[y], descanso2)
-            temp.push(empSolicitud[y])
-            temp.push(getInfoExtra[0].horasExtra)
-            temp.push(getInfoDescanso1[0].horasDescanso)
-            temp.push(getInfoDescanso2[0].horasDescanso)
-            arrayHorasEmp.push(temp)
+        //     let getInfoExtra = await funcion.getInfoExtra(empSolicitud[y], inicio, fin)
+        //     let getInfoDescanso1 = await funcion.getInfoDescanso(empSolicitud[y], descanso1)
+        //     let getInfoDescanso2 = await funcion.getInfoDescanso(empSolicitud[y], descanso2)
+        //     temp.push(empSolicitud[y])
+        //     temp.push(getInfoExtra[0].horasExtra)
+        //     temp.push(getInfoDescanso1[0].horasDescanso)
+        //     temp.push(getInfoDescanso2[0].horasDescanso)
+        //     arrayHorasEmp.push(temp)
 
-        }
+        // }
 
-        result.push(arrayHorasEmp)
+        // result.push(arrayHorasEmp)
 
         let solicitudHoras = await funcion.getSolicitudHoras(id)
         result.push(solicitudHoras)
@@ -1873,12 +1937,13 @@ controller.getHorasGerente_POST = (req, res) => {
 
             solicitudes = await funcion.getManagerHorasEmpleados(startDate, endDate, arrayEmpleados)
 
-        } else {
-            solicitudes = await funcion.getManagerHorasEmpleados(startDate, endDate, arrayEmpleados)
-            //Se comenta linea para remover horas utilizado por aprobado 
-            //solicitudes = await funcion.getManagerHorasEmpleadosUtilizado(startDate, endDate, arrayEmpleados)
-
         }
+        // else {
+        //     solicitudes = await funcion.getManagerHorasEmpleados(startDate, endDate, arrayEmpleados)
+        //     //Se comenta linea para remover horas utilizado por aprobado 
+        //     //solicitudes = await funcion.getManagerHorasEmpleadosUtilizado(startDate, endDate, arrayEmpleados)
+
+        // }
 
 
         for (let i = 0; i < solicitudes.length; i++) {
@@ -1914,18 +1979,19 @@ controller.getHorasGerente_POST = (req, res) => {
                 getInfoDescanso1 = await funcion.getInfoDescansoManager(empSolicitud[y], arrayEmpleados, descanso1)
                 getInfoDescanso2 = await funcion.getInfoDescansoManager(empSolicitud[y], arrayEmpleados, descanso2)
 
-            } else {
-
-                getInfoExtra = await funcion.getInfoExtraManager(empSolicitud[y], arrayEmpleados, inicio, fin)
-                getInfoDescanso1 = await funcion.getInfoDescansoManager(empSolicitud[y], arrayEmpleados, descanso1)
-                getInfoDescanso2 = await funcion.getInfoDescansoManager(empSolicitud[y], arrayEmpleados, descanso2)
-                
-                // Se comenta para remover tiempo utilizado
-                // getInfoExtra = await funcion.getInfoExtraManagerUtilizado(empSolicitud[y], arrayEmpleados, inicio, fin)
-                // getInfoDescanso1 = await funcion.getInfoDescansoManagerUtilizado(empSolicitud[y], arrayEmpleados, descanso1)
-                // getInfoDescanso2 = await funcion.getInfoDescansoManagerUtilizado(empSolicitud[y], arrayEmpleados, descanso2)
-
             }
+            // else {
+
+            //     getInfoExtra = await funcion.getInfoExtraManager(empSolicitud[y], arrayEmpleados, inicio, fin)
+            //     getInfoDescanso1 = await funcion.getInfoDescansoManager(empSolicitud[y], arrayEmpleados, descanso1)
+            //     getInfoDescanso2 = await funcion.getInfoDescansoManager(empSolicitud[y], arrayEmpleados, descanso2)
+
+            //     // Se comenta para remover tiempo utilizado
+            //     // getInfoExtra = await funcion.getInfoExtraManagerUtilizado(empSolicitud[y], arrayEmpleados, inicio, fin)
+            //     // getInfoDescanso1 = await funcion.getInfoDescansoManagerUtilizado(empSolicitud[y], arrayEmpleados, descanso1)
+            //     // getInfoDescanso2 = await funcion.getInfoDescansoManagerUtilizado(empSolicitud[y], arrayEmpleados, descanso2)
+
+            // }
 
             temp.push(empSolicitud[y])
             temp.push(getInfoExtra[0].horasExtra)
@@ -2000,15 +2066,16 @@ controller.getHorasGerentePlanta_POST = (req, res) => {
 
 
         let solicitudes
+
         if (tabla == "aprobado") {
             solicitudes = await funcion.getPlantManagerHorasEmpleados(startDate, endDate)
-        } else {
-            //Se elimina funcionalidad de horas laboradas
-           // solicitudes = await funcion.getPlantManagerHorasEmpleadosUtilizado(startDate, endDate)
-
-           solicitudes = await funcion.getPlantManagerHorasEmpleados(startDate, endDate)
         }
+        // else {
+        //     //Se elimina funcionalidad de horas laboradas
+        //    // solicitudes = await funcion.getPlantManagerHorasEmpleadosUtilizado(startDate, endDate)
 
+        //    solicitudes = await funcion.getPlantManagerHorasEmpleados(startDate, endDate)
+        // }
 
 
 
@@ -2044,16 +2111,17 @@ controller.getHorasGerentePlanta_POST = (req, res) => {
                 getInfoExtra = await funcion.getInfoExtraPlantManager(empSolicitud[y], inicio, fin)
                 getInfoDescanso1 = await funcion.getInfoDescansoPlantManager(empSolicitud[y], descanso1)
                 getInfoDescanso2 = await funcion.getInfoDescansoPlantManager(empSolicitud[y], descanso2)
-            } else {
-                getInfoExtra = await funcion.getInfoExtraPlantManager(empSolicitud[y], inicio, fin)
-                getInfoDescanso1 = await funcion.getInfoDescansoPlantManager(empSolicitud[y], descanso1)
-                getInfoDescanso2 = await funcion.getInfoDescansoPlantManager(empSolicitud[y], descanso2)
-                //Se elimina la funcionalidad de laborado
-                // getInfoExtra = await funcion.getInfoExtraPlantManagerUtilizado(empSolicitud[y], inicio, fin)
-                // getInfoDescanso1 = await funcion.getInfoDescansoPlantManagerUtilizado(empSolicitud[y], descanso1)
-                // getInfoDescanso2 = await funcion.getInfoDescansoPlantManagerUtilizado(empSolicitud[y], descanso2)
-
             }
+            // else {
+            //     getInfoExtra = await funcion.getInfoExtraPlantManager(empSolicitud[y], inicio, fin)
+            //     getInfoDescanso1 = await funcion.getInfoDescansoPlantManager(empSolicitud[y], descanso1)
+            //     getInfoDescanso2 = await funcion.getInfoDescansoPlantManager(empSolicitud[y], descanso2)
+            //     //Se elimina la funcionalidad de laborado
+            //     // getInfoExtra = await funcion.getInfoExtraPlantManagerUtilizado(empSolicitud[y], inicio, fin)
+            //     // getInfoDescanso1 = await funcion.getInfoDescansoPlantManagerUtilizado(empSolicitud[y], descanso1)
+            //     // getInfoDescanso2 = await funcion.getInfoDescansoPlantManagerUtilizado(empSolicitud[y], descanso2)
+
+            // }
 
             temp.push(empSolicitud[y])
             temp.push(getInfoExtra[0].horasExtra)
@@ -2127,9 +2195,11 @@ controller.empleados_supervisor_fecha_POST = (req, res) => {
                 fin = friday
             }
 
-            let getInfoExtra = await funcion.getInfoExtra(empSolicitud[y], inicio, fin)
-            let getInfoDescanso1 = await funcion.getInfoDescanso(empSolicitud[y], descanso1)
-            let getInfoDescanso2 = await funcion.getInfoDescanso(empSolicitud[y], descanso2)
+            let condicion = 'status != "Rechazado"'
+            let signo = '!='
+            let getInfoExtra = await funcion.getInfoExtra(empSolicitud[y], inicio, fin, 0, condicion, signo)
+            let getInfoDescanso1 = await funcion.getInfoDescanso(empSolicitud[y], descanso1, 0, condicion, signo)
+            let getInfoDescanso2 = await funcion.getInfoDescanso(empSolicitud[y], descanso2, 0, condicion, signo)
             temp.push(empSolicitud[y])
             temp.push(getInfoExtra[0].horasExtra)
             temp.push(getInfoDescanso1[0].horasDescanso)
@@ -2347,10 +2417,11 @@ controller.gerente_supervisores_fecha_POST = (req, res) => {
         if (tabla == "aprobado") {
             suma = await funcion.getTotalSupervisoresGerente(arrayEmpleados, fecha_inicial, fecha_final)
             costototal = await funcion.getCostoGerenteTotalAprobado(arrayEmpleados, fecha_inicial, fecha_final)
-        } else {
-            suma = await funcion.getTotalSupervisoresGerenteUtilizado(arrayEmpleados, fecha_inicial, fecha_final)
-            costototal = await funcion.getCostoGerenteTotalUtilizado(arrayEmpleados, fecha_inicial, fecha_final)
         }
+        // else {
+        //     suma = await funcion.getTotalSupervisoresGerenteUtilizado(arrayEmpleados, fecha_inicial, fecha_final)
+        //     costototal = await funcion.getCostoGerenteTotalUtilizado(arrayEmpleados, fecha_inicial, fecha_final)
+        // }
 
 
         let empleados = await funcion.getAllEmpleados()
@@ -2382,7 +2453,7 @@ controller.gerente_gerentes_fecha_POST = (req, res) => {
         if (tabla == "aprobado") {
             suma = await funcion.getTotalGerentesGerente(fecha_inicial, fecha_final)
             costototal = await funcion.getCostoPlantaTotalAprobado(fecha_inicial, fecha_final)
-        } 
+        }
         // else {
         //     suma = await funcion.getTotalGerentesGerenteUtilizado(fecha_inicial, fecha_final)
         //     costototal = await funcion.getCostoPlantaTotalUtilizado(fecha_inicial, fecha_final)
@@ -2753,6 +2824,26 @@ controller.getSolicitudesPendienteRH_POST = (req, res) => {
 }
 
 
+controller.getBusqueda_POST = (req, res) => {
+    resultado = []
+
+    async function waitForPromise() {
+
+        let allEmpleados = await funcion.getAllEmpleados()
+        resultado.push(allEmpleados)
+
+        funcion.getBusqueda()
+            .then((result) => {
+                resultado.push(result)
+                res.json(resultado)
+            })
+            .catch((err) => { console.error(err) })
+
+    }
+
+    waitForPromise()
+}
+
 
 
 controller.InsertCosto_POST = (req, res) => {
@@ -2864,7 +2955,7 @@ controller.insertar_catalogo_POST = (req, res) => {
                 }
             })
             .then(() => {
-   
+
                 if (formato.length === titulos2.length) {
                     for (let i = 0; i < titulos2.length; i++) {
 
@@ -2872,7 +2963,7 @@ controller.insertar_catalogo_POST = (req, res) => {
                     }
 
 
-        
+
 
                     if (formato.length != count) {
 
@@ -2949,14 +3040,14 @@ controller.cancelar_solicitud_POST = (req, res) => {
     let solicitante = req.connection.user.substring(4)
 
     async function waitForPromise() {
-    let emp_id = await funcion.getEmpleadoId(solicitante)
-    let comment = await funcion.insertHistorial(id, emp_id, "Rechazado", "Solicitud Cancelada")
+        let emp_id = await funcion.getEmpleadoId(solicitante)
+        let comment = await funcion.insertHistorial(id, emp_id, "Rechazado", "Solicitud Cancelada")
 
-    funcion.cancelarSolicitud(id)
-        .then((result) => {
-            res.json(result)
-        })
-        .catch((err) => { res.json(err) })
+        funcion.cancelarSolicitud(id)
+            .then((result) => {
+                res.json(result)
+            })
+            .catch((err) => { res.json(err) })
 
     }
     waitForPromise()
@@ -2964,6 +3055,35 @@ controller.cancelar_solicitud_POST = (req, res) => {
 }
 
 
+
+
+controller.infoEmpleadoConfig_POST = (req, res) => {
+
+    let empleado = req.body.empleado
+    funcion.getInfoEmpleado(empleado)
+        .then((result) => {
+            res.json(result)
+        })
+
+
+}
+
+
+controller.InsertVacaciones_POST = (req, res) => {
+    let empleado = req.body.empleado
+    let nombre= req.body.nombre
+    let tipo= req.body.tipo
+    let fecha= req.body.fecha
+
+    funcion.InsertVacaciones(empleado, nombre, tipo, fecha)
+        .then((result) => {
+            res.json(result)
+        })
+        .catch((err) => { console.error(err) })
+
+
+
+}
 
 
 module.exports = controller;
