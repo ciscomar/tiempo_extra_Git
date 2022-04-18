@@ -735,6 +735,7 @@ selectedMotivo.addEventListener('change', function (evt) {
 });
 
 btnSend.addEventListener('click', function (evt) {
+  
   let empleadoAll = document.querySelectorAll(".nombre")
   let doblesAll = document.querySelectorAll(".dobles")
   let laborarAll = document.querySelectorAll(".laborar")
@@ -771,6 +772,7 @@ btnSend.addEventListener('click', function (evt) {
   }
 
   if(selectedMotivo.value != "" && selectedMotivo.value != "Seleccionar" && empty ==false){
+    btnSend.disabled=true
     send()
   }else{
 
