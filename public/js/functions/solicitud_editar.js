@@ -983,6 +983,7 @@ btnSend.addEventListener('click', function (evt) {
   }
 
   if (selectedMotivo.value != "" && selectedMotivo.value != "Seleccionar" && empty == false) {
+    btnSend.disabled=true
     send()
   } else {
 
