@@ -118,6 +118,10 @@ $(document).ready(function () {
 
           let temp = []
           let row = []
+
+          let dobles = 0
+          let triples = 0
+          let descansoAcumulado = 0
           for (let i = 0; i < datasupervisores.length; i++) {
 
             temp.push(datasupervisores[i].solicitante)
@@ -130,6 +134,9 @@ $(document).ready(function () {
               }
             }
 
+            dobles=dobles +=datasupervisores[i].dobles
+            triples=triples+=datasupervisores[i].triples
+            descansoAcumulado=descansoAcumulado+=datasupervisores[i].descanso
             temp.push(datasupervisores[i].dobles)
             temp.push(datasupervisores[i].triples)
             temp.push(datasupervisores[i].descanso)
@@ -138,6 +145,16 @@ $(document).ready(function () {
             temp = []
 
           }
+
+
+          let classColor = ""
+          if (triples > 0) { classColor = "danger" } else { classColor = "" }
+          temp.push(`<input type="text"  style="width: 100%; text-align:center;" name="idPlan" id="test" value="${dobles}" disabled>`)
+          temp.push(`<input type="text" class="${classColor}" style="width: 100%; text-align:center;" name="idPlan" id="test" value="${triples}" disabled>`)
+          temp.push(`<input type="text"  style="width: 100%; text-align:center;" name="idPlan" id="test" value="${descansoAcumulado}" disabled>`)
+
+          tableAcumulado.row.add(temp)
+          tableAcumulado.draw(false);
 
         })
         .catch((err) => { console.error(err) })
@@ -213,98 +230,98 @@ $(document).ready(function () {
 
           numero_semana.textContent = "Semana: " + week_number
 
-          let dobles = 0
-          let triples = 0
-          let descansoAcumulado = 0
-          let temp = []
+          // let dobles = 0
+          // let triples = 0
+          // let descansoAcumulado = 0
+          // let temp = []
 
-          for (let z = 0; z < dataHoras.length; z++) {
+          // for (let z = 0; z < dataHoras.length; z++) {
 
-            let extrax2 = 0
-            let extrax3 = 0
-            let descanso = 0
-            let horasExtra = dataHoras[z][1]
-            let horasDescanso1 = dataHoras[z][2]
-            let horasDescanso2 = dataHoras[z][3]
+          //   let extrax2 = 0
+          //   let extrax3 = 0
+          //   let descanso = 0
+          //   let horasExtra = dataHoras[z][1]
+          //   let horasDescanso1 = dataHoras[z][2]
+          //   let horasDescanso2 = dataHoras[z][3]
 
-            extrax2 = horasExtra
+          //   extrax2 = horasExtra
 
-            //Horas extra dobles y triples
-            if (horasExtra == null) {
-              horasExtra = 0
-            }
-            if (horasExtra <=9) {
-              extrax2 = horasExtra
-            } else {
-              extrax2 = 9
-              extrax3 = horasExtra - 9
-            }
+          //   //Horas extra dobles y triples
+          //   if (horasExtra == null) {
+          //     horasExtra = 0
+          //   }
+          //   if (horasExtra <=9) {
+          //     extrax2 = horasExtra
+          //   } else {
+          //     extrax2 = 9
+          //     extrax3 = horasExtra - 9
+          //   }
 
-            //Horas descanso laborado1
+          //   //Horas descanso laborado1
 
-            if (isNaN(horasDescanso1)) {
-              horasDescanso1 = 0
-            }
+          //   if (isNaN(horasDescanso1)) {
+          //     horasDescanso1 = 0
+          //   }
 
-            let doble = extrax2
-            let triple = extrax3
+          //   let doble = extrax2
+          //   let triple = extrax3
 
-            if (horasDescanso1 <= 8) {
-              descanso = horasDescanso1
-            } else {
-              descanso = 8
-              restante = horasDescanso1 - 8
+          //   if (horasDescanso1 <= 8) {
+          //     descanso = horasDescanso1
+          //   } else {
+          //     descanso = 8
+          //     restante = horasDescanso1 - 8
 
-              if ((doble + restante) <=9) {
-                extrax2 = doble + restante
-              } else {
+          //     if ((doble + restante) <=9) {
+          //       extrax2 = doble + restante
+          //     } else {
 
-                extrax2 = 9
-                extrax3 = triple + ((doble + restante) - 9)
+          //       extrax2 = 9
+          //       extrax3 = triple + ((doble + restante) - 9)
 
-              }
+          //     }
 
-            }
+          //   }
 
-            //Horas descanso laborado2
+          //   //Horas descanso laborado2
 
-            if (isNaN(horasDescanso2)) {
-              horasDescanso2 = 0
-            }
+          //   if (isNaN(horasDescanso2)) {
+          //     horasDescanso2 = 0
+          //   }
 
-            let doble2 = extrax2
-            let triple2 = extrax3
+          //   let doble2 = extrax2
+          //   let triple2 = extrax3
 
-            if (horasDescanso2 <= 8) {
-              descanso = descanso + horasDescanso2
-            } else {
-              descanso = descanso + 8
-              restante2 = horasDescanso2 - 8
+          //   if (horasDescanso2 <= 8) {
+          //     descanso = descanso + horasDescanso2
+          //   } else {
+          //     descanso = descanso + 8
+          //     restante2 = horasDescanso2 - 8
 
-              if ((doble2 + restante2) <= 9) {
-                extrax2 = doble2 + restante2
-              } else {
+          //     if ((doble2 + restante2) <= 9) {
+          //       extrax2 = doble2 + restante2
+          //     } else {
 
-                extrax2 = 9
-                extrax3 = triple2 + ((doble2 + restante2) - 9)
+          //       extrax2 = 9
+          //       extrax3 = triple2 + ((doble2 + restante2) - 9)
 
-              }
+          //     }
 
-            }
+          //   }
 
-            dobles = dobles + extrax2
-            triples = triples + extrax3
-            descansoAcumulado = descansoAcumulado + descanso
+          //   dobles = dobles + extrax2
+          //   triples = triples + extrax3
+          //   descansoAcumulado = descansoAcumulado + descanso
 
-          }
-          let classColor = ""
-          if (triples > 0) { classColor = "danger" } else { classColor = "" }
-          temp.push(`<input type="text"  style="width: 100%; text-align:center;" name="idPlan" id="test" value="${dobles}" disabled>`)
-          temp.push(`<input type="text" class="${classColor}" style="width: 100%; text-align:center;" name="idPlan" id="test" value="${triples}" disabled>`)
-          temp.push(`<input type="text"  style="width: 100%; text-align:center;" name="idPlan" id="test" value="${descansoAcumulado}" disabled>`)
+          // }
+          // let classColor = ""
+          // if (triples > 0) { classColor = "danger" } else { classColor = "" }
+          // temp.push(`<input type="text"  style="width: 100%; text-align:center;" name="idPlan" id="test" value="${dobles}" disabled>`)
+          // temp.push(`<input type="text" class="${classColor}" style="width: 100%; text-align:center;" name="idPlan" id="test" value="${triples}" disabled>`)
+          // temp.push(`<input type="text"  style="width: 100%; text-align:center;" name="idPlan" id="test" value="${descansoAcumulado}" disabled>`)
 
-          tableAcumulado.row.add(temp)
-          tableAcumulado.draw(false);
+          // tableAcumulado.row.add(temp)
+          // tableAcumulado.draw(false);
 
         })
         .catch((err) => { console.error(err) })
