@@ -108,7 +108,10 @@ function loadTable() {
                     empleado.emp_categoria,
                     empleado.emp_id_jefe,
                     empleado.emp_turno,
-                    empleado.emp_area
+                    empleado.emp_area,
+                    empleado.emp_rfc,
+                    empleado.emp_curp,
+                    empleado.emp_imss
                 ]
                 data.push(info)
             });
