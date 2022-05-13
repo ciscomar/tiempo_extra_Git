@@ -499,7 +499,7 @@ let getInfoEmpleado = (e) => {
           } else {
 
             $('#modalSuccess').modal({ backdrop: 'static', keyboard: false })
-            errorMessage.innerHTML = "Empleado con Solicitud Pendiente"
+            //errorMessage.innerHTML = "Empleado con Solicitud Pendiente"
 
             let name = document.getElementById("n" + id)
             let actual = document.getElementById("a" + id)
