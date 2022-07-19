@@ -52,6 +52,7 @@ axios({
       let e=$.datepicker.formatDate('yy-mm-dd',endDate) 
 
 
+      console.log(  dataSolicitud[i]);
       revisar=`<button type="submit" class="btn"
       id="${dataSolicitud[i].solicitud}" onClick="search(this.id)"><span class="icoSidebar fas fa-search text-dark""></span>`
 
@@ -61,6 +62,8 @@ axios({
               nombre,
               s+"    /    "+e,
               dataSolicitud[i].motivo,
+              dataSolicitud[i].fecha_solicitud.substring(0, dataSolicitud[i].fecha_solicitud.indexOf("T")),
+            
               
           ]).draw(false);   
       
