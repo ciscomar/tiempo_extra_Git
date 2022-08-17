@@ -1349,6 +1349,8 @@ controller.finalizar_solicitud_POST = (req, res) => {
     let fechas = req.body.fechas
     let motivo = ""
     let solicitante = req.body.solicitante
+
+    console.log(empleados);
     //
 
     if (comentario == "") { comentario = status }
@@ -2137,8 +2139,6 @@ controller.getHorasGerentePlanta_POST = (req, res) => {
 
     }
     waitForPromise()
-
-
 }
 
 
@@ -3071,15 +3071,44 @@ controller.infoEmpleadoConfig_POST = (req, res) => {
 
 controller.InsertVacaciones_POST = (req, res) => {
     let empleado = req.body.empleado
-    let nombre= req.body.nombre
-    let tipo= req.body.tipo
-    let fecha= req.body.fecha
+    let nombre = req.body.nombre
+    let tipo = req.body.tipo
+    let fecha = req.body.fecha
 
     funcion.InsertVacaciones(empleado, nombre, tipo, fecha)
         .then((result) => {
             res.json(result)
         })
         .catch((err) => { console.error(err) })
+
+
+
+}
+
+
+
+
+controller.finalizar_solicitud_multiple_POST = (req, res) => {
+    let username = req.connection.user.substring(4)
+    let ids = req.body.id
+    ids.forEach(id => {
+        async function waitForPromise() {
+
+            let aprobador = await funcion.getEmpleadoId(username)
+            let update = await funcion.updateFinalizar(id, aprobador, "Finalizado")
+            let comment = await funcion.insertHistorial(id, aprobador, "Finalizado", "Finalizado")
+            let updateHoras = await funcion.updateHorasStatus(id, "Finalizado")
+            let solicitante_id = await funcion.getSolicitante(id)
+            let soilicitante_nombre = await funcion.getEmpleadoNombre(solicitante_id[0].solicitante)
+           
+            sendConfirmacionMail(soilicitante_nombre[0].emp_correo, id, username, "mail_aprobacion", "Gerencial Planta")
+        }
+
+        waitForPromise()
+    });
+
+    res.json("ok")
+ 
 
 
 

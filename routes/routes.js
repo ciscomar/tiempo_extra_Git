@@ -83,6 +83,7 @@ router.post('/InsertVacaciones', middleware.sspi, middleware.userType, routesCon
 router.get('/busqueda/:id', middleware.sspi, middleware.userType, routesController.busqueda_GET);
 router.post('/getBusqueda', middleware.sspi, middleware.userType, routesController.getBusqueda_POST);
 router.post('/infoEmpleadoConfig', middleware.sspi, middleware.userType, routesController.infoEmpleadoConfig_POST);
+router.post('/finalizar_solicitud_multiple', middleware.sspi, middleware.userType, routesController.finalizar_solicitud_multiple_POST);
 
 
 module.exports = router;

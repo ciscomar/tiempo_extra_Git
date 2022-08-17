@@ -87,6 +87,7 @@ function finalizar(status){
     arregloFinal.push(temp)
   }
     
+  console.log(arregloFinal);
   let data = { "id": id, "status": status ,"comentario": `${comentario.value}`, "empleados": arregloFinal,  "fechas": fechas, "solicitante": empleadoSolicitante}
   
   axios({
@@ -902,6 +903,8 @@ function getTableInfo() {
 
 
       getOtherInfo(week_start,week_end)
+
+      //finalizar("Finalizado")
 
     })
     .catch((err) => { console.error(err) })
