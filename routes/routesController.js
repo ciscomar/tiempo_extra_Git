@@ -151,6 +151,21 @@ controller.acumulado_planta_GET = (req, res) => {
 }
 
 
+controller.reporte_GET = (req, res) => {
+    let user = req.res.locals.authData[0]
+    let sidebar = req.res.locals.authData[1]
+
+    if (sidebar === "supervisor" || sidebar === "admin") {
+
+        res.render("reporte_bts.ejs", { user, sidebar })
+
+    } else {
+        res.redirect("/acceso_denegado")
+    }
+
+}
+
+
 
 controller.infoEmpleado_POST = (req, res) => {
 
@@ -2380,6 +2395,27 @@ controller.acumulado_planta_fecha_POST = (req, res) => {
 
     waitForPromise()
 }
+
+
+
+
+controller.reporte_fecha_POST = (req, res) => {
+
+    let fecha_inicial = req.body.fecha_inicial
+    let fecha_final = req.body.fecha_final
+
+    async function waitForPromise() {
+
+        let solicitud = await funcion.getSolicitudesFechaPlanta(fecha_inicial, fecha_final)
+
+  
+        res.json({ solicitud })
+    }
+
+    waitForPromise()
+}
+
+
 
 
 
