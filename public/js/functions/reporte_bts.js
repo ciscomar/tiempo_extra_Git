@@ -109,6 +109,7 @@ $(document).ready(function () {
               element.solicitud,
               element.solicitante,
               element.empleado,
+              element.turno,
               element.horas,
               element.motivo,
               element.area_req,
