@@ -69,9 +69,12 @@ $(document).ready(function () {
               temp.push(horas_solicitudes[y].horas)
             }
           }
+          
+          
           temp.push(data[i].motivo)
           temp.push(data[i].status)
           temp.push(data[i].fecha_solicitud.substring(0, data[i].fecha_solicitud.indexOf("T")))
+          temp.push(data[i].area_req)
 
           solicitud.push(temp)
 
@@ -95,9 +98,12 @@ $(document).ready(function () {
                 temp.push(horas_solicitudes[y].horas)
               }
             }
+            
+            
             temp.push(data[i].motivo)
             temp.push(data[i].status)
             temp.push(data[i].fecha_solicitud.substring(0, data[i].fecha_solicitud.indexOf("T")))
+            temp.push(data[i].area_req)
 
 
             solicitud.push(temp)
@@ -143,8 +149,9 @@ $(document).ready(function () {
           solicitud_actual[1],
           solicitud_actual[3],
           s + "    /    " + e,
+          solicitud_actual[7],
           solicitud_actual[4],
-          solicitud_actual[6],
+          solicitud_actual[6],  
           aprobar
 
 
