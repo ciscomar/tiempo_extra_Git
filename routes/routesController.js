@@ -1586,21 +1586,18 @@ controller.getSolicitudesAprobar_POST = (req, res) => {
             inc++
         });
 
-
+console.log(arrayEmpleados);
 
         let solicitudesConf = await funcion.getSolicitudesConfirmadas(arrayEmpleados)
         let solicitudesPend = await funcion.getSolicitudesPendientesConf(arrayEmpleados)
         let sumahorasConf = await funcion.getSolicitudesSumaConfirmadas(arrayEmpleados)
 
-        console.log(solicitudesConf);
-        console.log(solicitudesPend);
-        console.log(sumahorasConf);
-
+  
 
         for (let i = 0; i < solicitudesConf.length; i++) {
             for (let y = 0; y < solicitudesPend.length; y++) {
                 if (solicitudesConf.length > 0) {
-                    if (solicitudesConf[i].solicitud == solicitudesPend[y].solicitud) {
+                    if (solicitudesConf[i].solicitud === solicitudesPend[y].solicitud) {
                         solicitudesConf.splice(i, 1)
                     }
                 }
