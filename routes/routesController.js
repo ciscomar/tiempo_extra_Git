@@ -1591,8 +1591,6 @@ controller.getSolicitudesAprobar_POST = (req, res) => {
         let solicitudesPend = await funcion.getSolicitudesPendientesConf(arrayEmpleados)
         let sumahorasConf = await funcion.getSolicitudesSumaConfirmadas(arrayEmpleados)
 
-        console.log(solicitudesConf.length);
-        console.log(solicitudesPend.length);
 
 
         for (let i = 0; i < solicitudesConf.length; i++) {
