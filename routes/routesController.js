@@ -1563,11 +1563,15 @@ controller.getSolicitudesAprobar_POST = (req, res) => {
 
     let solicitante = req.connection.user.substring(4)
 
+    console.log(solicitante);
+
     async function waitForPromise() {
         let result = []
         let allEmpleados = await funcion.getAllEmpleados()
         let emp_id = await funcion.getEmpleadoId(solicitante)
         let myEmpleados = await funcion.getMyEmpleados(emp_id)
+
+        console.log(emp_id);
 
         let arrayEmpleados = ""
         let inc = 0
