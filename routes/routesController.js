@@ -1604,15 +1604,12 @@ controller.getSolicitudesAprobar_POST = (req, res) => {
 
         }
 
+        
 
-        setTimeout(() => {
-            result.push(allEmpleados)
-            result.push(solicitudesConf)
-            result.push(sumahorasConf)
-            res.json(result)
-    
-          }, 3000);
-
+        result.push(allEmpleados)
+        result.push(solicitudesConf)
+        result.push(sumahorasConf)
+        res.json(result)
 
 
     }
