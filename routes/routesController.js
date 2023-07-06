@@ -1572,6 +1572,7 @@ controller.getSolicitudesAprobar_POST = (req, res) => {
         let myEmpleados = await funcion.getMyEmpleados(emp_id)
 
         console.log(emp_id);
+        console.log(myEmpleados);
 
         let arrayEmpleados = ""
         let inc = 0
@@ -1592,24 +1593,32 @@ controller.getSolicitudesAprobar_POST = (req, res) => {
         let sumahorasConf = await funcion.getSolicitudesSumaConfirmadas(arrayEmpleados)
 
 
-
-        for (let i = 0; i < solicitudesConf.length; i++) {
-            for (let y = 0; y < solicitudesPend.length; y++) {
-                if (solicitudesConf.length > 0) {
-                    if (solicitudesConf[i].solicitud === solicitudesPend[y].solicitud) {
-                        solicitudesConf.splice(i, 1)
+        async function processLoop() {
+            for (let i = 0; i < solicitudesConf.length; i++) {
+                for (let y = 0; y < solicitudesPend.length; y++) {
+                    if (solicitudesConf.length > 0) {
+                        if (solicitudesConf[i].solicitud === solicitudesPend[y].solicitud) {
+                            solicitudesConf.splice(i, 1)
+                        }
                     }
                 }
+
             }
 
         }
 
-        
+        async function main() {
+            await processLoop();
+            result.push(allEmpleados)
+            result.push(solicitudesConf)
+            result.push(sumahorasConf)
 
-        result.push(allEmpleados)
-        result.push(solicitudesConf)
-        result.push(sumahorasConf)
-        res.json(result)
+            res.json(result)
+        }
+
+        main();
+
+
 
 
     }
@@ -2412,7 +2421,7 @@ controller.reporte_fecha_POST = (req, res) => {
 
         let solicitud = await funcion.getSolicitudesFechaPlanta(fecha_inicial, fecha_final)
 
-  
+
         res.json({ solicitud })
     }
 
@@ -3140,7 +3149,7 @@ controller.finalizar_solicitud_multiple_POST = (req, res) => {
             let updateHoras = await funcion.updateHorasStatus(id, "Finalizado")
             let solicitante_id = await funcion.getSolicitante(id)
             let soilicitante_nombre = await funcion.getEmpleadoNombre(solicitante_id[0].solicitante)
-           
+
             sendConfirmacionMail(soilicitante_nombre[0].emp_correo, id, username, "mail_aprobacion", "Gerencial Planta")
         }
 
@@ -3148,7 +3157,7 @@ controller.finalizar_solicitud_multiple_POST = (req, res) => {
     });
 
     res.json("ok")
- 
+
 
 
 
