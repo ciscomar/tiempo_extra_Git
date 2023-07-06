@@ -126,7 +126,7 @@ $(document).ready(function () {
           dataempleados = result.data.result[1]
           dataHoras = result.data.result[2]
           fecha = data[0].fecha
-          let datef = new Date(fecha)
+           let datef = new Date(fecha.substring(0,fecha.indexOf('T'))+'T08:00:00.000z')
 
 
 
@@ -304,21 +304,21 @@ $(document).ready(function () {
           }
 
 
-        //   table2 = $('#table2').DataTable({
-        //     //dom: "<'row'<'col-lg-4'l><'col-lg-4 text-center'B><'col-lg-4'f>><'row'<'col-lg-2't>><'row'<'col-lg-3'i><'col-lg-6'><'col-lg-3'p>>",
-        //     data: row,
-        //     bInfo: false,
-        //     buttons: [
-        //         {
-        //             extend: 'excelHtml5',
-        //             title: null,
-        //             filename: `Tiempo Extra`,
-        //             className: "d-none"
+          table2 = $('#table2').DataTable({
+            //dom: "<'row'<'col-lg-4'l><'col-lg-4 text-center'B><'col-lg-4'f>><'row'<'col-lg-2't>><'row'<'col-lg-3'i><'col-lg-6'><'col-lg-3'p>>",
+            data: row,
+            bInfo: false,
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    title: null,
+                    filename: `Tiempo Extra`,
+                    className: "d-none"
 
-        //         }
+                }
 
-        //     ]
-        // })
+            ]
+        })
 
     
           //// Tabla sin formato
