@@ -111,7 +111,8 @@ function loadTable() {
                     empleado.emp_area,
                     empleado.emp_rfc,
                     empleado.emp_curp,
-                    empleado.emp_imss
+                    empleado.emp_imss,
+                    empleado.emp_vacaciones
                 ]
                 data.push(info)
             });

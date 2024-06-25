@@ -1,0 +1,155 @@
+<%- include ("./static/header") %>
+    <%- include ("./static/sidebar") %>
+        <%- include ("./static/navbar") %>
+
+
+            <div class="container">
+                <div class="row mt-5">
+
+                    <div class="col-2"></div>
+                    <div class="col-8">
+
+                        <img src="/img/TristoneLogo.png" class="img-logo rounded mx-auto d-block"
+                            alt="Tristone Flowtech">
+                        <h1 class="display-5 text-center csvTitulo">Vacaciones y Permisos</h1>
+                        <p class="lead text-center"></p>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-12">
+
+                        <div class="table-responsive mt-2">
+                            <div class="containerTable">
+                                <div class="table table-responsive" id="table">
+                                    <table id="table2"
+                                        class="table table-bordered table-striped table-sm hover text-center">
+                                        <thead class="thead-dark">
+
+                                            <th width="1%"><span></span> Revisar</th>
+                                            <th width="10%"><span></span> Id Solicitud</th>
+                                            <th width="10%"><span></span> Fecha Creada</th>
+    
+                                            <!-- Se elimina funcionalidad de horas laboradas -->
+                                            <!-- <th width="10%"><span></span> Hrs. Laboradas</th> -->
+
+
+                                        </thead>
+
+                                        <tbody>
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div class="modal fade" id="modalSuccess" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header card-mov">
+                            <img src="/img/TristoneLogo.png" alt="SAP" srcset="" class="card-mov">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-2">
+                                    <i class="fas fa-check-circle text-success" style="font-size: 2rem;"> </i>
+                                </div>
+                                <div class="col">
+                                    <h5>Solicitud Creada</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="btnCerrar_Success" type="button" class="btn btn-secondary btnCerrar"
+                                data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="modal fade" id="modalConfirmado" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header card-mov">
+                            <img src="/img/TristoneLogo.png" alt="SAP" srcset="" class="card-mov">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-2">
+                                    <i class="fas fa-check-circle text-success" style="font-size: 2rem;"> </i>
+                                </div>
+                                <div class="col">
+                                    <h5>Horas Confirmadas</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="btnCerrar_Success" type="button" class="btn btn-secondary btnCerrar"
+                                data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="modal fade" id="modalSearchResults" tabindex="-1" role="dialog" aria-labelledby="searchResultsTitle" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header card-mov">
+                            <h5 class="modal-title" id="searchResultsTitle">Detalle de Solicitud</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table table-bordered table-striped table-sm hover text-center">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Solicitud</th>
+                                        <th>Solicitante</th>
+                                        <th>Empleado</th>
+                                        <th>Fecha Inicial</th>
+                                        <th>Fecha Final</th>
+                                        <th>Tipo</th>
+                                        <th>Fecha Solicitud</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="searchResultsBody">
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <%- include ("./static/guia") %>
+
+                <%- include ("./static/footer") %>
+                    <script src="/js/functions/solicitud_list_vacaciones.js"></script>

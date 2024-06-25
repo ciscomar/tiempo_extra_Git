@@ -1,0 +1,380 @@
+<%- include ("./static/header") %>
+<%- include ("./static/sidebar") %>
+<%- include ("./static/navbar") %>
+
+<div class="container">
+    <div class="row mt-5 justify-content-center">
+        <div class="col-8 text-center">
+            <img src="/img/TristoneLogo.png" class="img-logo rounded mx-auto d-block" alt="Tristone Flowtech">
+            <h1 class="display-5 text-center csvTitulo">Vacaciones y Permisos</h1>
+            <p class="lead text-center"></p>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <form id="vacacionesPermisosForm" class="form-inline justify-content-center">
+                <div class="form-group mx-2 mb-2">
+                    <label for="numeroEmpleado" class="sr-only">Número de Empleado</label>
+                    <input type="text" class="form-control form-control-sm" id="numeroEmpleado" name="numeroEmpleado" placeholder="Número de Empleado" required>
+                </div>
+                
+                <div class="form-group mx-2 mb-2">
+                    <label for="fechaInicio" class="sr-only">Fecha de Inicio</label>
+                    <input type="text" class="form-control form-control-sm datepicker" id="fechaInicio" name="fechaInicio" placeholder="Fecha de Inicio" required>
+                </div>
+                <div class="form-group mx-2 mb-2">
+                    <label for="fechaFin" class="sr-only">Fecha de Fin</label>
+                    <input type="text" class="form-control form-control-sm datepicker" id="fechaFin" name="fechaFin" placeholder="Fecha de Fin" required>
+                </div>
+                <div class="form-group mx-2 mb-2">
+                    <label for="tipo" class="sr-only">Tipo</label>
+                    <select class="form-control form-control-sm" id="tipo" name="tipo" required>
+                        <option value="" disabled selected>Tipo</option>
+                        <option value="Vacaciones">Vacaciones</option>
+                        <option value="Permiso sin Goce">Permiso sin Goce</option>
+                    </select>
+                </div>
+                
+                <button type="button" class="btn btn-secondary btn-sm mb-2" id="agregarFila">Agregar</button>
+            </form>
+<div class="form-group mx-2 mb-2 mt-2 text-center">
+    <div class="form-row">
+        <div class="col">
+            <label for="nombre">Nombre:</label>
+            <input type="text" class="form-control form-control-sm small-input" id="nombreEmpleado" name="nombreEmpleado" placeholder="" readonly>
+        </div>
+        <div class="col">
+            <label for="vacacionesDisponibles">Vacaciones Disponibles:</label>
+            <input type="text" class="form-control form-control-sm small-input" id="diasVacaciones" name="diasVacaciones" placeholder="" readonly>
+        </div>
+        <div class="col">
+            <label for="turno">Turno:</label>
+            <input type="text" class="form-control form-control-sm small-input" id="turnoEmpleado" name="turnoEmpleado" placeholder="" readonly>
+        </div>
+    </div>
+</div>
+        </div>
+    </div>
+    <div class="row justify-content-center mt-4">
+        <div class="col-10">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th  width="0%">Número de Empleado</th>
+                        <th>Nombre</th>
+                        <th>Turno</th>
+                        <th>Fecha de Inicio</th>
+                        <th>Fecha de Fin</th>
+                        <th>Tipo</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="solicitudesTableBody">
+                    <!-- Aquí se agregarán las solicitudes -->
+                </tbody>
+            </table>
+            <button type="button" class="btn btn-success btn-sm" id="enviarSolicitudes">Enviar Solicitud</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalSuccess" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header card-mov">
+                <img src="/img/TristoneLogo.png" alt="SAP" srcset="" class="card-mov">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-2">
+                        <i class="fas fa-times text-danger" style="font-size: 2rem;"></i>
+                    </div>
+                    <div class="col">
+                        <h5 id="errorMessage"></h5>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btnCerrar_Success" type="button" class="btn btn-secondary btnCerrar" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalError" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header card-mov">
+                <img src="/img/TristoneLogo.png" alt="SAP" srcset="" class="card-mov">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-2">
+                        <i class="fas fa-times text-danger" style="font-size: 2rem;"></i>
+                    </div>
+                    <div class="col">
+                        <h5>Solicitud Incompleta</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btnCerrar_Success" type="button" class="btn btn-secondary btnCerrar" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="modalError" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+aria-hidden="true">
+<div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+        <div class="modal-header card-mov">
+            <img src="/img/TristoneLogo.png" alt="SAP" srcset="" class="card-mov">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-2">
+                    <i class="fas fa-times text-danger" style="font-size: 2rem;"> </i>
+                </div>
+                <div class="col">
+                    <h5>Solicitud Incompleta</h5>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button id="btnCerrar_Success" type="button" class="btn btn-secondary btnCerrar"
+                data-dismiss="modal">Cerrar</button>
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+
+<div class="modal fade" id="modalSuccess" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+aria-hidden="true">
+<div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+        <div class="modal-header card-mov">
+            <img src="/img/TristoneLogo.png" alt="SAP" srcset="" class="card-mov">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-2">
+                    <i class="fas fa-times text-danger" style="font-size: 2rem;"> </i>
+                </div>
+                <div class="col">
+                    <h5 id="errorMessage"></h5>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button id="btnCerrar_Success" type="button" class="btn btn-secondary btnCerrar"
+                data-dismiss="modal">Cerrar</button>
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+
+
+<%- include ("./static/guia") %>
+<%- include ("./static/footer") %>
+
+
+<style>
+    .small-input {
+        width: 150px; /* Ajusta el tamaño según tus necesidades */
+        display: inline-block;
+    }
+</style>
+
+<script>
+
+let errorMessage = document.getElementById("errorMessage")
+    $(function() {
+        var today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        $(".datepicker").datepicker({
+            dateFormat: "dd-mm-yy",
+            minDate: today
+        });
+
+        function parseDate(str) {
+            var parts = str.split("-");
+            return new Date(parts[2], parts[1] - 1, parts[0]);
+        }
+
+        function validateInputs() {
+            var numeroEmpleado = $("#numeroEmpleado").val().trim();
+            var nombreEmpleado = $("#nombreEmpleado").val().trim();
+            var turnoEmpleado = $("#turnoEmpleado").val().trim();
+            var fechaInicio = $("#fechaInicio").val().trim();
+            var fechaFin = $("#fechaFin").val().trim();
+            var tipo = $("#tipo").val();
+
+            if (numeroEmpleado === "" || fechaInicio === "" || fechaFin === "" || !tipo) {
+                 $('#modalSuccess').modal({ backdrop: 'static', keyboard: false })
+                errorMessage.innerHTML="Por favor, complete todos los campos"
+                return false;
+            }
+
+            var fechaInicioDate = parseDate(fechaInicio);
+            var fechaFinDate = parseDate(fechaFin);
+
+            if (fechaInicioDate < today || fechaFinDate < today) {
+                 $('#modalSuccess').modal({ backdrop: 'static', keyboard: false })
+                errorMessage.innerHTML="Las fechas no pueden ser en el pasado"
+                return false;
+            }
+
+            if (fechaFinDate < fechaInicioDate) {
+                 $('#modalSuccess').modal({ backdrop: 'static', keyboard: false })
+                errorMessage.innerHTML="La fecha de fin no puede ser anterior a la fecha de inicio"
+                return false;
+            }
+
+            return true;
+        }
+
+        $("#numeroEmpleado").on("blur", function() {
+            var numeroEmpleado = $(this).val().trim();
+            if (numeroEmpleado) {
+                // Llamada AJAX para obtener los días de vacaciones disponibles
+                $.ajax({
+                    url: '/dias_vacaciones', // Actualiza esta URL con la ruta correcta
+                    method: 'POST',
+                    data: { numeroEmpleado: numeroEmpleado },
+                    success: function(response) {
+                        if(response == "No es tu empleado") {
+                            $('#modalSuccess').modal({ backdrop: 'static', keyboard: false })
+                            errorMessage.innerHTML="No es tu Empleado"
+                            $("#diasVacaciones").val("");
+                            $("#numeroEmpleado").val("");
+                            $("#numeroEmpleado").focus();
+                        }else if(response.length > 0){
+                           
+                            $("#diasVacaciones").val(response[0].emp_turno);
+                            $("#nombreEmpleado").val(response[0].emp_nombre);
+                            $("#turnoEmpleado").val(response[0].emp_turno);
+                        }else{
+                            $('#modalSuccess').modal({ backdrop: 'static', keyboard: false })
+                            errorMessage.innerHTML="Empleado no Encontrado"
+                            $("#numeroEmpleado").val("");
+                            $("#diasVacaciones").val("");
+                            
+                            $("#numeroEmpleado").focus();
+                        }
+                        
+                    },
+                    error: function(error) {
+                         $('#modalSuccess').modal({ backdrop: 'static', keyboard: false })
+                errorMessage.innerHTML="Ocurrió un error al obtener los días de vacaciones"
+                    }
+                });
+            }
+        });
+
+        $("#agregarFila").on("click", function(event) {
+            event.preventDefault();
+
+            if (!validateInputs()) {
+                return;
+            }
+            
+            var numeroEmpleado = $("#numeroEmpleado").val();
+            var fechaInicio = $("#fechaInicio").val();
+            var fechaFin = $("#fechaFin").val();
+            var tipo = $("#tipo").val();
+            var nombreEmpleado = $("#nombreEmpleado").val();
+            var turnoEmpleado = $("#turnoEmpleado").val();
+
+            var newRow = `
+                <tr>
+                    <td>${numeroEmpleado}</td>
+                    <td>${nombreEmpleado}</td>
+                    <td>${turnoEmpleado}</td>
+                    <td>${fechaInicio}</td>
+                    <td>${fechaFin}</td>
+                    <td>${tipo}</td>
+                    <td><button class="btn btn-danger btn-sm btnEliminar">Eliminar</button></td>
+                </tr>
+            `;
+
+            $("#solicitudesTableBody").append(newRow);
+
+            // Limpiar el formulario después de agregar la solicitud
+            $("#vacacionesPermisosForm")[0].reset();
+            // Reiniciar los datepickers para que tengan la restricción de fecha mínima
+            $(".datepicker").datepicker("option", "minDate", today);
+            $("#diasVacaciones").val("");
+            $("#nombreEmpleado").val("");
+            $("#turnoEmpleado").val("");
+        });
+
+        // Delegar el evento click para los botones de eliminar
+        $("#solicitudesTableBody").on("click", ".btnEliminar", function() {
+            $(this).closest("tr").remove();
+        });
+
+        $("#enviarSolicitudes").on("click", function() {
+            if ($("#solicitudesTableBody tr").length === 0) {
+        ;
+                   $('#modalSuccess').modal({ backdrop: 'static', keyboard: false })
+                errorMessage.innerHTML="No hay solicitudes para enviar"
+                return;
+            }
+
+            var solicitudes = [];
+            $("#solicitudesTableBody tr").each(function() {
+                var numeroEmpleado = $(this).find("td:eq(0)").text();
+                var nombreEmpleado = $(this).find("td:eq(1)").text();
+                var turnoEmpleado = $(this).find("td:eq(2)").text();
+                var fechaInicio = $(this).find("td:eq(3)").text();
+                var fechaFin = $(this).find("td:eq(4)").text();
+                var tipo = $(this).find("td:eq(5)").text();
+
+                solicitudes.push({
+                    numeroEmpleado: numeroEmpleado,
+                    nombreEmpleado: nombreEmpleado,
+                    turnoEmpleado: turnoEmpleado,
+                    fechaInicio: fechaInicio,
+                    fechaFin: fechaFin,
+                    tipo: tipo,
+                });
+            });
+
+            // Enviar las solicitudes al servidor (ejemplo usando AJAX)
+            $.ajax({
+                url: '/solicitud_vacaciones', // Actualiza esta URL con la ruta correcta
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(solicitudes),
+                success: function(response) {
+                       window.location = `/solicitud_list_vacaciones/enviada`
+                },
+                error: function(error) {
+                $('#modalSuccess').modal({ backdrop: 'static', keyboard: false })
+                errorMessage.innerHTML="Ocurrió un error al enviar las solicitudes"
+         
+                }
+            });
+        });
+    });
+</script>
+<!-- <script src="/js/functions/solicitud.js"></script> -->

@@ -76,6 +76,22 @@ controller.crear_solicitud_GET = (req, res) => {
 }
 
 
+controller.crear_vacaciones_GET = (req, res) => {
+    let user = req.res.locals.authData[0]
+    let sidebar = req.res.locals.authData[1]
+
+    if (sidebar === "supervisor" || sidebar === "admin") {
+
+        res.render("vacaciones.ejs", { user, sidebar })
+
+    } else {
+
+        res.redirect("/acceso_denegado")
+    }
+
+}
+
+
 controller.empleados_supervisor_GET = (req, res) => {
     let user = req.res.locals.authData[0]
     let sidebar = req.res.locals.authData[1]
@@ -143,6 +159,21 @@ controller.acumulado_planta_GET = (req, res) => {
     if (sidebar === "planta" || sidebar === "admin" || sidebar === "rh") {
 
         res.render("acumulado_planta.ejs", { user, sidebar })
+
+    } else {
+        res.redirect("/acceso_denegado")
+    }
+
+}
+
+
+controller.acumulado_vacaciones_GET = (req, res) => {
+    let user = req.res.locals.authData[0]
+    let sidebar = req.res.locals.authData[1]
+
+    if (sidebar === "planta" || sidebar === "admin" || sidebar === "rh") {
+
+        res.render("acumulado_vacaciones.ejs", { user, sidebar })
 
     } else {
         res.redirect("/acceso_denegado")
@@ -572,6 +603,21 @@ controller.solicitud_list_GET = (req, res) => {
 
 }
 
+controller.solicitud_list_vacaciones_GET = (req, res) => {
+    let user = req.res.locals.authData[0]
+    let id = req.param.id
+    let sidebar = req.res.locals.authData[1]
+
+    if (sidebar === "supervisor" || sidebar === "admin") {
+
+        res.render("solicitud_list_vacaciones.ejs", { id, sidebar, user })
+
+    } else {
+        res.redirect("/acceso_denegado")
+    }
+
+}
+
 
 
 controller.pendiente_rh_GET = (req, res) => {
@@ -638,6 +684,47 @@ controller.getSolicitudes_POST = (req, res) => {
             .then((result) => {
                 resultados.push(result)
                 res.json(resultados)
+            })
+            .catch((err) => { console.error(err) })
+
+
+    }
+
+    waitForPromise()
+}
+
+
+controller.getSolicitudesVacaciones_POST = (req, res) => {
+
+    let username = req.connection.user.substring(4)
+    async function waitForPromise() {
+
+        let emp_id = await funcion.getEmpleadoId(username)
+
+        funcion.getSolicitudesVacaciones(emp_id)
+            .then((result) => {
+              
+                res.json(result)
+            })
+            .catch((err) => { console.error(err) })
+
+
+    }
+
+    waitForPromise()
+}
+
+
+controller.getSolicitudVacaciones_POST = (req, res) => {
+
+   
+    let id = req.body.id
+    async function waitForPromise() {
+
+        funcion.getSolicitudVacacionesId(id)
+            .then((result) => {
+               
+                res.json(result)
             })
             .catch((err) => { console.error(err) })
 
@@ -2411,6 +2498,24 @@ controller.acumulado_planta_fecha_POST = (req, res) => {
 
 
 
+controller.acumulado_planta_vacaciones_fecha_POST = (req, res) => {
+
+    let fecha_inicial = req.body.fecha_inicial
+    let fecha_final = req.body.fecha_final
+    async function waitForPromise() {
+        let result = []
+
+
+        let solicitud = await funcion.getVacacionesFechaPlanta(fecha_inicial, fecha_final)
+
+        result.push(solicitud)
+        res.json({ result })
+    }
+
+    waitForPromise()
+}
+
+
 
 controller.reporte_fecha_POST = (req, res) => {
 
@@ -2421,7 +2526,7 @@ controller.reporte_fecha_POST = (req, res) => {
 
         let solicitud = await funcion.getSolicitudesFechaPlanta(fecha_inicial, fecha_final)
 
-  
+
         res.json({ solicitud })
     }
 
@@ -3149,7 +3254,7 @@ controller.finalizar_solicitud_multiple_POST = (req, res) => {
             let updateHoras = await funcion.updateHorasStatus(id, "Finalizado")
             let solicitante_id = await funcion.getSolicitante(id)
             let soilicitante_nombre = await funcion.getEmpleadoNombre(solicitante_id[0].solicitante)
-           
+
             sendConfirmacionMail(soilicitante_nombre[0].emp_correo, id, username, "mail_aprobacion", "Gerencial Planta")
         }
 
@@ -3157,7 +3262,54 @@ controller.finalizar_solicitud_multiple_POST = (req, res) => {
     });
 
     res.json("ok")
- 
+
+
+
+
+}
+
+
+
+controller.getDiasVacaciones_POST = (req, res) => {
+    let gafete = req.body.numeroEmpleado
+    let supervisor = username = req.connection.user.substring(4)
+
+    funcion.getDiasVacaciones(gafete)
+        .then((result) => {
+            funcion.getUserJefe(result[0].emp_id_jefe).then((result2) => {
+
+                if(result2[0].emp_alias.toUpperCase() == supervisor.toUpperCase()){
+                    res.json(result)
+                }else{
+                    res.json("No es tu empleado")
+                
+                }
+
+            }).catch((err) => { console.error(err) })
+        })
+        .catch((err) => { res.json(err) })
+
+
+}
+
+
+controller.solicitud_vacaciones_POST = async (req, res) => {
+    let data = req.body
+    let username = req.connection.user.substring(4)
+    let solicitante = await funcion.getEmpleadoId(username)
+    let lastSolicitud = await funcion.getSolicitudVacaciones();
+    let solicitud
+
+    if (lastSolicitud == undefined) {
+        solicitud = 1
+    } else {
+        solicitud = lastSolicitud.solicitud + 1
+    }
+
+   funcion.insertSolicitudVacaciones(solicitante, data, solicitud).then((result) => {
+        res.json(result)
+   }).catch((err) => { console.error(err) })
+
 
 
 
