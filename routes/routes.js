@@ -11,6 +11,7 @@ const upload = multer()
 router.get('/',middleware.sspi,middleware.userType, routesController.index_GET);
 router.get('/acceso_denegado',routesController.accesoDenegado_GET);
 router.get('/crear_solicitud', middleware.sspi, middleware.userType, routesController.crear_solicitud_GET);
+router.get('/crear_vacaciones', middleware.sspi, middleware.userType, routesController.crear_vacaciones_GET);
 router.get('/solicitud_list/:id', middleware.sspi, middleware.userType, routesController.solicitud_list_GET);
 router.post('/infoEmpleado', middleware.sspi, middleware.userType, routesController.infoEmpleado_POST);
 router.post('/sendSolicitud', middleware.sspi, middleware.userType, routesController.sendSolicitud_POST);
@@ -86,6 +87,14 @@ router.post('/infoEmpleadoConfig', middleware.sspi, middleware.userType, routesC
 router.post('/finalizar_solicitud_multiple', middleware.sspi, middleware.userType, routesController.finalizar_solicitud_multiple_POST);
 router.get('/reporte', middleware.sspi, middleware.userType, routesController.reporte_GET);
 router.post('/reporte_fecha', middleware.sspi, middleware.userType, routesController.reporte_fecha_POST);
+router.post('/dias_vacaciones', middleware.sspi, middleware.userType, routesController.getDiasVacaciones_POST);
+router.post('/solicitud_vacaciones', middleware.sspi, middleware.userType, routesController.solicitud_vacaciones_POST);
+router.get('/solicitud_list_vacaciones/:id', middleware.sspi, middleware.userType, routesController.solicitud_list_vacaciones_GET);
+router.post('/getSolicitudesVacaciones', middleware.sspi, middleware.userType, routesController.getSolicitudesVacaciones_POST);
+router.post('/getSolicitudVacaciones', middleware.sspi, middleware.userType, routesController.getSolicitudVacaciones_POST);
+router.get('/acumulado_vacaciones', middleware.sspi, middleware.userType, routesController.acumulado_vacaciones_GET);
+router.post('/acumulado_planta_vacaciones_fecha', middleware.sspi, middleware.userType, routesController.acumulado_planta_vacaciones_fecha_POST);
+
 
 
 module.exports = router;

@@ -135,6 +135,24 @@ funcion.getSolicitudesSuma = (username) => {
 
 }
 
+
+funcion.getSolicitudesVacaciones = (username) => {
+    return new Promise((resolve, reject) => {
+
+        dbT(`SELECT solicitud, fecha_solicitud
+        FROM 
+            vacaciones_solicitud WHERE solicitante = "${username}" 
+        GROUP BY 
+            solicitud
+        ORDER BY 
+            solicitud DESC`)
+            .then((result) => { resolve(result) })
+            .catch((error) => { reject(error) })
+    })
+
+
+}
+
 funcion.getSolicitudesSumaConfirmar = (username) => {
     return new Promise((resolve, reject) => {
 
@@ -383,6 +401,18 @@ funcion.getSolicitudesFechaPlanta = (week_start, week_end) => {
 
         `
         )
+            .then((result) => { resolve(result) })
+            .catch((error) => { reject(error) })
+    })
+}
+
+
+funcion.getVacacionesFechaPlanta = (week_start, week_end) => {
+    return new Promise((resolve, reject) => {
+
+        dbT(`SELECT * FROM vacaciones_solicitud WHERE
+        (fecha_inicial BETWEEN  "${week_start}" AND "${week_end}")
+        `)
             .then((result) => { resolve(result) })
             .catch((error) => { reject(error) })
     })
@@ -1711,4 +1741,65 @@ funcion.cancelarSolicitud = (id) => {
     })
 }
 
+
+funcion.getDiasVacaciones = (gafete) => {
+    return new Promise((resolve, reject) => {
+
+        dbE(`SELECT emp_turno, emp_id_jefe, emp_nombre FROM del_empleados WHERE emp_id=${gafete}`)
+            .then((result) => { resolve(result) })
+            .catch((error) => { reject(error) })
+    })
+}
+
+funcion.getUserJefe = (gafete) => {
+    return new Promise((resolve, reject) => {
+
+        dbE(`SELECT emp_alias FROM del_empleados WHERE emp_id=${gafete}`)
+            .then((result) => { resolve(result) })
+            .catch((error) => { reject(error) })
+    })
+}
+
+funcion.insertSolicitudVacaciones = (solicitante, data, solicitud) => {
+    return new Promise((resolve, reject) => {
+        const query = `INSERT INTO vacaciones_solicitud (solicitud, solicitante, empleado, fecha_inicial, fecha_final, tipo, turno) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+
+        // Function to convert date format
+        const convertDateFormat = (date) => {
+            const [day, month, year] = date.split('-');
+            return `${year}-${month}-${day}`;
+        };
+
+        // Using a Promise.all to handle multiple inserts
+        const promises = data.map(item => {
+            const fechaInicio = convertDateFormat(item.fechaInicio);
+            const fechaFin = convertDateFormat(item.fechaFin);
+            const values = [solicitud, solicitante, item.numeroEmpleado, fechaInicio, fechaFin, item.tipo, item.turnoEmpleado];
+            return dbT(query, values);
+        });
+
+        Promise.all(promises)
+            .then(results => { resolve(results); })
+            .catch(error => { reject(error); });
+    });
+}
+
+
+funcion.getSolicitudVacaciones = () => {
+    return new Promise((resolve, reject) => {
+
+        dbT(`SELECT solicitud FROM vacaciones_solicitud ORDER BY solicitud DESC LIMIT 1`)
+            .then((result) => { resolve(result[0]) })
+            .catch((error) => { reject(error) })
+    })
+}
+
+funcion.getSolicitudVacacionesId = (id) => {
+    return new Promise((resolve, reject) => {
+
+        dbT(`SELECT * FROM vacaciones_solicitud WHERE solicitud=${id}`)
+            .then((result) => { resolve(result) })
+            .catch((error) => { reject(error) })
+    })
+}
 module.exports = funcion;
