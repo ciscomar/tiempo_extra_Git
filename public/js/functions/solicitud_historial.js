@@ -41,7 +41,7 @@ $(document).ready(function () {
       dataSolicitudHoras = result.data.result[3]
 
       fecha = data[0].fecha
-      let datef = new Date(fecha)
+       let datef = new Date(fecha.substring(0,fecha.indexOf('T'))+'T08:00:00.000z')
 
 
       momentdate = moment(datef)

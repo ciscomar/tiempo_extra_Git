@@ -1572,6 +1572,7 @@ controller.getSolicitudesAprobar_POST = (req, res) => {
         let myEmpleados = await funcion.getMyEmpleados(emp_id)
 
         console.log(emp_id);
+        console.log(myEmpleados);
 
         let arrayEmpleados = ""
         let inc = 0
@@ -1592,26 +1593,31 @@ controller.getSolicitudesAprobar_POST = (req, res) => {
         let sumahorasConf = await funcion.getSolicitudesSumaConfirmadas(arrayEmpleados)
 
 
-
-        for (let i = 0; i < solicitudesConf.length; i++) {
-            for (let y = 0; y < solicitudesPend.length; y++) {
-                if (solicitudesConf.length > 0) {
-                    if (solicitudesConf[i].solicitud === solicitudesPend[y].solicitud) {
-                        solicitudesConf.splice(i, 1)
+        async function processLoop() {
+            for (let i = 0; i < solicitudesConf.length; i++) {
+                for (let y = 0; y < solicitudesPend.length; y++) {
+                    if (solicitudesConf.length > 0) {
+                        if (solicitudesConf[i].solicitud === solicitudesPend[y].solicitud) {
+                            solicitudesConf.splice(i, 1)
+                        }
                     }
                 }
+
             }
 
         }
 
-
-        setTimeout(() => {
+        async function main() {
+            await processLoop();
             result.push(allEmpleados)
             result.push(solicitudesConf)
             result.push(sumahorasConf)
+
             res.json(result)
-    
-          }, 3000);
+        }
+
+        main();
+
 
 
 

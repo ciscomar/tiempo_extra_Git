@@ -75,7 +75,7 @@ function confirmar(status){
 
 
 //       fecha = data[0].fecha
-//       let datef = new Date(fecha)
+//        let datef = new Date(fecha.substring(0,fecha.indexOf('T'))+'T08:00:00.000z')
 
 //       momentdate=moment(datef)
 //       week_day=momentdate.weekday()
@@ -436,7 +436,7 @@ function getTableInfo() {
 
 
       fecha = data[0].fecha
-      let datef = new Date(fecha)
+       let datef = new Date(fecha.substring(0,fecha.indexOf('T'))+'T08:00:00.000z')
 
 
       momentdate = moment(datef)

@@ -84,7 +84,7 @@ $(document).ready(function () {
           dataempleados = result.data.result[1]
           dataHoras = result.data.result[2]
           fecha = data[0].fecha
-          let datef = new Date(fecha)
+           let datef = new Date(fecha.substring(0,fecha.indexOf('T'))+'T08:00:00.000z')
     
 
           let semana = []
