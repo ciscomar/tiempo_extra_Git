@@ -269,7 +269,7 @@ let errorMessage = document.getElementById("errorMessage")
                             $("#numeroEmpleado").focus();
                         }else if(response.length > 0){
                            
-                            $("#diasVacaciones").val(response[0].emp_turno);
+                            $("#diasVacaciones").val(response[0].emp_vacaciones);
                             $("#nombreEmpleado").val(response[0].emp_nombre);
                             $("#turnoEmpleado").val(response[0].emp_turno);
                         }else{
