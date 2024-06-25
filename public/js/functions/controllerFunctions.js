@@ -1745,7 +1745,7 @@ funcion.cancelarSolicitud = (id) => {
 funcion.getDiasVacaciones = (gafete) => {
     return new Promise((resolve, reject) => {
 
-        dbE(`SELECT emp_turno, emp_id_jefe, emp_nombre FROM del_empleados WHERE emp_id=${gafete}`)
+        dbE(`SELECT emp_vacaciones, emp_id_jefe, emp_nombre FROM del_empleados WHERE emp_id=${gafete}`)
             .then((result) => { resolve(result) })
             .catch((error) => { reject(error) })
     })
