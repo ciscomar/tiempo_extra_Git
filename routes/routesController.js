@@ -1681,17 +1681,21 @@ controller.getSolicitudesAprobar_POST = (req, res) => {
 
 
         async function processLoop() {
+            const indicesToRemove = [];
+            
             for (let i = 0; i < solicitudesConf.length; i++) {
                 for (let y = 0; y < solicitudesPend.length; y++) {
-                    if (solicitudesConf.length > 0) {
-                        if (solicitudesConf[i].solicitud === solicitudesPend[y].solicitud) {
-                            solicitudesConf.splice(i, 1)
-                        }
+                    if (solicitudesConf[i].solicitud === solicitudesPend[y].solicitud) {
+                        indicesToRemove.push(i);
+                        break; // Exit the inner loop since we found a match
                     }
                 }
-
             }
-
+        
+            // Remove elements in reverse order to avoid index shifting issues
+            for (let i = indicesToRemove.length - 1; i >= 0; i--) {
+                solicitudesConf.splice(indicesToRemove[i], 1);
+            }
         }
 
         async function main() {
