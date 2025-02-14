@@ -6,6 +6,7 @@ let btnExcelDownloadCon = document.getElementById("btnExcelDownloadCon")
 let tableSinFormato
 let table2
 let reloadCounter=0
+////
 // let table = $('#table2').DataTable(
 //     {
 //       bFilter: false,
